@@ -67,7 +67,7 @@ class RenderTabluarFlex extends RenderFlex {
   Decoration get decoration => _decoration;
   Decoration _decoration;
   set decoration(Decoration value) {
-    assert(value != null);
+//    assert(value != null);
     if (value == _decoration)
       return;
     _painter?.dispose();

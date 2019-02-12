@@ -8,6 +8,8 @@ dragging and dropping the children within the widget.
 
 ## Getting Started
 
+This package includes ReorderableTable, ReorderableWrap, ReorderableRow, and ReorderableColumn.
+
 This project is a starting point for a Dart
 [package](https://flutter.io/developing-packages/),
 a library module containing code that can be shared easily across

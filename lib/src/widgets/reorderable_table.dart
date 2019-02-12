@@ -7,27 +7,27 @@ import './reorderable_flex.dart';
 import '../rendering/tabluar_flex.dart';
 
 class ReorderableTableRow extends TabluarRow {
-//  ReorderableTableRow({
-//    Key key,
-//    MainAxisAlignment mainAxisAlignment = MainAxisAlignment.start,
-//    MainAxisSize mainAxisSize = MainAxisSize.max,
-//    CrossAxisAlignment crossAxisAlignment = CrossAxisAlignment.center,
-//    TextDirection textDirection,
-//    VerticalDirection verticalDirection = VerticalDirection.down,
-//    TextBaseline textBaseline,
-//    List<Widget> children = const <Widget>[],
-//    Decoration decoration,
-//  }) : super(
-//        children: children,
-//        key: key,
-//        mainAxisAlignment: mainAxisAlignment,
-//        mainAxisSize: mainAxisSize,
-//        crossAxisAlignment: crossAxisAlignment,
-//        textDirection: textDirection,
-//        verticalDirection: verticalDirection,
-//        textBaseline: textBaseline,
-//        decoration: decoration,
-//  );
+  ReorderableTableRow({
+    Key key,
+    MainAxisAlignment mainAxisAlignment = MainAxisAlignment.start,
+    MainAxisSize mainAxisSize = MainAxisSize.max,
+    CrossAxisAlignment crossAxisAlignment = CrossAxisAlignment.center,
+    TextDirection textDirection,
+    VerticalDirection verticalDirection = VerticalDirection.down,
+    TextBaseline textBaseline,
+    List<Widget> children = const <Widget>[],
+    Decoration decoration,
+  }) : super(
+        children: children,
+        key: key,
+        mainAxisAlignment: mainAxisAlignment,
+        mainAxisSize: mainAxisSize,
+        crossAxisAlignment: crossAxisAlignment,
+        textDirection: textDirection,
+        verticalDirection: verticalDirection,
+        textBaseline: textBaseline,
+        decoration: decoration,
+  );
 }
 
 typedef DecorateDraggableFeedback = Widget Function(BuildContext feedbackContext, Widget draggableFeedback);
