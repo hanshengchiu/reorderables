@@ -25,6 +25,7 @@ This package includes ReorderableTable, ReorderableWrap, ReorderableRow, and Reo
 
 If my work has helped you, you can support me by buying me a coffee or donate me via PayPal.
 Your support is very much appreciated. :)
-<a href="https://www.buymeacoffee.com/q5gkeA4t2" target="_blank"><img src="https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png" alt="Buy Me A Coffee" style="height: auto !important;width: auto !important;" ></a>
-or
+
+[![Donate](https://img.shields.io/badge/Donate-Buy%20Me%20A%20Coffee-yellow.svg)](https://www.buymeacoffee.com/q5gkeA4t2) 
+ or 
 [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=2L56VGH228QJE)
