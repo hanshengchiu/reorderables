@@ -121,7 +121,7 @@ class RenderTabluarFlex extends RenderFlex {
       }
     }
     if (mainAxisAlignment == MainAxisAlignment.start ||
-      mainAxisAlignment == MainAxisAlignment.end) {
+        mainAxisAlignment == MainAxisAlignment.end) {
       switch (direction) {
         case Axis.horizontal:
           assert(textDirection != null, 'Horizontal $runtimeType with $mainAxisAlignment has a null textDirection, so the alignment cannot be resolved.');
@@ -130,9 +130,9 @@ class RenderTabluarFlex extends RenderFlex {
           assert(verticalDirection != null, 'Vertical $runtimeType with $mainAxisAlignment has a null verticalDirection, so the alignment cannot be resolved.');
           break;
       }
-    }
-    if (crossAxisAlignment == CrossAxisAlignment.start ||
-      crossAxisAlignment == CrossAxisAlignment.end) {
+   }
+   if (crossAxisAlignment == CrossAxisAlignment.start ||
+        crossAxisAlignment == CrossAxisAlignment.end) {
       switch (direction) {
         case Axis.horizontal:
           assert(verticalDirection != null, 'Horizontal $runtimeType with $crossAxisAlignment has a null verticalDirection, so the alignment cannot be resolved.');
@@ -424,9 +424,9 @@ class RenderTabluarFlex extends RenderFlex {
           if (!canFlex && (mainAxisSize == MainAxisSize.max || _getFit(child) == FlexFit.tight)) {
             error = 'RenderFlex children have non-zero flex but incoming $dimension constraints are unbounded.';
             message = 'When a $identity is in a parent that does not provide a finite $dimension constraint, for example '
-              'if it is in a $axis scrollable, it will try to shrink-wrap its children along the $axis '
-              'axis. Setting a flex on a child (e.g. using Expanded) indicates that the child is to '
-              'expand to fill the remaining space in the $axis direction.';
+                      'if it is in a $axis scrollable, it will try to shrink-wrap its children along the $axis '
+                      'axis. Setting a flex on a child (e.g. using Expanded) indicates that the child is to '
+                      'expand to fill the remaining space in the $axis direction.';
             final StringBuffer information = StringBuffer();
             RenderBox node = this;
             switch (direction) {
@@ -483,11 +483,11 @@ class RenderTabluarFlex extends RenderFlex {
           switch (direction) {
             case Axis.horizontal:
               innerConstraints = BoxConstraints(minHeight: constraints.maxHeight,
-                maxHeight: constraints.maxHeight);
+                                                    maxHeight: constraints.maxHeight);
               break;
             case Axis.vertical:
               innerConstraints = BoxConstraints(minWidth: constraints.maxWidth,
-                maxWidth: constraints.maxWidth);
+                                                    maxWidth: constraints.maxWidth);
               break;
           }
         } else {
@@ -554,28 +554,28 @@ class RenderTabluarFlex extends RenderFlex {
             switch (direction) {
               case Axis.horizontal:
                 innerConstraints = BoxConstraints(minWidth: minChildExtent,
-                  maxWidth: maxChildExtent,
-                  minHeight: constraints.maxHeight,
-                  maxHeight: constraints.maxHeight);
+                                                      maxWidth: maxChildExtent,
+                                                      minHeight: constraints.maxHeight,
+                                                      maxHeight: constraints.maxHeight);
                 break;
               case Axis.vertical:
                 innerConstraints = BoxConstraints(minWidth: constraints.maxWidth,
-                  maxWidth: constraints.maxWidth,
-                  minHeight: minChildExtent,
-                  maxHeight: maxChildExtent);
+                                                      maxWidth: constraints.maxWidth,
+                                                      minHeight: minChildExtent,
+                                                      maxHeight: maxChildExtent);
                 break;
             }
           } else {
             switch (direction) {
               case Axis.horizontal:
                 innerConstraints = BoxConstraints(minWidth: minChildExtent,
-                  maxWidth: maxChildExtent,
-                  maxHeight: constraints.maxHeight);
+                                                      maxWidth: maxChildExtent,
+                                                      maxHeight: constraints.maxHeight);
                 break;
               case Axis.vertical:
                 innerConstraints = BoxConstraints(maxWidth: constraints.maxWidth,
-                  minHeight: minChildExtent,
-                  maxHeight: maxChildExtent);
+                                                      minHeight: minChildExtent,
+                                                      maxHeight: maxChildExtent);
                 break;
             }
           }

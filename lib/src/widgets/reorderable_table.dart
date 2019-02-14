@@ -166,11 +166,6 @@ class ReorderableTable extends StatelessWidget {
       onReorder: onReorder,
       direction: Axis.vertical,
       buildItemsContainer: (BuildContext containerContext, Axis direction, List<Widget> children) {
-//        List<ReorderableTableRow> wrappedChildren = children.map((Widget child) {
-//          return ReorderableTableRow(children: <Widget>[],);
-//        }).toList();
-        //get keys in this.children
-//        this.children[0].
         return TabluarFlex(
           key: tableKey,
           direction: direction,
