@@ -23,7 +23,7 @@ This package includes ReorderableTable, ReorderableWrap, ReorderableRow, and Reo
 
 ##### Reorderable Table
 
-![ReorderableTable](https://github.com/hanshengchiu/reorderables/blob/master/example/gifs/reorderable_table.gif?raw=true =540x960)
+![ReorderableTable](https://github.com/hanshengchiu/reorderables/blob/master/example/gifs/reorderable_table.gif?raw=true)
 
 ## Support
 
