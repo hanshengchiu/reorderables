@@ -1,5 +1,5 @@
 name: reorderables_example
-description: A new Flutter project.
+description: Demonstrates how to use the reorderables package..
 
 # The following defines the version and build number for your application.
 # A version number is three numbers separated by dots, like 1.2.43
@@ -7,13 +7,15 @@ description: A new Flutter project.
 # Both the version and the builder number may be overridden in flutter
 # build by specifying --build-name and --build-number, respectively.
 # Read more about versioning at semver.org.
-version: 1.0.0+1
+version: 1.0.0+2
 
 environment:
   sdk: ">=2.1.0 <3.0.0"
 
 dependencies:
   reorderables:
+    #path: '../'
+
   flutter:
     sdk: flutter
 

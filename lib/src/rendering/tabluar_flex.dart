@@ -365,8 +365,7 @@ class RenderTabluarFlex extends RenderFlex {
     assert(constraints != null);
     final double maxMainSize = direction == Axis.horizontal ? constraints.maxWidth : constraints.maxHeight;
     final bool canFlex = maxMainSize < double.infinity;
-//    debugPrint('this:$this performLayout()');
-
+//    debugPrint('${DateTime.now().toString().substring(5, 22)} tabluar_flex.dart(369) $this.performLayout');
     Map<int, double> maxGrandchildrenCrossSize = {};
 
     Map<RenderBox, RenderTabluarFlex> tabluarFlexDescendants = {};
@@ -379,7 +378,7 @@ class RenderTabluarFlex extends RenderFlex {
         bool callbackCalled = false;
         void _childLayoutCallback(BoxConstraints constraints) {
           List<RenderBox> grandchildren = tabluarFlexChild.getChildrenAsList();
-//          debugPrint('this:$this _childLayoutCallback: grandchildren.length:${grandchildren.length}');
+//          debugPrint('${DateTime.now().toString().substring(5, 22)} tabluar_flex.dart(381) $this._childLayoutCallback: grandchildren.length:${grandchildren.length}');
           for (int i = 0; i < grandchildren.length; i++) {
             double grandchildCrossSize = _getCrossSize(grandchildren[i]);
             maxGrandchildrenCrossSize[i] = math.max(maxGrandchildrenCrossSize[i] ?? 0, grandchildCrossSize);
@@ -403,6 +402,47 @@ class RenderTabluarFlex extends RenderFlex {
     }
 
     Map<int, double> minChildrenMainSize = minMainSizesQueue.isNotEmpty ? minMainSizesQueue.last : {};
+
+    BoxConstraints _innerConstraints(int childIndex) {
+      BoxConstraints innerConstraints;
+      if (crossAxisAlignment == CrossAxisAlignment.stretch) {
+        switch (direction) {
+          case Axis.horizontal:
+            innerConstraints = BoxConstraints(minHeight: constraints.maxHeight,
+              maxHeight: constraints.maxHeight);
+            break;
+          case Axis.vertical:
+            innerConstraints = BoxConstraints(minWidth: constraints.maxWidth,
+              maxWidth: constraints.maxWidth);
+            break;
+        }
+      } else {
+        switch (direction) {
+          case Axis.horizontal:
+            innerConstraints = BoxConstraints(maxHeight: constraints.maxHeight);
+            break;
+          case Axis.vertical:
+            innerConstraints = BoxConstraints(maxWidth: constraints.maxWidth);
+            break;
+        }
+      }
+
+      if (childIndex < minChildrenMainSize.length) {
+        switch (direction) {
+          case Axis.horizontal:
+            innerConstraints = innerConstraints.copyWith(
+              minWidth: math.max(innerConstraints.minWidth, minChildrenMainSize[childIndex]));
+            break;
+          case Axis.vertical:
+            innerConstraints = innerConstraints.copyWith(
+              minHeight: math.max(innerConstraints.minHeight, minChildrenMainSize[childIndex]));
+            break;
+        }
+      }
+
+      return innerConstraints;
+    }
+
     Map<RenderBox, BoxConstraints> childrenConstraints = {};
 
     double crossSize = 0.0;
@@ -478,42 +518,9 @@ class RenderTabluarFlex extends RenderFlex {
         totalFlex += childParentData.flex;
         lastFlexChild = child;
       } else {
-        BoxConstraints innerConstraints;
-        if (crossAxisAlignment == CrossAxisAlignment.stretch) {
-          switch (direction) {
-            case Axis.horizontal:
-              innerConstraints = BoxConstraints(minHeight: constraints.maxHeight,
-                                                    maxHeight: constraints.maxHeight);
-              break;
-            case Axis.vertical:
-              innerConstraints = BoxConstraints(minWidth: constraints.maxWidth,
-                                                    maxWidth: constraints.maxWidth);
-              break;
-          }
-        } else {
-          switch (direction) {
-            case Axis.horizontal:
-              innerConstraints = BoxConstraints(maxHeight: constraints.maxHeight);
-              break;
-            case Axis.vertical:
-              innerConstraints = BoxConstraints(maxWidth: constraints.maxWidth);
-              break;
-          }
-        }
+        BoxConstraints innerConstraints = _innerConstraints(childIndex);
 
-        if (childIndex < minChildrenMainSize.length) {
-          switch (direction) {
-            case Axis.horizontal:
-              innerConstraints = innerConstraints.copyWith(
-                minWidth: math.max(innerConstraints.minWidth, minChildrenMainSize[childIndex]));
-              break;
-            case Axis.vertical:
-              innerConstraints = innerConstraints.copyWith(
-                minHeight: math.max(innerConstraints.minHeight, minChildrenMainSize[childIndex]));
-              break;
-          }
-        }
-
+//        debugPrint('${DateTime.now().toString().substring(5, 22)} tabluar_flex.dart(515) $this.performLayout: innerConstraints:$innerConstraints');
 //        child.layout(innerConstraints, parentUsesSize: true);
         _layoutChild(child, innerConstraints);
         childrenConstraints[child] = innerConstraints;//save this for later use
@@ -524,6 +531,20 @@ class RenderTabluarFlex extends RenderFlex {
       assert(child.parentData == childParentData);
       child = childParentData.nextSibling;
       childIndex++;
+    }
+
+    for (; childIndex < minChildrenMainSize.length; childIndex++) {
+      totalChildren++;
+
+      BoxConstraints innerConstraints = _innerConstraints(childIndex);
+      switch (direction) {
+        case Axis.horizontal:
+          allocatedSize += innerConstraints.minWidth;
+          break;
+        case Axis.vertical:
+          allocatedSize += innerConstraints.minHeight;
+          break;
+      }
     }
 
     // Distribute free space to flexible children, and determine baseline.
@@ -554,28 +575,28 @@ class RenderTabluarFlex extends RenderFlex {
             switch (direction) {
               case Axis.horizontal:
                 innerConstraints = BoxConstraints(minWidth: minChildExtent,
-                                                      maxWidth: maxChildExtent,
-                                                      minHeight: constraints.maxHeight,
-                                                      maxHeight: constraints.maxHeight);
+                                                  maxWidth: maxChildExtent,
+                                                  minHeight: constraints.maxHeight,
+                                                  maxHeight: constraints.maxHeight);
                 break;
               case Axis.vertical:
                 innerConstraints = BoxConstraints(minWidth: constraints.maxWidth,
-                                                      maxWidth: constraints.maxWidth,
-                                                      minHeight: minChildExtent,
-                                                      maxHeight: maxChildExtent);
+                                                  maxWidth: constraints.maxWidth,
+                                                  minHeight: minChildExtent,
+                                                  maxHeight: maxChildExtent);
                 break;
             }
           } else {
             switch (direction) {
               case Axis.horizontal:
                 innerConstraints = BoxConstraints(minWidth: minChildExtent,
-                                                      maxWidth: maxChildExtent,
-                                                      maxHeight: constraints.maxHeight);
+                                                  maxWidth: maxChildExtent,
+                                                  maxHeight: constraints.maxHeight);
                 break;
               case Axis.vertical:
                 innerConstraints = BoxConstraints(maxWidth: constraints.maxWidth,
-                                                      minHeight: minChildExtent,
-                                                      maxHeight: maxChildExtent);
+                                                  minHeight: minChildExtent,
+                                                  maxHeight: maxChildExtent);
                 break;
             }
           }
@@ -621,7 +642,8 @@ class RenderTabluarFlex extends RenderFlex {
 //    debugPrint('this:$this crossSize:$crossSize minChildrenMainSize:$minChildrenMainSize maxGrandchildrenCrossSize:$maxGrandchildrenCrossSize tabluarFlexDescendants:$tabluarFlexDescendants');
     if (maxGrandchildrenCrossSize.isNotEmpty) {
       double minCrossSize = maxGrandchildrenCrossSize.values.reduce((value, element) => value + element);
-//      debugPrint('this:$this minCrossSize:$minCrossSize crossSize:$crossSize minChildrenMainSize:$minChildrenMainSize maxGrandchildrenCrossSize:$maxGrandchildrenCrossSize');
+//      debugPrint('${DateTime.now().toString().substring(5, 22)} tabluar_flex.dart(624) $this.performLayout: '
+//        'minCrossSize:$minCrossSize crossSize:$crossSize minChildrenMainSize:$minChildrenMainSize maxGrandchildrenCrossSize:$maxGrandchildrenCrossSize');
 
       child = firstChild;
       while (child != null) {

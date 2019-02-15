@@ -181,13 +181,18 @@ class ReorderableTable extends StatelessWidget {
       buildDraggableFeedback: (BuildContext feedbackContext, BoxConstraints constraints, Widget child) {
         // The child is a ReorderableTableRow because children is a List<ReorderableTableRow>
         ReorderableTableRow tableRow = child;
-//        debugPrint('buildDraggableFeedback: ${tableKey.currentContext.findRenderObject()}');
         RenderTabluarFlex renderTabluarFlex = tableKey.currentContext.findRenderObject();
-        for (int i=0; i<tableRow.children.length; i++) {
-          tableRow.children[i] = ConstrainedBox(
-            constraints: BoxConstraints(minWidth: renderTabluarFlex.maxGrandchildrenCrossSize[i]),
-            child: tableRow.children[i]
+        int grandChildIndex=0;
+        for (; grandChildIndex<tableRow.children.length; grandChildIndex++) {
+          tableRow.children[grandChildIndex] = ConstrainedBox(
+            constraints: BoxConstraints(minWidth: renderTabluarFlex.maxGrandchildrenCrossSize[grandChildIndex]),
+            child: tableRow.children[grandChildIndex]
           );
+        }
+        for (; grandChildIndex < renderTabluarFlex.maxGrandchildrenCrossSize.length; grandChildIndex++) {
+          tableRow.children.add(ConstrainedBox(
+            constraints: BoxConstraints(minWidth: renderTabluarFlex.maxGrandchildrenCrossSize[grandChildIndex]),
+          ));
         }
 
         ConstrainedBox constrainedTableRow = ConstrainedBox(constraints: constraints, child: tableRow);
