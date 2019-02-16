@@ -23,8 +23,7 @@ import 'package:reorderables/reorderables.dart';
 This package includes ReorderableTable, ReorderableWrap, ReorderableRow, and ReorderableColumn, 
 which are reorderable versions of Flutter's Table, Wrap, Row, and Column respectively.
 
-<img src="https://github.com/hanshengchiu/reorderables/blob/master/example/gifs/reorderable_table.gif?raw=true" width="180" title="ReorderableTable">
-<img src="https://github.com/hanshengchiu/reorderables/blob/master/example/gifs/reorderable_wrap.gif?raw=true" width="180" title="ReorderableWrap">
+<img src="https://github.com/hanshengchiu/reorderables/blob/master/example/gifs/reorderable_table.gif?raw=true" width="180" title="ReorderableTable"><img src="https://github.com/hanshengchiu/reorderables/blob/master/example/gifs/reorderable_wrap.gif?raw=true" width="180" title="ReorderableWrap">
 
 ##### Reorderable Table
 
