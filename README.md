@@ -23,6 +23,9 @@ import 'package:reorderables/reorderables.dart';
 This package includes ReorderableTable, ReorderableWrap, ReorderableRow, and ReorderableColumn, 
 which are reorderable versions of Flutter's Table, Wrap, Row, and Column respectively.
 
+<img src="https://github.com/hanshengchiu/reorderables/blob/master/example/gifs/reorderable_table.gif?raw=true" width="180" title="ReorderableTable">
+<img src="https://github.com/hanshengchiu/reorderables/blob/master/example/gifs/reorderable_wrap.gif?raw=true" width="180" title="ReorderableWrap">
+
 ##### Reorderable Table
 
 ``` dart
@@ -100,7 +103,54 @@ whereas cells in a row of a list view don't align with  other rows.
 
 ##### Reorderable Table Demo
 
-<img src="https://github.com/hanshengchiu/reorderables/blob/master/example/gifs/reorderable_table.gif?raw=true" width="540" height="960" title="ReorderableTable">
+<img src="https://github.com/hanshengchiu/reorderables/blob/master/example/gifs/reorderable_table.gif?raw=true" width="360" title="ReorderableTable">
+
+##### Reorderable Wrap
+
+``` dart
+class _WrapExampleState extends State<WrapExample> {
+  final double _iconSize = 90;
+  List<Widget> _tiles;
+
+  @override
+  void initState() {
+    super.initState();
+    _tiles = <Widget>[
+      Icon(Icons.filter_1, key: ValueKey(1), size: _iconSize),
+      Icon(Icons.filter_2, key: ValueKey(2), size: _iconSize),
+      Icon(Icons.filter_3, key: ValueKey(3), size: _iconSize),
+      Icon(Icons.filter_4, key: ValueKey(4), size: _iconSize),
+      Icon(Icons.filter_5, key: ValueKey(5), size: _iconSize),
+      Icon(Icons.filter_6, key: ValueKey(6), size: _iconSize),
+      Icon(Icons.filter_7, key: ValueKey(7), size: _iconSize),
+      Icon(Icons.filter_8, key: ValueKey(8), size: _iconSize),
+      Icon(Icons.filter_9, key: ValueKey(9), size: _iconSize),
+    ];
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    void _onReorder(int oldIndex, int newIndex) {
+      setState(() {
+        Widget row = _tiles.removeAt(oldIndex);
+        _tiles.insert(newIndex, row);
+      });
+    }
+
+    return ReorderableWrap(
+      spacing: 8.0,
+      runSpacing: 4.0,
+      padding: const EdgeInsets.all(8),
+      children: _tiles,
+      onReorder: _onReorder
+    );
+  }
+}
+```
+
+##### Reorderable Wrap Demo
+
+<img src="https://github.com/hanshengchiu/reorderables/blob/master/example/gifs/reorderable_wrap.gif?raw=true" width="360" title="ReorderableWrap">
 
 ## Support
 

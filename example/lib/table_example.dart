@@ -8,6 +8,7 @@ class TableExample extends StatefulWidget {
 }
 
 class _TableExampleState extends State<TableExample> {
+  //The children of ReorderableTableRow must be of type ReorderableTableRow
   List<ReorderableTableRow> _itemRows;
 
   @override

@@ -18,4 +18,8 @@ samples, guidance on mobile development, and a full API reference.
 
 ##### Reorderable Table
 
-<img src="https://github.com/hanshengchiu/reorderables/blob/master/example/gifs/reorderable_table.gif?raw=true" width="540" height="960" title="ReorderableTable">
+<img src="https://github.com/hanshengchiu/reorderables/blob/master/example/gifs/reorderable_table.gif?raw=true" width="480" title="ReorderableTable">
+
+##### Reorderable Wrap
+
+<img src="https://github.com/hanshengchiu/reorderables/blob/master/example/gifs/reorderable_wrap.gif?raw=true" width="480" title="ReorderableWrap">

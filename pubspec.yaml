@@ -1,6 +1,6 @@
 name: reorderables
 description: Reorderable table, row, column, and wrap that allow drag and drop of the children.
-version: 0.1.3
+version: 0.1.3+2
 author: Hansheng Chiu <hansheng.chiu@gmail.com>
 homepage: https://github.com/hanshengchiu/reorderables
 
