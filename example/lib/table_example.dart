@@ -69,7 +69,6 @@ class _TableExampleState extends State<TableExample> {
 
     return ReorderableTable(
       header: headerRow,
-//      footer: toolBar,//toolBarRow,
       children: _itemRows,
       onReorder: _onReorder,
     );
