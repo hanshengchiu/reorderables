@@ -7,10 +7,10 @@ class RenderSizeTransitionWithIntrinsicSize extends RenderProxyBox {
     this.axis = Axis.vertical,
     @required this.sizeFactor,
     RenderBox child,
-  }) : assert(sizeFactor != null),
+  })  : assert(sizeFactor != null),
 //       _axis = axis,
 //       _sizeFactor = sizeFactor,
-       super(child);
+        super(child);
 
   Axis axis;
 //  Axis get axis => _axis;
@@ -28,7 +28,9 @@ class RenderSizeTransitionWithIntrinsicSize extends RenderProxyBox {
   double computeMinIntrinsicWidth(double height) {
     if (child != null) {
       double childWidth = child.getMinIntrinsicWidth(height);
-      return axis == Axis.horizontal ? childWidth * sizeFactor.value : childWidth;
+      return axis == Axis.horizontal
+          ? childWidth * sizeFactor.value
+          : childWidth;
     }
     return 0.0;
   }
@@ -37,7 +39,9 @@ class RenderSizeTransitionWithIntrinsicSize extends RenderProxyBox {
   double computeMaxIntrinsicWidth(double height) {
     if (child != null) {
       double childWidth = child.getMaxIntrinsicWidth(height);
-      return axis == Axis.horizontal ? childWidth * sizeFactor.value : childWidth;
+      return axis == Axis.horizontal
+          ? childWidth * sizeFactor.value
+          : childWidth;
     }
     return 0.0;
   }
@@ -46,7 +50,9 @@ class RenderSizeTransitionWithIntrinsicSize extends RenderProxyBox {
   double computeMinIntrinsicHeight(double width) {
     if (child != null) {
       double childHeight = child.getMinIntrinsicHeight(width);
-      return axis == Axis.vertical ? childHeight * sizeFactor.value : childHeight;
+      return axis == Axis.vertical
+          ? childHeight * sizeFactor.value
+          : childHeight;
     }
     return 0.0;
   }
@@ -55,7 +61,9 @@ class RenderSizeTransitionWithIntrinsicSize extends RenderProxyBox {
   double computeMaxIntrinsicHeight(double width) {
     if (child != null) {
       double childHeight = child.getMaxIntrinsicHeight(width);
-      return axis == Axis.vertical ? childHeight * sizeFactor.value : childHeight;
+      return axis == Axis.vertical
+          ? childHeight * sizeFactor.value
+          : childHeight;
     }
     return 0.0;
   }
