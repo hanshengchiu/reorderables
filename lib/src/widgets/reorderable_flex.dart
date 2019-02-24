@@ -483,7 +483,7 @@ class _ReorderableFlexContentState extends State<_ReorderableFlexContent>
     }
 
     Widget _makeAppearingWidget(Widget child) {
-      return SizeTransition(
+      var transition = SizeTransition(
         sizeFactor: _entranceController,
         axis: widget.direction,
         child: FadeTransition(
@@ -491,9 +491,12 @@ class _ReorderableFlexContentState extends State<_ReorderableFlexContent>
           child: child
         ),//Column(children: [spacing, Text('eeeeee $index')])
       );
+
+      BoxConstraints contentSizeConstraints = BoxConstraints.loose(_draggingFeedbackSize);
+      return ConstrainedBox(constraints: contentSizeConstraints, child: transition);
     }
     Widget _makeDisappearingWidget(Widget child) {
-      return SizeTransition(
+      var transition = SizeTransition(
         sizeFactor: _ghostController,
         axis: widget.direction,
         child: FadeTransition(
@@ -501,6 +504,9 @@ class _ReorderableFlexContentState extends State<_ReorderableFlexContent>
           child: child
         ),
       );
+
+      BoxConstraints contentSizeConstraints = BoxConstraints.loose(_draggingFeedbackSize);
+      return ConstrainedBox(constraints: contentSizeConstraints, child: transition);
     }
 
     Widget buildDragTarget(BuildContext context, List<Key> acceptedCandidates, List<dynamic> rejectedCandidates) {
@@ -511,18 +517,8 @@ class _ReorderableFlexContentState extends State<_ReorderableFlexContent>
 //          RenderRepaintBoundary renderObject = _contentKey.currentContext.findRenderObject();
 //          BoxConstraints contentSizeConstraints = BoxConstraints.loose(renderObject.size);
           BoxConstraints contentSizeConstraints = BoxConstraints.loose(_draggingFeedbackSize);//renderObject.constraints
-//          debugPrint('feedbackBuilder: contentConstraints:$contentSizeConstraints');
+//          debugPrint('${DateTime.now().toString().substring(5, 22)} reorderable_flex.dart(515) $this.buildDragTarget: contentConstraints:$contentSizeConstraints _draggingFeedbackSize:$_draggingFeedbackSize');
           return (widget.buildDraggableFeedback ?? defaultBuildDraggableFeedback)(context, contentSizeConstraints, toWrap);
-//          return Transform(
-//            transform: new Matrix4.rotationZ(0),
-//            alignment: FractionalOffset.topLeft,
-//            child: Material(
-//              child: Card(child: ConstrainedBox(constraints: contentConstraints, child: toWrapWithSemantics)),
-//              elevation: 6.0,
-//              color: Colors.transparent,
-//              borderRadius: BorderRadius.zero,
-//            ),
-//          );
         }
       );
 
@@ -786,7 +782,7 @@ class _ReorderableFlexContentState extends State<_ReorderableFlexContent>
 
   Widget defaultBuildDraggableFeedback(BuildContext context, BoxConstraints constraints, Widget child) {
     return Transform(
-      transform: new Matrix4.rotationZ(0),
+      transform: Matrix4.rotationZ(0),
       alignment: FractionalOffset.topLeft,
       child: Material(
         child: Card(child: ConstrainedBox(constraints: constraints, child: child)),

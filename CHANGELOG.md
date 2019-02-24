@@ -1,3 +1,4 @@
-## [0.0.1] - TODO: Add release date.
+## [0.1.4] - 25 March 2019.
 
-* TODO: Describe initial release.
+* Alignment bugfix.
+* Added column examples.

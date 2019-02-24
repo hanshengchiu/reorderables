@@ -26,6 +26,8 @@ which are reorderable versions of Flutter's Table, Wrap, Row, and Column respect
 <p>
 <img src="https://github.com/hanshengchiu/reorderables/blob/master/example/gifs/reorderable_table.gif?raw=true" width="180" title="ReorderableTable">
 <img src="https://github.com/hanshengchiu/reorderables/blob/master/example/gifs/reorderable_wrap.gif?raw=true" width="180" title="ReorderableWrap">
+<img src="https://github.com/hanshengchiu/reorderables/blob/master/example/gifs/reorderable_column1.gif?raw=true" width="180" title="ReorderableColumn #1">
+<img src="https://github.com/hanshengchiu/reorderables/blob/master/example/gifs/reorderable_column2.gif?raw=true" width="180" title="ReorderableColumn #2">
 </p>
 
 ##### Reorderable Table
@@ -153,6 +155,94 @@ class _WrapExampleState extends State<WrapExample> {
 ##### Reorderable Wrap Demo
 
 <img src="https://github.com/hanshengchiu/reorderables/blob/master/example/gifs/reorderable_wrap.gif?raw=true" width="360" title="ReorderableWrap">
+
+##### Reorderable Column example #1
+
+``` dart
+class _ColumnExample1State extends State<ColumnExample1> {
+  List<Widget> _rows;
+
+  @override
+  void initState() {
+    super.initState();
+    _rows = List<Widget>.generate(50,
+        (int index) => Text('This is row $index', key: ValueKey(index), textScaleFactor: 1.5)
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    void _onReorder(int oldIndex, int newIndex) {
+      setState(() {
+        Widget row = _rows.removeAt(oldIndex);
+        _rows.insert(newIndex, row);
+      });
+    }
+
+    return ReorderableColumn(
+      header: Text('THIS IS THE HEADER ROW'),
+      footer: Text('THIS IS THE FOOTER ROW'),
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: _rows,
+      onReorder: _onReorder,
+    );
+  }
+}
+```
+
+##### Reorderable Column example #1 Demo
+
+<img src="https://github.com/hanshengchiu/reorderables/blob/master/example/gifs/reorderable_column1.gif?raw=true" width="360" title="ReorderableColumn #1">
+
+##### Reorderable Column example #2
+
+``` dart
+class _ColumnExample2State extends State<ColumnExample2> {
+  List<Widget> _rows;
+
+  @override
+  void initState() {
+    super.initState();
+    _rows = List<Widget>.generate(10,
+        (int index) => Text('This is row $index', key: ValueKey(index), textScaleFactor: 1.5)
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    void _onReorder(int oldIndex, int newIndex) {
+      setState(() {
+        Widget row = _rows.removeAt(oldIndex);
+        _rows.insert(newIndex, row);
+      });
+    }
+
+    Widget reorderableColumn = IntrinsicWidth(
+      child: ReorderableColumn(
+        header: Text('List-like view but supports IntrinsicWidth'),
+//        crossAxisAlignment: CrossAxisAlignment.start,
+        children: _rows,
+        onReorder: _onReorder,
+      )
+    );
+
+    return Transform(
+      transform: Matrix4.rotationZ(0),
+      alignment: FractionalOffset.topLeft,
+      child: Material(
+        child: Card(child: reorderableColumn),
+        elevation: 6.0,
+        color: Colors.transparent,
+        borderRadius: BorderRadius.zero,
+      ),
+    );
+  }
+}
+```
+
+##### Reorderable Column example #2 Demo
+
+<img src="https://github.com/hanshengchiu/reorderables/blob/master/example/gifs/reorderable_column2.gif?raw=true" width="360" title="ReorderableColumn #2">
 
 ## Support
 

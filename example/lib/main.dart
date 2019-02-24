@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 
 import './table_example.dart';
 import './wrap_example.dart';
-import './column_example.dart';
+import './column_example1.dart';
+import './column_example2.dart';
 import './row_example.dart';
 
 void main() => runApp(MyApp());
@@ -41,7 +42,8 @@ class _MyHomePageState extends State<MyHomePage> {
   final List<Widget> _examples = [
     TableExample(),
     WrapExample(),
-    ColumnExample(),
+    ColumnExample1(),
+    ColumnExample2(),
     RowExample(),
   ];
   final _bottomNavigationColor = Colors.blue;
@@ -69,7 +71,11 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.more_vert, color: _bottomNavigationColor),
-            title: Text('ReroderableColumn', maxLines: 2, style: TextStyle(color: _bottomNavigationColor))
+            title: Text('ReroderableColumn 1', maxLines: 2, style: TextStyle(color: _bottomNavigationColor))
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.more_vert, color: _bottomNavigationColor),
+            title: Text('ReroderableColumn 2', maxLines: 2, style: TextStyle(color: _bottomNavigationColor))
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.more_horiz, color: _bottomNavigationColor),
