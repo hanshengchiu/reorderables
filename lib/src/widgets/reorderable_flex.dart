@@ -16,48 +16,29 @@ import 'package:flutter/rendering.dart';
 import './passthrough_overlay.dart';
 import './typedefs.dart';
 
-// Examples can assume:
-// class MyDataObject { }
-
-/// The callback used by [ReorderableListView] to move an item to a new
-/// position in a list.
+/// Reorderable (drag and drop) version of [Flex], a widget that displays its
+/// children in a one-dimensional array.
 ///
-/// Implementations should remove the corresponding list item at [oldIndex]
-/// and reinsert it at [newIndex].
+/// The [ReorderableFlex] widget has allows you to control the axis along which
+/// the children are placed (horizontal or vertical). This is referred to as the
+/// [direction]. If you know the main axis in advance, then consider using
+/// a [ReorderableRow] (if it's horizontal) or [ReorderableColumn] (if it's
+/// vertical) instead, because that will be less verbose.
 ///
-/// If [oldIndex] is before [newIndex], removing the item at [oldIndex] from the
-/// list will reduce the list's length by one. Implementations used by
-/// [ReorderableListView] will need to account for this when inserting before
-/// [newIndex].
-///
-/// {@tool sample}
-///
-/// ```dart
-/// final List<MyDataObject> backingList = <MyDataObject>[/* ... */];
-///
-/// void handleReorder(int oldIndex, int newIndex) {
-///   if (oldIndex < newIndex) {
-///     // removing the item at oldIndex will shorten the list by 1.
-///     newIndex -= 1;
-///   }
-///   final MyDataObject element = backingList.removeAt(oldIndex);
-///   backingList.insert(newIndex, element);
-/// }
-/// ```
-/// {@end-tool}
-//typedef ReorderCallback = void Function(int oldIndex, int newIndex);
-
-//typedef BuildItemsContainer = Widget Function(BuildContext context, Axis direction, List<Widget> children);
-//typedef BuildDraggableFeedback = Widget Function(BuildContext context, BoxConstraints constraints, Widget child);
-
-/// A list whose items the user can interactively reorder by dragging.
-///
-/// This class is appropriate for views with a small number of
-/// children because constructing the [List] requires doing work for every
-/// child that could possibly be displayed in the list view instead of just
-/// those children that are actually visible.
+/// In addition to other parameters in [Flex]'s constructor, this widget also
+/// has [header] and [footer] for placing non-reorderable widgets at the
+/// top/left and bottom/right of the widget. If further control is needed, you
+/// can use [buildItemsContainer] to customize how each item is contained, or
+/// use [buildDraggableFeedback] to customize the [feedback] of the internal
+/// [LongPressDraggable]. Consider using [ReorderableRow] or [ReorderableColumn]
+/// instead using this widget directly.
 ///
 /// All [children] must have a key.
+///
+/// See also:
+///
+///  * [ReorderableRow], for a version of this widget that is always horizontal.
+///  * [ReorderableColumn], for a version of this widget that is always vertical.
 class ReorderableFlex extends StatefulWidget {
 
   /// Creates a reorderable list.
@@ -84,8 +65,12 @@ class ReorderableFlex extends StatefulWidget {
 
   /// A non-reorderable header widget to show before the list.
   ///
-  /// If null, no header will appear before the list.
+  /// If null, no header will appear at the top/left of the widget.
   final Widget header;
+
+  /// A non-reorderable header widget to show before the list.
+  ///
+  /// If null, no footer will appear at the bottom/right of the widget.
   final Widget footer;
 
   /// The widgets to display.
@@ -103,7 +88,7 @@ class ReorderableFlex extends StatefulWidget {
   /// Called when a list child is dropped into a new position to shuffle the
   /// underlying list.
   ///
-  /// This [ReorderableListView] calls [onReorder] after a list child is dropped
+  /// This [ReorderableFlex] calls [onReorder] after a list child is dropped
   /// into a new position.
   final ReorderCallback onReorder;
 
@@ -166,7 +151,7 @@ class _ReorderableFlexState extends State<ReorderableFlex> {
 }
 
 // This widget is responsible for the inside of the Overlay in the
-// ReorderableListView.
+// ReorderableFlex.
 class _ReorderableFlexContent extends StatefulWidget {
   const _ReorderableFlexContent({
     this.header,
@@ -794,6 +779,31 @@ class _ReorderableFlexContentState extends State<_ReorderableFlexContent>
   }
 }
 
+/// Reorderable (drag and drop) version of [Row], a widget that displays its
+/// children in horizontally.
+///
+/// In addition to other parameters in [Row]'s constructor, this widget also
+/// has [header] and [footer] for placing non-reorderable widgets at the top and
+/// bottom of the widget, and [buildDraggableFeedback] to customize the
+/// [feedback] widget of the internal [LongPressDraggable].
+///
+/// The [onReorder] function must be defined. A typical onReorder function looks
+/// like the following:
+///
+/// ``` dart
+/// void _onReorder(int oldIndex, int newIndex) {
+///   setState(() {
+///     Widget row = _rows.removeAt(oldIndex);
+///     _rows.insert(newIndex, row);
+///   });
+/// }
+/// ```
+///
+/// All [children] must have a key.
+///
+/// See also:
+///
+///  * [ReorderableColumn], for a version of this widget that is always vertical.
 class ReorderableRow extends ReorderableFlex {
   ReorderableRow({
     Key key,
@@ -835,6 +845,31 @@ class ReorderableRow extends ReorderableFlex {
   );
 }
 
+/// Reorderable (drag and drop) version of [Column], a widget that displays its
+/// children in horizontally.
+///
+/// In addition to other parameters in [Column]'s constructor, this widget also
+/// has [header] and [footer] for placing non-reorderable widgets at the left and
+/// right of the widget, and [buildDraggableFeedback] to customize the
+/// [feedback] widget of the internal [LongPressDraggable].
+///
+/// The [onReorder] function must be defined. A typical onReorder function looks
+/// like the following:
+///
+/// ``` dart
+/// void _onReorder(int oldIndex, int newIndex) {
+///   setState(() {
+///     Widget row = _rows.removeAt(oldIndex);
+///     _rows.insert(newIndex, row);
+///   });
+/// }
+/// ```
+///
+/// All [children] must have a key.
+///
+/// See also:
+///
+///  * [ReorderableRow], for a version of this widget that is always horizontal.
 class ReorderableColumn extends ReorderableFlex {
   ReorderableColumn({
     Key key,
