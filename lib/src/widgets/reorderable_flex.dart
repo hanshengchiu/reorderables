@@ -826,6 +826,7 @@ class ReorderableRow extends ReorderableFlex {
     children: children,
     onReorder: onReorder,
     direction: Axis.horizontal,
+    scrollDirection: Axis.horizontal,
     padding: padding,
 
     buildItemsContainer: (BuildContext context, Axis direction, List<Widget> children) {
