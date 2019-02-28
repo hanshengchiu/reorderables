@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-//import 'package:reorderables/reorderables.dart';
+import 'package:reorderables/reorderables.dart';
 
 class RowExample extends StatefulWidget {
   @override
@@ -8,8 +8,31 @@ class RowExample extends StatefulWidget {
 }
 
 class _RowExampleState extends State<RowExample> {
+  List<Widget> _columns;
+
+  @override
+  void initState() {
+    super.initState();
+    _columns = <Widget>[
+      Image.asset('assets/river1.jpg', key: ValueKey('river1.jpg')),
+      Image.asset('assets/river2.jpg', key: ValueKey('river2.jpg')),
+      Image.asset('assets/river3.jpg', key: ValueKey('river3.jpg')),
+    ];
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Text('row');
+    void _onReorder(int oldIndex, int newIndex) {
+      setState(() {
+        Widget col = _columns.removeAt(oldIndex);
+        _columns.insert(newIndex, col);
+      });
+    }
+
+    return ReorderableRow(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: _columns,
+      onReorder: _onReorder,
+    );
   }
 }
