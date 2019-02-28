@@ -19,48 +19,21 @@ import './wrap.dart';
 import './transitions.dart';
 import '../rendering/wrap.dart';
 
-// Examples can assume:
-// class MyDataObject { }
-
-/// The callback used by [ReorderableListView] to move an item to a new
-/// position in a list.
+/// Reorderable (drag and drop) version of [Wrap], A widget that displays its
+/// children in multiple horizontal or vertical runs.
 ///
-/// Implementations should remove the corresponding list item at [oldIndex]
-/// and reinsert it at [newIndex].
-///
-/// If [oldIndex] is before [newIndex], removing the item at [oldIndex] from the
-/// list will reduce the list's length by one. Implementations used by
-/// [ReorderableListView] will need to account for this when inserting before
-/// [newIndex].
-///
-/// {@tool sample}
-///
-/// ```dart
-/// final List<MyDataObject> backingList = <MyDataObject>[/* ... */];
-///
-/// void handleReorder(int oldIndex, int newIndex) {
-///   if (oldIndex < newIndex) {
-///     // removing the item at oldIndex will shorten the list by 1.
-///     newIndex -= 1;
-///   }
-///   final MyDataObject element = backingList.removeAt(oldIndex);
-///   backingList.insert(newIndex, element);
-/// }
-/// ```
-/// {@end-tool}
-//typedef ReorderCallback = void Function(int oldIndex, int newIndex);
-
-//typedef BuildItemsContainer = Widget Function(BuildContext context, Axis direction, List<Widget> children);
-//typedef BuildDraggableFeedback = Widget Function(BuildContext context, BoxConstraints constraints, Widget child);
-
-/// A list whose items the user can interactively reorder by dragging.
-///
-/// This class is appropriate for views with a small number of
-/// children because constructing the [List] requires doing work for every
-/// child that could possibly be displayed in the list view instead of just
-/// those children that are actually visible.
+/// In addition to [Wrap]'s parameters, this widget also adds two parameters,
+/// [minMainAxisCount] and [maxMainAxisCount], that limits how many children
+/// each run has at least and at most. For example, if the size of parent
+/// widget allows a run to have more than [maxMainAxisCount] children, the run
+/// is forced to end and will have [maxMainAxisCount] children only.
 ///
 /// All [children] must have a key.
+///
+/// See also:
+///
+///  * [Wrap], which displays its children in multiple horizontal or vertical
+///  runs.
 class ReorderableWrap extends StatefulWidget {
 
   /// Creates a reorderable list.

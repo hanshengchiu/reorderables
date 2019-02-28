@@ -4,8 +4,8 @@
 [![Donate](https://img.shields.io/badge/Donate-Buy%20Me%20A%20Coffee-yellow.svg)](https://www.buymeacoffee.com/q5gkeA4t2)
 [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=2L56VGH228QJE)
 
-Various reorderable Flutter widgets, including reorderable table, row, column, and wrap, that handle
-dragging and dropping the children within the widget. Parent widget only need to provide a function
+Various reorderable, a.k.a. drag and drop, Flutter widgets, including reorderable table, row, column, and wrap, that handle
+reordering the children within the widget. Parent widget only need to provide a function
 that is invoked with the old and new indexes of child being reordered.
 
 ## Usage
@@ -20,8 +20,7 @@ import 'package:reorderables/reorderables.dart';
 ```
 ## Examples
 
-This package includes ReorderableTable, ReorderableWrap, ReorderableRow, and ReorderableColumn, 
-which are reorderable versions of Flutter's Table, Wrap, Row, and Column respectively.
+This package includes ReorderableTable, ReorderableWrap, ReorderableRow, and ReorderableColumn, which are reorderable versions of Flutter's Table, Wrap, Row, and Column respectively.
 
 <p>
 <img src="https://github.com/hanshengchiu/reorderables/blob/master/example/gifs/reorderable_table.gif?raw=true" width="180" title="ReorderableTable">
@@ -30,7 +29,11 @@ which are reorderable versions of Flutter's Table, Wrap, Row, and Column respect
 <img src="https://github.com/hanshengchiu/reorderables/blob/master/example/gifs/reorderable_column2.gif?raw=true" width="180" title="ReorderableColumn #2">
 </p>
 
-##### Reorderable Table
+#### ReorderableTable
+
+The difference between table and list is that cells in a table are horizontally aligned, whereas in a list, each item can have children but they are not aligned with children in another item.
+
+Making a row draggable requires cells to be contained in a single widget. This isn't achievable with Table or GridView widget since their children are laid out as cells of widget instead of rows of widget.
 
 ``` dart
 class _TableExampleState extends State<TableExample> {
@@ -105,11 +108,13 @@ class _TableExampleState extends State<TableExample> {
 In a table, cells in each row are aligned on column basis with cells in other rows, 
 whereas cells in a row of a list view don't align with  other rows.
 
-##### Reorderable Table Demo
+##### ReorderableTable Demo
 
 <img src="https://github.com/hanshengchiu/reorderables/blob/master/example/gifs/reorderable_table.gif?raw=true" width="360" title="ReorderableTable">
 
-##### Reorderable Wrap
+#### ReorderableWrap
+
+This widget can also limit the minimum and maximum amount of children in each run, on top of the size-based policy in Wrap's algorithm.
 
 ``` dart
 class _WrapExampleState extends State<WrapExample> {
@@ -152,11 +157,11 @@ class _WrapExampleState extends State<WrapExample> {
 }
 ```
 
-##### Reorderable Wrap Demo
+##### ReorderableWrap Demo
 
 <img src="https://github.com/hanshengchiu/reorderables/blob/master/example/gifs/reorderable_wrap.gif?raw=true" width="360" title="ReorderableWrap">
 
-##### Reorderable Column example #1
+#### ReorderableColumn example #1
 
 ``` dart
 class _ColumnExample1State extends State<ColumnExample1> {
@@ -190,11 +195,11 @@ class _ColumnExample1State extends State<ColumnExample1> {
 }
 ```
 
-##### Reorderable Column example #1 Demo
+##### ReorderableColumn example #1 Demo
 
 <img src="https://github.com/hanshengchiu/reorderables/blob/master/example/gifs/reorderable_column1.gif?raw=true" width="360" title="ReorderableColumn #1">
 
-##### Reorderable Column example #2
+#### ReorderableColumn example #2
 
 ``` dart
 class _ColumnExample2State extends State<ColumnExample2> {
@@ -240,13 +245,13 @@ class _ColumnExample2State extends State<ColumnExample2> {
 }
 ```
 
-##### Reorderable Column example #2 Demo
+##### ReorderableColumn example #2 Demo
 
 <img src="https://github.com/hanshengchiu/reorderables/blob/master/example/gifs/reorderable_column2.gif?raw=true" width="360" title="ReorderableColumn #2">
 
 ## Support
 
-If my work has helped you, you can support me by buying me a coffee or donate me via PayPal.
+If you like my work, you can support me by buying me a coffee or donate me via PayPal.
 Your support is very much appreciated. :)
 
 [![Donate](https://img.shields.io/badge/Donate-Buy%20Me%20A%20Coffee-yellow.svg)](https://www.buymeacoffee.com/q5gkeA4t2) 

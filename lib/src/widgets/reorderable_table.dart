@@ -32,8 +32,25 @@ class ReorderableTableRow extends TabluarRow {
 
 typedef DecorateDraggableFeedback = Widget Function(BuildContext feedbackContext, Widget draggableFeedback);
 
+/// Reorderable (drag and drop) version of [Table], a widget that displays its
+/// children in a two-dimensional grid.
+///
+/// The difference between table and list is that cells in a table are
+/// horizontally aligned, whereas in a list, each item can have children but
+/// they are not aligned with children in another item.
+/// Making a row draggable requires cells to be contained in a single widget.
+/// This isn't achievable with [Table] or [GridView] widget since their
+/// children are laid out as cells of widget instead of rows of widget.
+///
+/// Cells of each row must be children of [ReorderableTableRow] and each
+/// [ReorderableTableRow] must have a key.
+///
+/// See also:
+///
+///  * [ReorderableTableRow], which is the container of a row of cells.
+///  * [Table], which uses the table layout algorithm for its children.
 class ReorderableTable extends StatelessWidget {
-  /// Creates a table.
+  /// Creates a reorderable table.
   ///
   /// The [children], [defaultColumnWidth], and [defaultVerticalAlignment]
   /// arguments must not be null.
@@ -49,7 +66,7 @@ class ReorderableTable extends StatelessWidget {
 
     this.header,
     this.footer,
-    this.onReorder,
+    @required this.onReorder,
     this.decorateDraggableFeedback,
   }) : assert(children != null),
       assert(defaultColumnWidth != null),
