@@ -16,10 +16,21 @@ samples, guidance on mobile development, and a full API reference.
 
 ## Demo
 
-##### Reorderable Table
+### ReorderableTable
 
-<img src="https://github.com/hanshengchiu/reorderables/blob/master/example/gifs/reorderable_table.gif?raw=true" width="480" title="ReorderableTable">
+<img src="https://github.com/hanshengchiu/reorderables/blob/master/example/gifs/reorderable_table_small.gif?raw=true" width="360" title="ReorderableTable">
 
-##### Reorderable Wrap
+### ReorderableWrap
 
-<img src="https://github.com/hanshengchiu/reorderables/blob/master/example/gifs/reorderable_wrap.gif?raw=true" width="480" title="ReorderableWrap">
+<img src="https://github.com/hanshengchiu/reorderables/blob/master/example/gifs/reorderable_wrap_small.gif?raw=true" width="360" title="ReorderableWrap">
+
+### ReorderableColumn
+
+<p>
+<img src="https://github.com/hanshengchiu/reorderables/blob/master/example/gifs/reorderable_column1_small.gif?raw=true" width="360" title="ReorderableColumn">
+<img src="https://github.com/hanshengchiu/reorderables/blob/master/example/gifs/reorderable_column2_small.gif?raw=true" width="360" title="ReorderableColumn">
+</p>
+
+### ReorderableRow
+
+<img src="https://github.com/hanshengchiu/reorderables/blob/master/example/gifs/reorderable_row_small.gif?raw=true" width="360" title="ReorderableRow">

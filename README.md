@@ -30,7 +30,7 @@ This package includes ReorderableTable, ReorderableWrap, ReorderableRow, and Reo
 <img src="https://github.com/hanshengchiu/reorderables/blob/master/example/gifs/reorderable_row_small.gif?raw=true" width="180" title="ReorderableRow">
 </p>
 
-#### ReorderableTable
+### ReorderableTable
 
 The difference between table and list is that cells in a table are horizontally aligned, whereas in a list, each item can have children but they are not aligned with children in another item.
 
@@ -109,11 +109,11 @@ class _TableExampleState extends State<TableExample> {
 In a table, cells in each row are aligned on column basis with cells in other rows, 
 whereas cells in a row of a list view don't align with  other rows.
 
-##### ReorderableTable Demo
+#### ReorderableTable Demo
 
 <img src="https://github.com/hanshengchiu/reorderables/blob/master/example/gifs/reorderable_table_small.gif?raw=true" width="360" title="ReorderableTable">
 
-#### ReorderableWrap
+### ReorderableWrap
 
 This widget can also limit the minimum and maximum amount of children in each run, on top of the size-based policy in Wrap's algorithm. See API references for more details.
 
@@ -158,11 +158,11 @@ class _WrapExampleState extends State<WrapExample> {
 }
 ```
 
-##### ReorderableWrap Demo
+#### ReorderableWrap Demo
 
 <img src="https://github.com/hanshengchiu/reorderables/blob/master/example/gifs/reorderable_wrap_small.gif?raw=true" width="360" title="ReorderableWrap">
 
-#### ReorderableColumn example #1
+### ReorderableColumn example #1
 
 ``` dart
 class _ColumnExample1State extends State<ColumnExample1> {
@@ -196,11 +196,11 @@ class _ColumnExample1State extends State<ColumnExample1> {
 }
 ```
 
-##### ReorderableColumn example #1 Demo
+#### ReorderableColumn example #1 Demo
 
 <img src="https://github.com/hanshengchiu/reorderables/blob/master/example/gifs/reorderable_column1_small.gif?raw=true" width="360" title="ReorderableColumn #1">
 
-#### ReorderableColumn example #2
+### ReorderableColumn example #2
 
 ``` dart
 class _ColumnExample2State extends State<ColumnExample2> {
@@ -246,15 +246,15 @@ class _ColumnExample2State extends State<ColumnExample2> {
 }
 ```
 
-##### ReorderableColumn example #2 Demo
+#### ReorderableColumn example #2 Demo
 
 <img src="https://github.com/hanshengchiu/reorderables/blob/master/example/gifs/reorderable_column2_small.gif?raw=true" width="360" title="ReorderableColumn #2">
 
-#### ReorderableRow
+### ReorderableRow
 
 See exmaple/lib/row_example.dart
 
-##### ReorderableRow Demo
+#### ReorderableRow Demo
 
 <img src="https://github.com/hanshengchiu/reorderables/blob/master/example/gifs/reorderable_row_small.gif?raw=true" width="360" title="ReorderableRow">
 
