@@ -639,7 +639,7 @@ class _ReorderableWrapContentState extends State<_ReorderableWrapContent>
 
       // Create the appropriate semantics actions.
       void moveToStart() => reorder(index, 0);
-      void moveToEnd() => reorder(index, widget.children.length);
+      void moveToEnd() => reorder(index, widget.children.length - 1);
       void moveBefore() => reorder(index, index - 1);
       // To move after, we go to index+2 because we are moving it to the space
       // before index+2, which is after the space at index+1.

@@ -17,7 +17,7 @@ import './passthrough_overlay.dart';
 import './typedefs.dart';
 
 /// Reorderable (drag and drop) version of [Flex], a widget that displays its
-/// children in a one-dimensional array.
+/// draggable children in a one-dimensional array.
 ///
 /// The [ReorderableFlex] widget has allows you to control the axis along which
 /// the children are placed (horizontal or vertical). This is referred to as the
@@ -68,7 +68,7 @@ class ReorderableFlex extends StatefulWidget {
   /// If null, no header will appear at the top/left of the widget.
   final Widget header;
 
-  /// A non-reorderable header widget to show before the list.
+  /// A non-reorderable footer widget to show after the list.
   ///
   /// If null, no footer will appear at the bottom/right of the widget.
   final Widget footer;
@@ -238,7 +238,7 @@ class _ReorderableFlexContentState extends State<_ReorderableFlexContent>
   // Whether or not we are currently scrolling this view to show a widget.
   bool _scrolling = false;
 
-  final GlobalKey _contentKey = GlobalKey(debugLabel: '$ReorderableFlex content key');
+//  final GlobalKey _contentKey = GlobalKey(debugLabel: '$ReorderableFlex content key');
 
   Size get _dropAreaSize {
     if (_draggingFeedbackSize == null) {
@@ -412,7 +412,7 @@ class _ReorderableFlexContentState extends State<_ReorderableFlexContent>
 
       // Create the appropriate semantics actions.
       void moveToStart() => reorder(index, 0);
-      void moveToEnd() => reorder(index, widget.children.length);
+      void moveToEnd() => reorder(index, widget.children.length - 1);
       void moveBefore() => reorder(index, index - 1);
       // To move after, we go to index+2 because we are moving it to the space
       // before index+2, which is after the space at index+1.
@@ -731,7 +731,7 @@ class _ReorderableFlexContentState extends State<_ReorderableFlexContent>
 //      );
 
     return SingleChildScrollView(
-      key: _contentKey,
+//      key: _contentKey,
       scrollDirection: widget.scrollDirection,
       child: (widget.buildItemsContainer ?? defaultBuildItemsContainer)(context, widget.direction, wrappedChildren),
       padding: widget.padding,
@@ -780,7 +780,7 @@ class _ReorderableFlexContentState extends State<_ReorderableFlexContent>
 }
 
 /// Reorderable (drag and drop) version of [Row], a widget that displays its
-/// children in horizontally.
+/// draggable children in horizontally.
 ///
 /// In addition to other parameters in [Row]'s constructor, this widget also
 /// has [header] and [footer] for placing non-reorderable widgets at the top and
@@ -847,7 +847,7 @@ class ReorderableRow extends ReorderableFlex {
 }
 
 /// Reorderable (drag and drop) version of [Column], a widget that displays its
-/// children in horizontally.
+/// draggable children in horizontally.
 ///
 /// In addition to other parameters in [Column]'s constructor, this widget also
 /// has [header] and [footer] for placing non-reorderable widgets at the left and
