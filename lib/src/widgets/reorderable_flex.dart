@@ -281,7 +281,9 @@ class _ReorderableFlexContentState extends State<_ReorderableFlexContent>
 
   // Animates the droppable space from _currentIndex to _nextIndex.
   void _requestAnimationToNextIndex({bool isAcceptingNewTarget=false}) {
-//    debugPrint('_requestAnimationToNextIndex _dragStartIndex:$_dragStartIndex _ghostIndex:$_ghostIndex _currentIndex:$_currentIndex _nextIndex:$_nextIndex isAcceptingNewTarget:$isAcceptingNewTarget isCompleted:${_entranceController.isCompleted}');
+//    debugPrint('${DateTime.now().toString().substring(5, 22)} reorderable_flex.dart(285) $this._requestAnimationToNextIndex: '
+//      '_dragStartIndex:$_dragStartIndex _ghostIndex:$_ghostIndex _currentIndex:$_currentIndex _nextIndex:$_nextIndex isAcceptingNewTarget:$isAcceptingNewTarget isCompleted:${_entranceController.isCompleted}');
+
     if (_entranceController.isCompleted) {
       _ghostIndex = _currentIndex;
       if (!isAcceptingNewTarget && _nextIndex == _currentIndex) {// && _dragStartIndex == _ghostIndex
@@ -605,7 +607,9 @@ class _ReorderableFlexContentState extends State<_ReorderableFlexContent>
         builder: buildDragTarget,
         onWillAccept: (Key toAccept) {
           bool willAccept = _dragging == toAccept && toAccept != toWrap.key;
-//          debugPrint('onWillAccept: toAccept:$toAccept return:$willAccept _nextIndex:$_nextIndex index:$index _currentIndex:$_currentIndex _dragStartIndex:$_dragStartIndex');
+
+//          debugPrint('${DateTime.now().toString().substring(5, 22)} reorderable_flex.dart(609) $this._wrap: '
+//            'onWillAccept: toAccept:$toAccept return:$willAccept _nextIndex:$_nextIndex index:$index _currentIndex:$_currentIndex _dragStartIndex:$_dragStartIndex');
 
           setState(() {
             if (willAccept) {
@@ -655,8 +659,11 @@ class _ReorderableFlexContentState extends State<_ReorderableFlexContent>
           shiftedIndex++;
         }
       }
-//      debugPrint('index:$index shiftedIndex:$shiftedIndex _nextIndex:$_nextIndex _currentIndex:$_currentIndex _ghostIndex:$_ghostIndex _dragStartIndex:$_dragStartIndex');
-      if (shiftedIndex == _currentIndex) {
+
+//      debugPrint('${DateTime.now().toString().substring(5, 22)} reorderable_flex.dart(659) $this._wrap: '
+//        'index:$index shiftedIndex:$shiftedIndex _nextIndex:$_nextIndex _currentIndex:$_currentIndex _ghostIndex:$_ghostIndex _dragStartIndex:$_dragStartIndex');
+
+      if (shiftedIndex == _currentIndex || index == _ghostIndex) {
         Widget entranceSpacing = _makeAppearingWidget(spacing);
         Widget ghostSpacing = _makeDisappearingWidget(spacing);
 
@@ -665,11 +672,23 @@ class _ReorderableFlexContentState extends State<_ReorderableFlexContent>
         } else if (_currentIndex > _ghostIndex) {
           //the ghost is moving down, i.e. the tile below the ghost is moving up
 //          debugPrint('index:$index item moving up / ghost moving down');
-          return _buildContainerForMainAxis(children: [ghostSpacing, dragTarget, entranceSpacing]);
+          if (shiftedIndex == _currentIndex && index == _ghostIndex) {
+            return _buildContainerForMainAxis(children: [ghostSpacing, dragTarget, entranceSpacing]);
+          } else if (shiftedIndex == _currentIndex) {
+            return _buildContainerForMainAxis(children: [dragTarget, entranceSpacing]);
+          } else if (index == _ghostIndex) {
+            return _buildContainerForMainAxis(children: shiftedIndex <= index ? [dragTarget, ghostSpacing] : [ghostSpacing, dragTarget]);
+          }
         } else if (_currentIndex < _ghostIndex) {
           //the ghost is moving up, i.e. the tile above the ghost is moving down
 //          debugPrint('index:$index item moving down / ghost moving up');
-          return _buildContainerForMainAxis(children: [entranceSpacing, dragTarget, ghostSpacing]);
+          if (shiftedIndex == _currentIndex && index == _ghostIndex) {
+            return _buildContainerForMainAxis(children: [entranceSpacing, dragTarget, ghostSpacing]);
+          } else if (shiftedIndex == _currentIndex) {
+            return _buildContainerForMainAxis(children: [entranceSpacing, dragTarget]);
+          } else if (index == _ghostIndex) {
+            return _buildContainerForMainAxis(children: shiftedIndex >= index ? [ghostSpacing, dragTarget] : [dragTarget, ghostSpacing]);
+          }
         } else {
 //          debugPrint('index:$index using _entranceController: spacing on top:${!(_dragStartIndex < _currentIndex)}');
           return _buildContainerForMainAxis(children: _dragStartIndex < _currentIndex ? [dragTarget, entranceSpacing] : [entranceSpacing, dragTarget]);
