@@ -5,6 +5,7 @@ import './wrap_example.dart';
 import './column_example1.dart';
 import './column_example2.dart';
 import './row_example.dart';
+import './sliver_example.dart';
 
 void main() => runApp(MyApp());
 
@@ -45,6 +46,7 @@ class _MyHomePageState extends State<MyHomePage> {
     ColumnExample1(),
     ColumnExample2(),
     RowExample(),
+    SliverExample(),
   ];
   final _bottomNavigationColor = Colors.blue;
 
@@ -80,6 +82,10 @@ class _MyHomePageState extends State<MyHomePage> {
           BottomNavigationBarItem(
             icon: Icon(Icons.more_horiz, color: _bottomNavigationColor),
             title: Text('ReroderableRow', maxLines: 2, style: TextStyle(color: _bottomNavigationColor))
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.calendar_view_day, color: _bottomNavigationColor),
+            title: Text('ReroderableSliverList', maxLines: 2, style: TextStyle(color: _bottomNavigationColor))
           ),
         ],
         onTap: (int index) {

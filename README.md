@@ -10,7 +10,7 @@ reordering the children within the widget. Parent widget only need to provide a 
 that is invoked with the old and new indexes of child being reordered.
 
 ## Usage
-To use this package, add `reorderables` as a [dependency in your pubspec.yaml file](https://flutter.io/platform-plugins/).
+To use this [package](https://pub.dartlang.org/packages/reorderables), add `reorderables` as a [dependency in your pubspec.yaml file](https://flutter.io/platform-plugins/).
 ```
 dependencies:
   reorderables:
