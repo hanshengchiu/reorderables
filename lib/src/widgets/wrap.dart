@@ -18,17 +18,16 @@ class WrapWithMainAxisCount extends Wrap {
     this.minMainAxisCount,
     this.maxMainAxisCount,
   }) : super(
-    key: key,
-    direction: direction,
-    alignment: alignment,
-    spacing: spacing,
-    runAlignment: runAlignment,
-    runSpacing: runSpacing,
-    crossAxisAlignment: crossAxisAlignment,
-    textDirection: textDirection,
-    verticalDirection: verticalDirection,
-    children: children
-  );
+            key: key,
+            direction: direction,
+            alignment: alignment,
+            spacing: spacing,
+            runAlignment: runAlignment,
+            runSpacing: runSpacing,
+            crossAxisAlignment: crossAxisAlignment,
+            textDirection: textDirection,
+            verticalDirection: verticalDirection,
+            children: children);
 
   final int minMainAxisCount;
   final int maxMainAxisCount;
@@ -36,21 +35,21 @@ class WrapWithMainAxisCount extends Wrap {
   @override
   RenderWrapWithMainAxisCount createRenderObject(BuildContext context) {
     return RenderWrapWithMainAxisCount(
-      direction: direction,
-      alignment: alignment,
-      spacing: spacing,
-      runAlignment: runAlignment,
-      runSpacing: runSpacing,
-      crossAxisAlignment: crossAxisAlignment,
-      textDirection: textDirection ?? Directionality.of(context),
-      verticalDirection: verticalDirection,
-      minMainAxisCount: minMainAxisCount,
-      maxMainAxisCount: maxMainAxisCount
-    );
+        direction: direction,
+        alignment: alignment,
+        spacing: spacing,
+        runAlignment: runAlignment,
+        runSpacing: runSpacing,
+        crossAxisAlignment: crossAxisAlignment,
+        textDirection: textDirection ?? Directionality.of(context),
+        verticalDirection: verticalDirection,
+        minMainAxisCount: minMainAxisCount,
+        maxMainAxisCount: maxMainAxisCount);
   }
 
   @override
-  void updateRenderObject(BuildContext context, RenderWrapWithMainAxisCount renderObject) {
+  void updateRenderObject(
+      BuildContext context, RenderWrapWithMainAxisCount renderObject) {
     super.updateRenderObject(context, renderObject);
     renderObject
       ..minMainAxisCount = minMainAxisCount

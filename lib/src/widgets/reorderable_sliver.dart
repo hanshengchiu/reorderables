@@ -17,7 +17,7 @@ import 'package:flutter/rendering.dart';
 //import 'material.dart';
 //import 'material_localizations.dart';
 
-import './passthrough_overlay.dart';
+//import './passthrough_overlay.dart';
 import './typedefs.dart';
 
 int _kDefaultSemanticIndexCallback(Widget _, int localIndex) => localIndex;
@@ -196,6 +196,10 @@ class ReorderableSliverChildListDelegate extends SliverChildListDelegate with _R
 /// wrapping the widget with a CustomScrollView.
 ///
 /// {@tool sample}
+///
+/// This sample shows how to create a reorderable sliver list with a sliver app
+/// bar.
+///
 /// ```dart
 /// CustomScrollView(
 ///  // a ScrollController must be included in CustomScrollView, otherwise
@@ -266,72 +270,72 @@ class ReorderableSliverList extends StatefulWidget {
   final BuildDraggableFeedback buildDraggableFeedback;
 
   @override
-  _ReorderableFlexContentState createState() => _ReorderableFlexContentState();
+  _ReorderableSliverListState createState() => _ReorderableSliverListState();
 }
 
-// This top-level state manages an Overlay that contains the list and
-// also any Draggables it creates.
+//// This top-level state manages an Overlay that contains the list and
+//// also any Draggables it creates.
+////
+//// _ReorderableFlexContent manages the list itself and reorder operations.
+////
+//// The Overlay doesn't properly keep state by building new overlay entries,
+//// and so we cache a single OverlayEntry for use as the list layer.
+//// That overlay entry then builds a _ReorderableListContent which may
+//// insert Draggables into the Overlay above itself.
+//class _ReorderableSliverListState extends State<ReorderableSliverList> {
+//  // We use an inner overlay so that the dragging list item doesn't draw outside of the list itself.
+//  final GlobalKey _overlayKey = GlobalKey(debugLabel: '$ReorderableSliverList overlay key');
 //
-// _ReorderableListContent manages the list itself and reorder operations.
+//  // This entry contains the scrolling list itself.
+//  PassthroughOverlayEntry _listOverlayEntry;
 //
-// The Overlay doesn't properly keep state by building new overlay entries,
-// and so we cache a single OverlayEntry for use as the list layer.
-// That overlay entry then builds a _ReorderableListContent which may
-// insert Draggables into the Overlay above itself.
-class _ReorderableSliverListState extends State<ReorderableSliverList> {
-  // We use an inner overlay so that the dragging list item doesn't draw outside of the list itself.
-  final GlobalKey _overlayKey = GlobalKey(debugLabel: '$ReorderableSliverList overlay key');
+//  @override
+//  void initState() {
+//    super.initState();
+//    _listOverlayEntry = PassthroughOverlayEntry(
+//      opaque: false,
+//      builder: (BuildContext context) {
+//        return _ReorderableFlexContent(
+//          delegate: widget.delegate,
+//          onReorder: widget.onReorder,
+//          buildItemsContainer: widget.buildItemsContainer,
+//          buildDraggableFeedback: widget.buildDraggableFeedback,
+//        );
+//      },
+//    );
+//  }
+//
+//  @override
+//  Widget build(BuildContext context) {
+//    return PassthroughOverlay(
+//      key: _overlayKey,
+//      initialEntries: <PassthroughOverlayEntry>[
+//        _listOverlayEntry,
+//      ]);
+//  }
+//
+//}
+//
+//// This widget is responsible for the inside of the Overlay in the
+//// ReorderableFlex.
+//class _ReorderableFlexContent extends StatefulWidget {
+//  const _ReorderableFlexContent({
+//    @required this.delegate,
+//    @required this.onReorder,
+//    @required this.buildItemsContainer,
+//    @required this.buildDraggableFeedback,
+//  });
+//
+//  final SliverChildDelegate delegate;
+//  final ReorderCallback onReorder;
+//  final BuildItemsContainer buildItemsContainer;
+//  final BuildDraggableFeedback buildDraggableFeedback;
+//
+//  @override
+//  _ReorderableFlexContentState createState() => _ReorderableFlexContentState();
+//}
 
-  // This entry contains the scrolling list itself.
-  PassthroughOverlayEntry _listOverlayEntry;
-
-  @override
-  void initState() {
-    super.initState();
-    _listOverlayEntry = PassthroughOverlayEntry(
-      opaque: false,
-      builder: (BuildContext context) {
-        return _ReorderableFlexContent(
-          delegate: widget.delegate,
-          onReorder: widget.onReorder,
-          buildItemsContainer: widget.buildItemsContainer,
-          buildDraggableFeedback: widget.buildDraggableFeedback,
-        );
-      },
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return PassthroughOverlay(
-      key: _overlayKey,
-      initialEntries: <PassthroughOverlayEntry>[
-        _listOverlayEntry,
-      ]);
-  }
-
-}
-
-// This widget is responsible for the inside of the Overlay in the
-// ReorderableFlex.
-class _ReorderableFlexContent extends StatefulWidget {
-  const _ReorderableFlexContent({
-    @required this.delegate,
-    @required this.onReorder,
-    @required this.buildItemsContainer,
-    @required this.buildDraggableFeedback,
-  });
-
-  final SliverChildDelegate delegate;
-  final ReorderCallback onReorder;
-  final BuildItemsContainer buildItemsContainer;
-  final BuildDraggableFeedback buildDraggableFeedback;
-
-  @override
-  _ReorderableFlexContentState createState() => _ReorderableFlexContentState();
-}
-
-class _ReorderableFlexContentState extends State<ReorderableSliverList>
+class _ReorderableSliverListState extends State<ReorderableSliverList>
   with TickerProviderStateMixin<ReorderableSliverList>
 {
 

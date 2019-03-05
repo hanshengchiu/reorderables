@@ -45,7 +45,7 @@ class _SliverExampleState extends State<SliverExample> {
   void initState() {
     super.initState();
     _rows = List<Widget>.generate(50,
-        (int index) => Text('This is sliver child $index', key: ValueKey(index), textScaleFactor: 2)
+        (int index) => Text('This is sliver child $index', textScaleFactor: 2)
     );
   }
 

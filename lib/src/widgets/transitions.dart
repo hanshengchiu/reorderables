@@ -17,19 +17,20 @@ class SizeTransitionWithIntrinsicSize extends SingleChildRenderObjectWidget {
     double axisAlignment = 0.0,
     Widget child,
   }) : super(
-    key: key,
-    child: SizeTransition(
-      axis: axis,
-      sizeFactor: sizeFactor,
-      axisAlignment: axisAlignment,
-      child: child,
-    ));
+            key: key,
+            child: SizeTransition(
+              axis: axis,
+              sizeFactor: sizeFactor,
+              axisAlignment: axisAlignment,
+              child: child,
+            ));
 
   final Axis axis;
   final Animation<double> sizeFactor;
 
   @override
-  RenderSizeTransitionWithIntrinsicSize createRenderObject(BuildContext context) {
+  RenderSizeTransitionWithIntrinsicSize createRenderObject(
+      BuildContext context) {
     return RenderSizeTransitionWithIntrinsicSize(
       axis: axis,
       sizeFactor: sizeFactor,
@@ -37,7 +38,8 @@ class SizeTransitionWithIntrinsicSize extends SingleChildRenderObjectWidget {
   }
 
   @override
-  void updateRenderObject(BuildContext context, RenderSizeTransitionWithIntrinsicSize renderObject) {
+  void updateRenderObject(BuildContext context,
+      RenderSizeTransitionWithIntrinsicSize renderObject) {
     renderObject
       ..axis = axis
       ..sizeFactor = sizeFactor;
@@ -47,6 +49,7 @@ class SizeTransitionWithIntrinsicSize extends SingleChildRenderObjectWidget {
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
     properties.add(DiagnosticsProperty<Axis>('axis', axis));
-    properties.add(DiagnosticsProperty<Animation<double>>('sizeFactor', sizeFactor));
+    properties
+        .add(DiagnosticsProperty<Animation<double>>('sizeFactor', sizeFactor));
   }
 }

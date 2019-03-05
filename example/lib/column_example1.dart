@@ -13,9 +13,10 @@ class _ColumnExample1State extends State<ColumnExample1> {
   @override
   void initState() {
     super.initState();
-    _rows = List<Widget>.generate(50,
-        (int index) => Text('This is row $index', key: ValueKey(index), textScaleFactor: 1.5)
-    );
+    _rows = List<Widget>.generate(
+        50,
+        (int index) => Text('This is row $index',
+            key: ValueKey(index), textScaleFactor: 1.5));
   }
 
   @override

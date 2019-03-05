@@ -13,9 +13,10 @@ class _ColumnExample2State extends State<ColumnExample2> {
   @override
   void initState() {
     super.initState();
-    _rows = List<Widget>.generate(10,
-        (int index) => Text('This is row $index', key: ValueKey(index), textScaleFactor: 1.5)
-    );
+    _rows = List<Widget>.generate(
+        10,
+        (int index) => Text('This is row $index',
+            key: ValueKey(index), textScaleFactor: 1.5));
   }
 
   @override
@@ -28,13 +29,12 @@ class _ColumnExample2State extends State<ColumnExample2> {
     }
 
     Widget reorderableColumn = IntrinsicWidth(
-      child: ReorderableColumn(
-        header: Text('List-like view but supports IntrinsicWidth'),
+        child: ReorderableColumn(
+      header: Text('List-like view but supports IntrinsicWidth'),
 //        crossAxisAlignment: CrossAxisAlignment.start,
-        children: _rows,
-        onReorder: _onReorder,
-      )
-    );
+      children: _rows,
+      onReorder: _onReorder,
+    ));
 
     return Transform(
       transform: Matrix4.rotationZ(0),

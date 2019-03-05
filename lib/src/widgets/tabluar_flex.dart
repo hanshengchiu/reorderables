@@ -16,16 +16,16 @@ class TabluarFlex extends Flex {
     List<Widget> children = const <Widget>[],
     this.decoration,
   }) : super(
-        key: key,
-        children: children,
-        direction: direction,
-        mainAxisAlignment: mainAxisAlignment,
-        mainAxisSize: mainAxisSize,
-        crossAxisAlignment: crossAxisAlignment,
-        textDirection: textDirection,
-        verticalDirection: verticalDirection,
-        textBaseline: textBaseline,
-  );
+          key: key,
+          children: children,
+          direction: direction,
+          mainAxisAlignment: mainAxisAlignment,
+          mainAxisSize: mainAxisSize,
+          crossAxisAlignment: crossAxisAlignment,
+          textDirection: textDirection,
+          verticalDirection: verticalDirection,
+          textBaseline: textBaseline,
+        );
 
   /// What decoration to paint.
   ///
@@ -48,7 +48,8 @@ class TabluarFlex extends Flex {
   }
 
   @override
-  void updateRenderObject(BuildContext context, RenderTabluarFlex renderObject) {
+  void updateRenderObject(
+      BuildContext context, RenderTabluarFlex renderObject) {
     renderObject
       ..direction = direction
       ..mainAxisAlignment = mainAxisAlignment
@@ -240,17 +241,17 @@ class TabluarRow extends TabluarFlex {
     List<Widget> children = const <Widget>[],
     Decoration decoration,
   }) : super(
-        children: children,
-        key: key,
-        direction: Axis.horizontal,
-        mainAxisAlignment: mainAxisAlignment,
-        mainAxisSize: mainAxisSize,
-        crossAxisAlignment: crossAxisAlignment,
-        textDirection: textDirection,
-        verticalDirection: verticalDirection,
-        textBaseline: textBaseline,
-        decoration: decoration,
-  );
+          children: children,
+          key: key,
+          direction: Axis.horizontal,
+          mainAxisAlignment: mainAxisAlignment,
+          mainAxisSize: mainAxisSize,
+          crossAxisAlignment: crossAxisAlignment,
+          textDirection: textDirection,
+          verticalDirection: verticalDirection,
+          textBaseline: textBaseline,
+          decoration: decoration,
+        );
 }
 
 /// A widget that displays its children in a vertical array.
@@ -438,15 +439,15 @@ class TabluarColumn extends TabluarFlex {
     List<Widget> children = const <Widget>[],
     Decoration decoration,
   }) : super(
-        children: children,
-        key: key,
-        direction: Axis.vertical,
-        mainAxisAlignment: mainAxisAlignment,
-        mainAxisSize: mainAxisSize,
-        crossAxisAlignment: crossAxisAlignment,
-        textDirection: textDirection,
-        verticalDirection: verticalDirection,
-        textBaseline: textBaseline,
-        decoration: decoration,
-  );
+          children: children,
+          key: key,
+          direction: Axis.vertical,
+          mainAxisAlignment: mainAxisAlignment,
+          mainAxisSize: mainAxisSize,
+          crossAxisAlignment: crossAxisAlignment,
+          textDirection: textDirection,
+          verticalDirection: verticalDirection,
+          textBaseline: textBaseline,
+          decoration: decoration,
+        );
 }

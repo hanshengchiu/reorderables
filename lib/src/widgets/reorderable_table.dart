@@ -18,19 +18,20 @@ class ReorderableTableRow extends TabluarRow {
     List<Widget> children = const <Widget>[],
     Decoration decoration,
   }) : super(
-        children: children,
-        key: key,
-        mainAxisAlignment: mainAxisAlignment,
-        mainAxisSize: mainAxisSize,
-        crossAxisAlignment: crossAxisAlignment,
-        textDirection: textDirection,
-        verticalDirection: verticalDirection,
-        textBaseline: textBaseline,
-        decoration: decoration,
-  );
+          children: children,
+          key: key,
+          mainAxisAlignment: mainAxisAlignment,
+          mainAxisSize: mainAxisSize,
+          crossAxisAlignment: crossAxisAlignment,
+          textDirection: textDirection,
+          verticalDirection: verticalDirection,
+          textBaseline: textBaseline,
+          decoration: decoration,
+        );
 }
 
-typedef DecorateDraggableFeedback = Widget Function(BuildContext feedbackContext, Widget draggableFeedback);
+typedef DecorateDraggableFeedback = Widget Function(
+    BuildContext feedbackContext, Widget draggableFeedback);
 
 /// Reorderable (drag and drop) version of [Table], a widget that displays its
 /// children in a two-dimensional grid.
@@ -63,32 +64,33 @@ class ReorderableTable extends StatelessWidget {
     this.border,
     this.defaultVerticalAlignment = TableCellVerticalAlignment.top,
     this.textBaseline,
-
     this.header,
     this.footer,
     @required this.onReorder,
     this.decorateDraggableFeedback,
-  }) : assert(children != null),
-      assert(defaultColumnWidth != null),
-      assert(defaultVerticalAlignment != null),
-      assert(() {
-        if (children.any((ReorderableTableRow row) => row.children.any((Widget cell) => cell == null))) {
-          throw FlutterError(
-            'One of the children of one of the rows of the table was null.\n'
-              'The children of a ReorderableTableRow must not be null.'
-          );
-        }
-        return true;
-      }()),
-      assert(() {
-        if (children.any((ReorderableTableRow row1) => row1.key != null && children.any((ReorderableTableRow row2) => row1 != row2 && row1.key == row2.key))) {
-          throw FlutterError(
-            'Two or more ReorderableTableRow children of this Table had the same key.\n'
-              'All the keyed ReorderableTableRow children of a Table must have different Keys.'
-          );
-        }
-        return true;
-      }()),
+  })  : assert(children != null),
+        assert(defaultColumnWidth != null),
+        assert(defaultVerticalAlignment != null),
+        assert(() {
+          if (children.any((ReorderableTableRow row) =>
+              row.children.any((Widget cell) => cell == null))) {
+            throw FlutterError(
+                'One of the children of one of the rows of the table was null.\n'
+                'The children of a ReorderableTableRow must not be null.');
+          }
+          return true;
+        }()),
+        assert(() {
+          if (children.any((ReorderableTableRow row1) =>
+              row1.key != null &&
+              children.any((ReorderableTableRow row2) =>
+                  row1 != row2 && row1.key == row2.key))) {
+            throw FlutterError(
+                'Two or more ReorderableTableRow children of this Table had the same key.\n'
+                'All the keyed ReorderableTableRow children of a Table must have different Keys.');
+          }
+          return true;
+        }()),
 //      assert(() {
 //        if (children.isNotEmpty) {
 //          final int cellCount = children.first.children.length;
@@ -103,16 +105,17 @@ class ReorderableTable extends StatelessWidget {
 //        return true;
 //      }()),
 
-      super(key: key) {
+        super(key: key) {
     assert(() {
-      final List<Widget> flatChildren = children.expand<Widget>((ReorderableTableRow row) => row.children).toList(growable: false);
+      final List<Widget> flatChildren = children
+          .expand<Widget>((ReorderableTableRow row) => row.children)
+          .toList(growable: false);
       if (debugChildrenHaveDuplicateKeys(this, flatChildren)) {
         throw FlutterError(
-          'Two or more cells in this Table contain widgets with the same key.\n'
+            'Two or more cells in this Table contain widgets with the same key.\n'
             'Every widget child of every TableRow in a Table must have different keys. The cells of a Table are '
             'flattened out for processing, so separate cells cannot have duplicate keys even if they are in '
-            'different rows.'
-        );
+            'different rows.');
       }
       return true;
     }());
@@ -182,60 +185,75 @@ class ReorderableTable extends StatelessWidget {
 //          ReorderableTableRow(key: ValueKey<int>(2), mainAxisSize:MainAxisSize.min, children: <Widget>[Text('33'), Text('4444444444')])
 //        ],
 //    )
-    final GlobalKey tableKey = GlobalKey(debugLabel: '$ReorderableTable table key');
+    final GlobalKey tableKey =
+        GlobalKey(debugLabel: '$ReorderableTable table key');
 
     return ReorderableFlex(
-      header: header,
-      footer: footer,
-      children: children,
-      onReorder: onReorder,
-      direction: Axis.vertical,
-      buildItemsContainer: (BuildContext containerContext, Axis direction, List<Widget> children) {
-        return TabluarFlex(
-          key: tableKey,
-          direction: direction,
+        header: header,
+        footer: footer,
+        children: children,
+        onReorder: onReorder,
+        direction: Axis.vertical,
+        buildItemsContainer: (BuildContext containerContext, Axis direction,
+            List<Widget> children) {
+          return TabluarFlex(
+              key: tableKey,
+              direction: direction,
 //          mainAxisAlignment: mainAxisAlignment,
 //          mainAxisSize: MainAxisSize.min,
 //          crossAxisAlignment: crossAxisAlignment,
-          textDirection: textDirection,
+              textDirection: textDirection,
 //          verticalDirection: verticalDirection,
-          textBaseline: textBaseline,
-          children: children
-        );
-      },
-      buildDraggableFeedback: (BuildContext feedbackContext, BoxConstraints constraints, Widget child) {
-        // The child is a ReorderableTableRow because children is a List<ReorderableTableRow>
-        ReorderableTableRow tableRow = child;
-        RenderTabluarFlex renderTabluarFlex = tableKey.currentContext.findRenderObject();
-        int grandChildIndex=0;
-        for (; grandChildIndex<tableRow.children.length; grandChildIndex++) {
-          tableRow.children[grandChildIndex] = ConstrainedBox(
-            constraints: BoxConstraints(minWidth: renderTabluarFlex.maxGrandchildrenCrossSize[grandChildIndex]),
-            child: tableRow.children[grandChildIndex]
-          );
-        }
-        for (; grandChildIndex < renderTabluarFlex.maxGrandchildrenCrossSize.length; grandChildIndex++) {
-          tableRow.children.add(ConstrainedBox(
-            constraints: BoxConstraints(minWidth: renderTabluarFlex.maxGrandchildrenCrossSize[grandChildIndex]),
-          ));
-        }
+              textBaseline: textBaseline,
+              children: children);
+        },
+        buildDraggableFeedback: (BuildContext feedbackContext,
+            BoxConstraints constraints, Widget child) {
+          // The child is a ReorderableTableRow because children is a List<ReorderableTableRow>
+          ReorderableTableRow tableRow = child;
+          RenderTabluarFlex renderTabluarFlex =
+              tableKey.currentContext.findRenderObject();
+          int grandChildIndex = 0;
+          for (;
+              grandChildIndex < tableRow.children.length;
+              grandChildIndex++) {
+            tableRow.children[grandChildIndex] = ConstrainedBox(
+                constraints: BoxConstraints(
+                    minWidth: renderTabluarFlex
+                        .maxGrandchildrenCrossSize[grandChildIndex]),
+                child: tableRow.children[grandChildIndex]);
+          }
+          for (;
+              grandChildIndex <
+                  renderTabluarFlex.maxGrandchildrenCrossSize.length;
+              grandChildIndex++) {
+            tableRow.children.add(ConstrainedBox(
+              constraints: BoxConstraints(
+                  minWidth: renderTabluarFlex
+                      .maxGrandchildrenCrossSize[grandChildIndex]),
+            ));
+          }
 
-        ConstrainedBox constrainedTableRow = ConstrainedBox(constraints: constraints, child: tableRow);
+          ConstrainedBox constrainedTableRow =
+              ConstrainedBox(constraints: constraints, child: tableRow);
 
-        return Transform(
-          transform: new Matrix4.rotationZ(0),
-          alignment: FractionalOffset.topLeft,
-          child: Material(
+          return Transform(
+            transform: new Matrix4.rotationZ(0),
+            alignment: FractionalOffset.topLeft,
+            child: Material(
 //            child: Card(child: ConstrainedBox(constraints: constraints, child: tableRow)),
-            child: (decorateDraggableFeedback ?? defaultDecorateDraggableFeedback)(feedbackContext, constrainedTableRow),
-            elevation: 6.0,
-            color: Colors.transparent,
-            borderRadius: BorderRadius.zero,
-          ),
-        );
-      }
-    );
+              child: (decorateDraggableFeedback ??
+                      defaultDecorateDraggableFeedback)(
+                  feedbackContext, constrainedTableRow),
+              elevation: 6.0,
+              color: Colors.transparent,
+              borderRadius: BorderRadius.zero,
+            ),
+          );
+        });
   }
 
-  Widget defaultDecorateDraggableFeedback(BuildContext feedbackContext, Widget draggableFeedback) => Card(child: draggableFeedback);
+  Widget defaultDecorateDraggableFeedback(
+          BuildContext feedbackContext, Widget draggableFeedback) =>
+      Card(child: draggableFeedback);
 }
