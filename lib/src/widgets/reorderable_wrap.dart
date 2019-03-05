@@ -87,11 +87,8 @@ class ReorderableWrap extends StatefulWidget {
   /// The amount of space by which to inset the [children].
   final EdgeInsets padding;
 
-  /// Called when a list child is dropped into a new position to shuffle the
-  /// underlying list.
-  ///
-  /// This [ReorderableListView] calls [onReorder] after a list child is dropped
-  /// into a new position.
+  /// Called when a child is dropped into a new position to shuffle the
+  /// children.
   final ReorderCallback onReorder;
 
   final BuildItemsContainer buildItemsContainer;

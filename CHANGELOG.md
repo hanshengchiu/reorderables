@@ -1,3 +1,8 @@
+## [0.2.0] - 5 March 2019.
+
+* Added ReorderableSliverList, ReorderableSliverChildBuilderDelegate, and ReorderableSliverChildListDelegate.
+* Bugfix: ReorderableFlex's animation.
+
 ## [0.1.6] - 1 March 2019.
 
 * Updated API references and README.

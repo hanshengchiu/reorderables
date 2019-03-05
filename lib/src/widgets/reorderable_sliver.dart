@@ -1,3 +1,7 @@
+// Copyright 2019 Hansheng Chiu <https://www.linkedin.com/in/hschiu/>. All rights reserved.
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+
 // Copyright 2018 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -18,14 +22,26 @@ import './typedefs.dart';
 
 int _kDefaultSemanticIndexCallback(Widget _, int localIndex) => localIndex;
 
-mixin ReorderableSliverChildDelegateMixin<T extends SliverChildDelegate> {
+mixin _ReorderableSliverChildDelegateMixin<T extends SliverChildDelegate> {
   Widget Function(Widget toWrap, int index) _wrap;
   set wrap(Function value) {
     _wrap = value;
   }
 }
 
-class ReorderableSliverChildBuilderDelegate extends SliverChildBuilderDelegate with ReorderableSliverChildDelegateMixin {
+/// Reorderable (drag and drop) version of [SliverChildBuilderDelegate], a
+/// delegate that supplies children for slivers using a builder callback.
+///
+/// The widget works exactly like [SliverChildBuilderDelegate]. When using
+/// [ReorderableSliverList], replace [SliverChildBuilderDelegate] with this
+/// class.
+///
+/// See also:
+///
+///  * [SliverChildBuilderDelegate], for how to use SliverChildBuilderDelegate.
+///  * [ReorderableSliverChildListDelegate], which is a delegate that supplies
+///    children for slivers using an explicit list.
+class ReorderableSliverChildBuilderDelegate extends SliverChildBuilderDelegate with _ReorderableSliverChildDelegateMixin {
   /// Creates a delegate that supplies children for slivers using the given
   /// builder callback.
   ///
@@ -103,7 +119,18 @@ class ReorderableSliverChildBuilderDelegate extends SliverChildBuilderDelegate w
   }
 }
 
-class ReorderableSliverChildListDelegate extends SliverChildListDelegate with ReorderableSliverChildDelegateMixin {
+/// Reorderable (drag and drop) version of [SliverChildListDelegate], a
+/// delegate supplies children for slivers using an explicit list.
+///
+/// The widget works exactly like [SliverChildListDelegate]. When using
+/// [ReorderableSliverList], replace [SliverChildListDelegate] with this class.
+///
+/// See also:
+///
+///  * [SliverChildListDelegate], for how to use SliverChildListDelegate.
+///  * [ReorderableSliverChildBuilderDelegate], which is a delegate that uses a
+///    builder callback to construct the reorderable children.
+class ReorderableSliverChildListDelegate extends SliverChildListDelegate with _ReorderableSliverChildDelegateMixin {
   /// Creates a delegate that supplies children for slivers using the given
   /// list.
   ///
@@ -165,10 +192,48 @@ class ReorderableSliverChildListDelegate extends SliverChildListDelegate with Re
 /// Reorderable (drag and drop) version of [SliverList], a widget that places
 /// multiple box draggable children in a linear array along the main axis.
 ///
+/// A ScrollController must be explicitly provided to CustomScrollView when
+/// wrapping the widget with a CustomScrollView.
+///
+/// {@tool sample}
+/// ```dart
+/// CustomScrollView(
+///  // a ScrollController must be included in CustomScrollView, otherwise
+///  // ReorderableSliverList won't work
+///  controller: _scrollController,
+///  slivers: <Widget>[
+///    SliverAppBar(
+///      expandedHeight: 210.0,
+///      flexibleSpace: FlexibleSpaceBar(
+///        title: Text('ReorderableSliverList'),
+///        background: Image.network(
+///          'https://upload.wikimedia.org/wikipedia/commons/thumb/6/68/Yushan'
+///            '_main_east_peak%2BHuang_Chung_Yu%E9%BB%83%E4%B8%AD%E4%BD%91%2B'
+///            '9030.png/640px-Yushan_main_east_peak%2BHuang_Chung_Yu%E9%BB%83'
+///            '%E4%B8%AD%E4%BD%91%2B9030.png'),
+///      ),
+///    ),
+///    ReorderableSliverList(
+///      delegate: ReorderableSliverChildListDelegate(_rows),
+///      // or use ReorderableSliverChildBuilderDelegate if needed
+///      //delegate: ReorderableSliverChildBuilderDelegate(
+///      //  (BuildContext context, int index) => _rows[index],
+///      //  childCount: _rows.length
+///      //),
+///      onReorder: _onReorder,
+///    )
+///  ],
+///)
+/// ```
+/// {@end-tool}
+///
 /// See also:
 ///
+///  * [SliverList], for how to use SliverList.
 ///  * [ReorderableSliverChildBuilderDelegate], for the reorderable version of
 ///    [SliverChildBuilderDelegate].
+///  * [ReorderableSliverChildListDelegate], for the reorderable version of
+///    [SliverChildListDelegate].
 class ReorderableSliverList extends StatefulWidget {
 
   /// Creates a reorderable list.
@@ -193,11 +258,8 @@ class ReorderableSliverList extends StatefulWidget {
   ///    builder callback and an explicit child list, respectively.
   final SliverChildDelegate delegate;
 
-  /// Called when a list child is dropped into a new position to shuffle the
-  /// underlying list.
-  ///
-  /// This [ReorderableSliverList] calls [onReorder] after a list child is dropped
-  /// into a new position.
+  /// Called when a child is dropped into a new position to shuffle the
+  /// children.
   final ReorderCallback onReorder;
 
   final BuildItemsContainer buildItemsContainer;
@@ -367,7 +429,6 @@ class _ReorderableFlexContentState extends State<ReorderableSliverList>
   @override
   void didChangeDependencies() {
     _scrollController = PrimaryScrollController.of(context) ?? ScrollController();
-    debugPrint('${DateTime.now().toString().substring(5, 22)} reorderable_sliver.dart(323) $this.didChangeDependencies: _scrollController:${PrimaryScrollController.of(context)}');
     super.didChangeDependencies();
   }
 
@@ -394,8 +455,8 @@ class _ReorderableFlexContentState extends State<ReorderableSliverList>
 
   // Animates the droppable space from _currentIndex to _nextIndex.
   void _requestAnimationToNextIndex({bool isAcceptingNewTarget=false, int updatingIndex}) {
-    debugPrint('${DateTime.now().toString().substring(5, 22)} reorderable_sliver.dart(345) $this._requestAnimationToNextIndex: '
-      '_dragStartIndex:$_dragStartIndex _ghostIndex:$_ghostIndex _currentIndex:$_currentIndex _nextIndex:$_nextIndex isAcceptingNewTarget:$isAcceptingNewTarget isCompleted:${_entranceController.isCompleted}');
+//    debugPrint('${DateTime.now().toString().substring(5, 22)} reorderable_sliver.dart(345) $this._requestAnimationToNextIndex: '
+//      '_dragStartIndex:$_dragStartIndex _ghostIndex:$_ghostIndex _currentIndex:$_currentIndex _nextIndex:$_nextIndex isAcceptingNewTarget:$isAcceptingNewTarget isCompleted:${_entranceController.isCompleted}');
 
     if (_entranceController.isCompleted) {
       void _update() {
@@ -753,8 +814,8 @@ class _ReorderableFlexContentState extends State<ReorderableSliverList>
         builder: buildDragTarget,
         onWillAccept: (Key toAccept) {
           bool willAccept = _dragging == toAccept && toAccept != toWrap.key;
-          debugPrint('${DateTime.now().toString().substring(5, 22)} reorderable_sliver.dart(679) $this._statefulWrap: '
-            'onWillAccept: toAccept:$toAccept return:$willAccept _nextIndex:$_nextIndex index:$index _currentIndex:$_currentIndex _dragStartIndex:$_dragStartIndex');
+//          debugPrint('${DateTime.now().toString().substring(5, 22)} reorderable_sliver.dart(679) $this._statefulWrap: '
+//            'onWillAccept: toAccept:$toAccept return:$willAccept _nextIndex:$_nextIndex index:$index _currentIndex:$_currentIndex _dragStartIndex:$_dragStartIndex');
 
           setState(() {
             if (willAccept) {
@@ -806,8 +867,8 @@ class _ReorderableFlexContentState extends State<ReorderableSliverList>
 //        }
 //      }
 
-      debugPrint('${DateTime.now().toString().substring(5, 22)} reorderable_sliver.dart(809) $this._statefulWrap: '
-        'index:$index shiftedIndex:$shiftedIndex _nextIndex:$_nextIndex _currentIndex:$_currentIndex _ghostIndex:$_ghostIndex _dragStartIndex:$_dragStartIndex');
+//      debugPrint('${DateTime.now().toString().substring(5, 22)} reorderable_sliver.dart(809) $this._statefulWrap: '
+//        'index:$index shiftedIndex:$shiftedIndex _nextIndex:$_nextIndex _currentIndex:$_currentIndex _ghostIndex:$_ghostIndex _dragStartIndex:$_dragStartIndex');
 
 //      if (shiftedIndex == _currentIndex) {
 //        Widget entranceSpacing = _makeAppearingWidget(spacing);
@@ -872,9 +933,9 @@ class _ReorderableFlexContentState extends State<ReorderableSliverList>
   @override
   Widget build(BuildContext context) {
     assert(debugCheckHasMaterialLocalizations(context));
-    assert(widget.delegate is ReorderableSliverChildDelegateMixin);
+    assert(widget.delegate is _ReorderableSliverChildDelegateMixin);
 
-    ReorderableSliverChildDelegateMixin reorderableDelegate = widget.delegate as ReorderableSliverChildDelegateMixin;
+    _ReorderableSliverChildDelegateMixin reorderableDelegate = widget.delegate as _ReorderableSliverChildDelegateMixin;
     reorderableDelegate.wrap = _wrap;
 
 //    return CustomScrollView(

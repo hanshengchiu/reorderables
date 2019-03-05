@@ -29,17 +29,24 @@ class _SliverExampleState extends State<SliverExample> {
     ScrollController _scrollController = PrimaryScrollController.of(context) ?? ScrollController();
 
     return CustomScrollView(
+      // a ScrollController must be included in CustomScrollView, otherwise
+      // ReorderableSliverList wouldn't work
       controller: _scrollController,
       slivers: <Widget>[
         SliverAppBar(
-          expandedHeight: 150.0,
-          flexibleSpace: const FlexibleSpaceBar(
+          expandedHeight: 210.0,
+          flexibleSpace: FlexibleSpaceBar(
             title: Text('ReorderableSliverList'),
-            background: Icon(Icons.filter),
+            background: Image.network(
+              'https://upload.wikimedia.org/wikipedia/commons/thumb/6/68/Yushan'
+                '_main_east_peak%2BHuang_Chung_Yu%E9%BB%83%E4%B8%AD%E4%BD%91%2B'
+                '9030.png/640px-Yushan_main_east_peak%2BHuang_Chung_Yu%E9%BB%83'
+                '%E4%B8%AD%E4%BD%91%2B9030.png'),
           ),
         ),
         ReorderableSliverList(
           delegate: ReorderableSliverChildListDelegate(_rows),
+          // or use ReorderableSliverChildBuilderDelegate if needed
 //          delegate: ReorderableSliverChildBuilderDelegate(
 //            (BuildContext context, int index) => _rows[index],
 //            childCount: _rows.length
@@ -48,6 +55,5 @@ class _SliverExampleState extends State<SliverExample> {
         )
       ],
     );
-
   }
 }

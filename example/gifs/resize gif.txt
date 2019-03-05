@@ -1,0 +1,1 @@
+gifsicle.exe --resize-width 360 --resize-colors 256 -O3 -i reorderable_column2.gif > reorderable_column2_small.gif

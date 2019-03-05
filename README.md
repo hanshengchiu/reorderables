@@ -5,9 +5,8 @@
 [![Buy Me A Coffee](https://img.shields.io/badge/Donate-Buy%20Me%20A%20Coffee-yellow.svg)](https://www.buymeacoffee.com/q5gkeA4t2)
 [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=2L56VGH228QJE)
 
-Various reorderable, a.k.a. drag and drop, Flutter widgets, including reorderable table, row, column, and wrap, that handle
-reordering the children within the widget. Parent widget only need to provide a function
-that is invoked with the old and new indexes of child being reordered.
+Various reorderable, a.k.a. drag and drop, Flutter widgets, including reorderable table, row, column, wrap, and sliver list, that make their children draggable and 
+reorder them within the widget. Parent widget only need to provide an `onReorder` function that is invoked with the old and new indexes of child being reordered.
 
 ## Usage
 To use this [package](https://pub.dartlang.org/packages/reorderables), add `reorderables` as a [dependency in your pubspec.yaml file](https://flutter.io/platform-plugins/).
@@ -21,15 +20,79 @@ import 'package:reorderables/reorderables.dart';
 ```
 ## Examples
 
-This package includes ReorderableTable, ReorderableWrap, ReorderableRow, and ReorderableColumn, which are reorderable versions of Flutter's Table, Wrap, Row, and Column respectively.
+This package includes ReorderableSliverList, ReorderableTable, ReorderableWrap, ReorderableRow, and ReorderableColumn, which are reorderable versions of Flutter's SliverList, Table, Wrap, Row, and Column respectively.
 
 <p>
+<img src="https://github.com/hanshengchiu/reorderables/blob/master/example/gifs/reorderable_sliver_small.gif?raw=true" width="180" title="ReorderableSliverList">
 <img src="https://github.com/hanshengchiu/reorderables/blob/master/example/gifs/reorderable_table_small.gif?raw=true" width="180" title="ReorderableTable">
 <img src="https://github.com/hanshengchiu/reorderables/blob/master/example/gifs/reorderable_wrap_small.gif?raw=true" width="180" title="ReorderableWrap">
 <img src="https://github.com/hanshengchiu/reorderables/blob/master/example/gifs/reorderable_column1_small.gif?raw=true" width="180" title="ReorderableColumn #1">
 <img src="https://github.com/hanshengchiu/reorderables/blob/master/example/gifs/reorderable_column2_small.gif?raw=true" width="180" title="ReorderableColumn #2">
 <img src="https://github.com/hanshengchiu/reorderables/blob/master/example/gifs/reorderable_row_small.gif?raw=true" width="180" title="ReorderableRow">
 </p>
+
+### ReorderableSliverList
+
+ReorderableSliverList behaves exactly like SliverList, but its children are draggable.
+
+To make a SliverList reorderable, replace it with ReorderableSliverList and replace SliverChildListDelegate/SliverChildBuilderDelegate with ReorderableSliverChildListDelegate/ReorderableSliverChildBuilderDelegate.
+
+``` dart
+class _SliverExampleState extends State<SliverExample> {
+  List<Widget> _rows;
+
+  @override
+  void initState() {
+    super.initState();
+    _rows = List<Widget>.generate(50,
+        (int index) => Text('This is sliver child $index', key: ValueKey(index), textScaleFactor: 2)
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    void _onReorder(int oldIndex, int newIndex) {
+      setState(() {
+        Widget row = _rows.removeAt(oldIndex);
+        _rows.insert(newIndex, row);
+      });
+    }
+    ScrollController _scrollController = PrimaryScrollController.of(context) ?? ScrollController();
+
+    return CustomScrollView(
+      // a ScrollController must be included in CustomScrollView, otherwise
+      // ReorderableSliverList wouldn't work
+      controller: _scrollController,
+      slivers: <Widget>[
+        SliverAppBar(
+          expandedHeight: 210.0,
+          flexibleSpace: FlexibleSpaceBar(
+            title: Text('ReorderableSliverList'),
+            background: Image.network(
+              'https://upload.wikimedia.org/wikipedia/commons/thumb/6/68/Yushan'
+                '_main_east_peak%2BHuang_Chung_Yu%E9%BB%83%E4%B8%AD%E4%BD%91%2B'
+                '9030.png/640px-Yushan_main_east_peak%2BHuang_Chung_Yu%E9%BB%83'
+                '%E4%B8%AD%E4%BD%91%2B9030.png'),
+          ),
+        ),
+        ReorderableSliverList(
+          delegate: ReorderableSliverChildListDelegate(_rows),
+          // or use ReorderableSliverChildBuilderDelegate if needed
+//          delegate: ReorderableSliverChildBuilderDelegate(
+//            (BuildContext context, int index) => _rows[index],
+//            childCount: _rows.length
+//          ),
+          onReorder: _onReorder,
+        )
+      ],
+    );
+  }
+}
+```
+
+#### ReorderableSliverList Demo
+
+<img src="https://github.com/hanshengchiu/reorderables/blob/master/example/gifs/reorderable_sliver_small.gif?raw=true" width="360" title="ReorderableSliverList">
 
 ### ReorderableTable
 

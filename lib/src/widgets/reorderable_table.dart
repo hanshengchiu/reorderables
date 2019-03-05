@@ -159,8 +159,16 @@ class ReorderableTable extends StatelessWidget {
   /// The text baseline to use when aligning rows using [TableCellVerticalAlignment.baseline].
   final TextBaseline textBaseline;
 
+  /// Non-reorderable widget at top of the table. Cells in [header] also affects
+  /// alignment of columns.
   final Widget header;
+
+  /// Non-reorderable widget at top of the table. Cells in [footer] also affects
+  /// alignment of columns.
   final Widget footer;
+
+  /// Called when a child is dropped into a new position to shuffle the
+  /// children.
   final ReorderCallback onReorder;
   final DecorateDraggableFeedback decorateDraggableFeedback;
 
