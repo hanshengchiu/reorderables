@@ -324,6 +324,8 @@ See exmaple/lib/row_example.dart
 
 ## Support
 
+If you need consulting services, you can reach out to me by sending me message on LinkedIn [![Hansheng](https://img.shields.io/badge/Consult%20Me-E68700.svg)](https://www.linkedin.com/in/hschiu/) 
+
 If you like my work, you can support me by buying me a coffee or donate me via PayPal.
 Your support is very much appreciated. :)
 
