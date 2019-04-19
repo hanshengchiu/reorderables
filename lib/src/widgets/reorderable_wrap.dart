@@ -47,6 +47,7 @@ class ReorderableWrap extends StatefulWidget {
     this.padding,
     this.buildItemsContainer,
     this.buildDraggableFeedback,
+    this.needsLongPressDraggable = true,
     this.alignment = WrapAlignment.start,
     this.spacing = 0.0,
     this.runAlignment = WrapAlignment.start,
@@ -59,8 +60,10 @@ class ReorderableWrap extends StatefulWidget {
   })  : assert(direction != null),
         assert(onReorder != null),
         assert(children != null),
-        assert(children.every((Widget w) => w.key != null),
-            'All children of this widget must have a key.',),
+        assert(
+          children.every((Widget w) => w.key != null),
+          'All children of this widget must have a key.',
+        ),
         super(key: key);
 
   /// A non-reorderable header widget to show before the list.
@@ -90,6 +93,10 @@ class ReorderableWrap extends StatefulWidget {
 
   final BuildItemsContainer buildItemsContainer;
   final BuildDraggableFeedback buildDraggableFeedback;
+
+  /// The flag of whether needs long press to trigger dragging mode.
+  /// true means it needs long press and false means no need.
+  final bool needsLongPressDraggable;
 
   /// How the children within a run should be places in the main axis.
   ///
@@ -255,6 +262,7 @@ class _ReorderableWrapState extends State<ReorderableWrap> {
           padding: widget.padding,
           buildItemsContainer: widget.buildItemsContainer,
           buildDraggableFeedback: widget.buildDraggableFeedback,
+          needsLongPressDraggable: widget.needsLongPressDraggable,
           alignment: widget.alignment,
           spacing: widget.spacing,
           runAlignment: widget.runAlignment,
@@ -292,6 +300,7 @@ class _ReorderableWrapContent extends StatefulWidget {
     @required this.onReorder,
     @required this.buildItemsContainer,
     @required this.buildDraggableFeedback,
+    @required this.needsLongPressDraggable = true,
     @required this.alignment,
     @required this.spacing,
     @required this.runAlignment,
@@ -312,6 +321,7 @@ class _ReorderableWrapContent extends StatefulWidget {
   final ReorderCallback onReorder;
   final BuildItemsContainer buildItemsContainer;
   final BuildDraggableFeedback buildDraggableFeedback;
+  final bool needsLongPressDraggable;
 
   final WrapAlignment alignment;
   final double spacing;
@@ -744,56 +754,62 @@ class _ReorderableWrapContentState extends State<_ReorderableWrapContent>
 
       // We build the draggable inside of a layout builder so that we can
       // constrain the size of the feedback dragging widget.
-      Widget child = LongPressDraggable<Key>(
-        maxSimultaneousDrags: 1,
-//        axis: widget.direction,
-        data: toWrap.key,
-        ignoringFeedbackSemantics: false,
-//        feedback: Container(
-//          alignment: Alignment.topLeft,
-//          // These constraints will limit the cross axis of the drawn widget.
-//          constraints: constraints,
-//          child: Material(
-//            elevation: 6.0,
-//            child: IntrinsicWidth(child: toWrapWithSemantics),
-//          ),
-//        ),
-        feedback: feedbackBuilder,
-//        feedback: Transform(
-//          transform: new Matrix4.rotationZ(0),
-//          alignment: FractionalOffset.topLeft,
-//          child: Material(
-//            child: Card(child: ConstrainedBox(constraints: BoxConstraints.tightFor(width: 100), child: toWrapWithSemantics)),
-//            elevation: 6.0,
-//            color: Colors.transparent,
-//            borderRadius: BorderRadius.zero,
-//          ),
-//        ),
-        // Wrap toWrapWithSemantics with a widget that supports HitTestBehavior
-        // to make sure the whole toWrapWithSemantics responds to pointer events, i.e. dragging
-        child: MetaData(
-            child: toWrapWithSemantics,
-            behavior: HitTestBehavior
-                .opaque), //toWrapWithSemantics,//_dragging == toWrap.key ? const SizedBox() : toWrapWithSemantics,
-        childWhenDragging: IgnorePointer(
-            ignoring: true,
-            child: Opacity(
-                opacity: 0.2,
-                //child: toWrap,//Container(width: 0, height: 0, child: toWrap)
-                child: _makeAppearingWidget(
-                    toWrap))), //ConstrainedBox(constraints: contentConstraints),//SizedBox(),
-        dragAnchor: DragAnchor.child,
-        onDragStarted: onDragStarted,
-        // When the drag ends inside a DragTarget widget, the drag
-        // succeeds, and we reorder the widget into position appropriately.
-        onDragCompleted: onDragEnded,
-        // When the drag does not end inside a DragTarget widget, the
-        // drag fails, but we still reorder the widget to the last position it
-        // had been dragged to.
-        onDraggableCanceled: (Velocity velocity, Offset offset) {
-          onDragEnded();
-        },
-      );
+
+      Widget child = this.widget.needsLongPressDraggable
+          ? LongPressDraggable<Key>(
+              maxSimultaneousDrags: 1,
+              data: toWrap.key,
+              ignoringFeedbackSemantics: false,
+              feedback: feedbackBuilder,
+              // Wrap toWrapWithSemantics with a widget that supports HitTestBehavior
+              // to make sure the whole toWrapWithSemantics responds to pointer events, i.e. dragging
+              child: MetaData(
+                  child: toWrapWithSemantics,
+                  behavior: HitTestBehavior
+                      .opaque), //toWrapWithSemantics,//_dragging == toWrap.key ? const SizedBox() : toWrapWithSemantics,
+              childWhenDragging: IgnorePointer(
+                  ignoring: true,
+                  child: Opacity(
+                      opacity: 0.2,
+                      //child: toWrap,//Container(width: 0, height: 0, child: toWrap)
+                      child: _makeAppearingWidget(
+                          toWrap))), //ConstrainedBox(constraints: contentConstraints),//SizedBox(),
+              dragAnchor: DragAnchor.child,
+              onDragStarted: onDragStarted,
+              // When the drag ends inside a DragTarget widget, the drag
+              // succeeds, and we reorder the widget into position appropriately.
+              onDragCompleted: onDragEnded,
+              // When the drag does not end inside a DragTarget widget, the
+              // drag fails, but we still reorder the widget to the last position it
+              // had been dragged to.
+              onDraggableCanceled: (Velocity velocity, Offset offset) {
+                onDragEnded();
+              },
+            )
+          : Draggable<Key>(
+              maxSimultaneousDrags: 1,
+              data: toWrap.key,
+              ignoringFeedbackSemantics: false,
+              feedback: feedbackBuilder,
+              child: MetaData(
+                  child: toWrapWithSemantics, behavior: HitTestBehavior.opaque),
+              childWhenDragging: IgnorePointer(
+                ignoring: true,
+                child: Opacity(
+                  opacity: 0.2,
+                  child: _makeAppearingWidget(toWrap),
+                ),
+              ),
+              dragAnchor: DragAnchor.child,
+              onDragStarted: onDragStarted,
+              onDragCompleted: onDragEnded,
+              onDraggableCanceled: (
+                Velocity velocity,
+                Offset offset,
+              ) {
+                onDragEnded();
+              },
+            );
 
       // The target for dropping at the end of the list doesn't need to be
       // draggable.
