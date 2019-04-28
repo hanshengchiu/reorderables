@@ -423,11 +423,11 @@ class _ReorderableSliverListState extends State<ReorderableSliverList>
     _ghostController = AnimationController(value: 0, vsync: this, duration: _reorderAnimationDuration);
     _entranceController.addStatusListener(_onEntranceStatusChanged);
 
-    if (widget.delegate is ReorderableSliverChildBuilderDelegate) {
-      _childCount = (widget.delegate as ReorderableSliverChildBuilderDelegate).childCount;
-    } else if (widget.delegate is ReorderableSliverChildListDelegate) {
-      _childCount = (widget.delegate as ReorderableSliverChildListDelegate).children.length;
-    }
+//    if (widget.delegate is ReorderableSliverChildBuilderDelegate) {
+//      _childCount = (widget.delegate as ReorderableSliverChildBuilderDelegate).childCount;
+//    } else if (widget.delegate is ReorderableSliverChildListDelegate) {
+//      _childCount = (widget.delegate as ReorderableSliverChildListDelegate).children.length;
+//    }
   }
 
   @override
@@ -938,6 +938,12 @@ class _ReorderableSliverListState extends State<ReorderableSliverList>
   Widget build(BuildContext context) {
     assert(debugCheckHasMaterialLocalizations(context));
     assert(widget.delegate is _ReorderableSliverChildDelegateMixin);
+
+    if (widget.delegate is ReorderableSliverChildBuilderDelegate) {
+      _childCount = (widget.delegate as ReorderableSliverChildBuilderDelegate).childCount;
+    } else if (widget.delegate is ReorderableSliverChildListDelegate) {
+      _childCount = (widget.delegate as ReorderableSliverChildListDelegate).children.length;
+    }
 
     _ReorderableSliverChildDelegateMixin reorderableDelegate = widget.delegate as _ReorderableSliverChildDelegateMixin;
     reorderableDelegate.wrap = _wrap;

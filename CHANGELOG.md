@@ -1,3 +1,9 @@
+## [0.2.1] - 28 April 2019.
+
+* Bugfix: couldn't add/remove elements in ReorderableWrap.
+* Bugfix: added elements weren't draggable in ReorderableSliverList.
+* Merged pull request: flag to choose between long press draggable and the short one.
+
 ## [0.2.0] - 5 March 2019.
 
 * Added ReorderableSliverList, ReorderableSliverChildBuilderDelegate, and ReorderableSliverChildListDelegate.

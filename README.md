@@ -5,8 +5,13 @@
 [![Buy Me A Coffee](https://img.shields.io/badge/Donate-Buy%20Me%20A%20Coffee-yellow.svg)](https://www.buymeacoffee.com/q5gkeA4t2)
 [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=2L56VGH228QJE)
 
+
 Various reorderable, a.k.a. drag and drop, Flutter widgets, including reorderable table, row, column, wrap, and sliver list, that make their children draggable and 
 reorder them within the widget. Parent widget only need to provide an `onReorder` function that is invoked with the old and new indexes of child being reordered.
+
+
+#### *Thanks those who bought me cups of coffee. Really appreciated. I've been busy working on other projects and might not be able to resolve issues promptly. Sorry about that, but I'll try. Nevertheless, please feel free to make pull requests. Switching between Python and Dart sometimes confused me. ;)*
+
 
 ## Usage
 To use this [package](https://pub.dartlang.org/packages/reorderables), add `reorderables` as a [dependency in your pubspec.yaml file](https://flutter.io/platform-plugins/).

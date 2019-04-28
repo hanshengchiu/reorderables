@@ -429,10 +429,10 @@ class _ReorderableWrapContentState extends State<_ReorderableWrapContent>
     _entranceController.addStatusListener(_onEntranceStatusChanged);
     _childKeys = List.filled(widget.children.length, null);
     _childSizes = List.filled(widget.children.length, Size(0, 0));
-    _childIndexToDisplayIndex =
-        List.generate(widget.children.length, (int index) => index);
-    _childDisplayIndexToIndex =
-        List.generate(widget.children.length, (int index) => index);
+//    _childIndexToDisplayIndex =
+//        List.generate(widget.children.length, (int index) => index);
+//    _childDisplayIndexToIndex =
+//        List.generate(widget.children.length, (int index) => index);
     _wrapChildRunIndexes = List.filled(widget.children.length, -1);
     _childRunIndexes = List.filled(widget.children.length, -1);
     _nextChildRunIndexes = List.filled(widget.children.length, -1);
@@ -1081,8 +1081,24 @@ class _ReorderableWrapContentState extends State<_ReorderableWrapContent>
     assert(debugCheckHasMaterialLocalizations(context));
     // We use the layout builder to constrain the cross-axis size of dragging child widgets.
 //    return LayoutBuilder(builder: (BuildContext context, BoxConstraints constraints) {
+//    debugPrint('${DateTime.now().toString().substring(5, 22)} reorderable_wrap.dart(1084) $this.build: ');
+//    _childKeys = List.filled(widget.children.length, null);
+//    _childSizes = List.filled(widget.children.length, Size(0, 0));
+    List<E> _resizeListMember<E>(List<E> listVar, E initValue) {
+      if (listVar.length < widget.children.length) {
+        return listVar + List.filled(widget.children.length - listVar.length, initValue);
+      } else if (listVar.length > widget.children.length) {
+        return listVar.sublist(0, widget.children.length);
+      }
+      return listVar;
+    }
+    _childKeys = _resizeListMember(_childKeys, null);
+    _childSizes = _resizeListMember(_childSizes, Size(0, 0));
+
     _childDisplayIndexToIndex =
         List.generate(widget.children.length, (int index) => index);
+    _childIndexToDisplayIndex =
+      List.generate(widget.children.length, (int index) => index);
     if (_dragStartIndex >= 0 &&
         _currentDisplayIndex >= 0 &&
         _dragStartIndex != _currentDisplayIndex) {
@@ -1094,6 +1110,10 @@ class _ReorderableWrapContentState extends State<_ReorderableWrapContent>
       _childIndexToDisplayIndex[element] = index++;
     });
 
+    _wrapChildRunIndexes = _resizeListMember(_wrapChildRunIndexes, -1);
+    _childRunIndexes = _resizeListMember(_childRunIndexes, -1);
+    _nextChildRunIndexes = _resizeListMember(_nextChildRunIndexes, -1);
+    _wrapChildren = _resizeListMember(_wrapChildren, null);
 //    debugPrint('build called! _currentIndex:$_currentDisplayIndex _dragStartIndex:$_dragStartIndex '
 //      '_childIndexToDisplayIndex:$_childIndexToDisplayIndex _childDisplayIndexToIndex:$_childDisplayIndexToIndex _childRunIndexes:$_childRunIndexes _nextChildRunIndexes:$_nextChildRunIndexes');
 

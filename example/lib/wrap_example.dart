@@ -36,12 +36,44 @@ class _WrapExampleState extends State<WrapExample> {
       });
     }
 
-    return ReorderableWrap(
+    var wrap = ReorderableWrap(
       spacing: 8.0,
       runSpacing: 4.0,
       padding: const EdgeInsets.all(8),
       children: _tiles,
       onReorder: _onReorder
     );
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        wrap,
+        ButtonBar(
+          alignment: MainAxisAlignment.start,
+          children: <Widget>[
+            IconButton(
+              icon: Icon(Icons.add_circle),
+              color: Colors.deepOrange,
+              onPressed: () {
+                var newTile = Icon(Icons.filter_9_plus, key: ValueKey(_tiles.length+1), size: _iconSize);
+                setState(() {
+                  _tiles.add(newTile);
+                });
+              },
+            ),
+            IconButton(
+              icon: Icon(Icons.remove_circle),
+              color: Colors.teal,
+              onPressed: () {
+                setState(() {
+                  _tiles.removeAt(0);
+                });
+              },
+            ),
+          ],
+        ),
+      ],
+    );
+
   }
 }
