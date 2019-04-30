@@ -538,6 +538,9 @@ class _ReorderableSliverListState extends State<ReorderableSliverList>
 //    final double margin = widget.direction == Axis.horizontal ? _dropAreaSize.width : _dropAreaSize.height;
     final double margin = _dropAreaSize.height;
 
+    assert(_scrollController.positions.isNotEmpty, 'An attached scroll controller is needed. '
+      'You probably forgot to attach one to the parent scroll view that contains this reorderable list.');
+
     final double scrollOffset = _scrollController.offset;
     final double topOffset = max(
       _scrollController.position.minScrollExtent,

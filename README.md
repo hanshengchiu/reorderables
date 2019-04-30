@@ -41,6 +41,7 @@ This package includes ReorderableSliverList, ReorderableTable, ReorderableWrap, 
 ReorderableSliverList behaves exactly like SliverList, but its children are draggable.
 
 To make a SliverList reorderable, replace it with ReorderableSliverList and replace SliverChildListDelegate/SliverChildBuilderDelegate with ReorderableSliverChildListDelegate/ReorderableSliverChildBuilderDelegate.
+Do make sure that there's a ScrollController attached to the ScrollView that contains ReorderableSliverList, otherwise an error will be thrown when dragging list items.
 
 ``` dart
 class _SliverExampleState extends State<SliverExample> {
@@ -62,10 +63,12 @@ class _SliverExampleState extends State<SliverExample> {
         _rows.insert(newIndex, row);
       });
     }
+    // Make sure there is a scroll controller attached to the scroll view that contains ReorderableSliverList.
+    // Otherwise an error will be thrown.
     ScrollController _scrollController = PrimaryScrollController.of(context) ?? ScrollController();
 
     return CustomScrollView(
-      // a ScrollController must be included in CustomScrollView, otherwise
+      // A ScrollController must be included in CustomScrollView, otherwise
       // ReorderableSliverList wouldn't work
       controller: _scrollController,
       slivers: <Widget>[

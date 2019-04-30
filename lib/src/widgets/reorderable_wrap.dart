@@ -300,7 +300,7 @@ class _ReorderableWrapContent extends StatefulWidget {
     @required this.onReorder,
     @required this.buildItemsContainer,
     @required this.buildDraggableFeedback,
-    @required this.needsLongPressDraggable = true,
+    @required this.needsLongPressDraggable,
     @required this.alignment,
     @required this.spacing,
     @required this.runAlignment,

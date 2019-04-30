@@ -26,10 +26,12 @@ class _SliverExampleState extends State<SliverExample> {
         _rows.insert(newIndex, row);
       });
     }
+    // Make sure there is a scroll controller attached to the scroll view that contains ReorderableSliverList.
+    // Otherwise an error will be thrown.
     ScrollController _scrollController = PrimaryScrollController.of(context) ?? ScrollController();
 
     return CustomScrollView(
-      // a ScrollController must be included in CustomScrollView, otherwise
+      // A ScrollController must be included in CustomScrollView, otherwise
       // ReorderableSliverList wouldn't work
       controller: _scrollController,
       slivers: <Widget>[
