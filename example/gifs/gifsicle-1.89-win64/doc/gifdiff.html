@@ -1,0 +1,137 @@
+<!-- Creator     : groff version 1.22.2 -->
+<!-- CreationDate: Sat Jul 15 16:40:30 2017 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>GIFDIFF</title>
+
+</head>
+<body>
+
+<h1 align="center">GIFDIFF</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#BUGS">BUGS</a><br>
+<a href="#AUTHORS">AUTHORS</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">gifdiff &minus;
+compares GIF images</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>gifdiff</b>
+[options] GIF&minus;file&minus;1 GIF&minus;file&minus;2</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>gifdiff</b>
+compares two GIF files and determines if they appear
+identical. Differences that don&rsquo;t affect appearance
+(like colormap ordering or how much an animation is
+optimized) are not reported.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>gifdiff</b>
+prints details of any differences it finds. If the GIFs are
+the same, it prints nothing. It exits with status 0 if there
+were no differences, 1 if there were some differences, and 2
+if there was trouble.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>&minus;&minus;brief</b>,
+<b>&minus;q</b></p>
+
+<p style="margin-left:18%;">Report only whether the GIFs
+differ, not the details of the differences.</p>
+
+
+<p style="margin-left:11%;"><b>&minus;&minus;ignore&minus;redundancy</b>,
+<b>&minus;w</b></p>
+
+<p style="margin-left:18%;">Do not report differences in
+the numbers of redundant frames (frames which do not change
+the displayed image).</p>
+
+
+<p style="margin-left:11%;"><b>&minus;&minus;ignore&minus;background</b>,
+<b>&minus;B</b></p>
+
+<p style="margin-left:18%;">Do not report differences in
+background colors.</p>
+
+<p style="margin-left:11%;"><b>&minus;&minus;help</b></p>
+
+<p style="margin-left:18%;">Print usage information and
+exit.</p>
+
+
+<p style="margin-left:11%;"><b>&minus;&minus;version</b></p>
+
+<p style="margin-left:18%;">Print the version number and
+some quickie warranty information and exit.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>gifsicle</b>(1)</p>
+
+<h2>BUGS
+<a name="BUGS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Please email
+suggestions, additions, patches and bugs to
+ekohler@gmail.com.</p>
+
+<h2>AUTHORS
+<a name="AUTHORS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Eddie Kohler,
+ekohler@gmail.com <br>
+http://www.read.seas.harvard.edu/~kohler/</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">http://www.lcdf.org/gifsicle/
+<br>
+The <b>gifsicle</b> home page.</p>
+<hr>
+</body>
+</html>
