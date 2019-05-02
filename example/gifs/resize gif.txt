@@ -1,1 +1,1 @@
-gifsicle.exe --resize-width 360 --resize-colors 256 -O3 -i reorderable_column2.gif > reorderable_column2_small.gif
+gifsicle-1.89-win64\gifsicle.exe --resize-width 360 --resize-colors 256 -O3 -i nested_reorderable_wrap.gif > nested_reorderable_wrap_small.gif
