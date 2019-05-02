@@ -44,7 +44,7 @@ class _WrapExampleState extends State<WrapExample> {
       onReorder: _onReorder
     );
 
-    return Column(
+    var column = Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         wrap,
@@ -73,6 +73,10 @@ class _WrapExampleState extends State<WrapExample> {
           ],
         ),
       ],
+    );
+
+    return SingleChildScrollView(
+      child: column,
     );
 
   }

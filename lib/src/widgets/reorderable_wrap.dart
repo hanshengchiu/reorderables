@@ -441,8 +441,8 @@ class _ReorderableWrapContentState extends State<_ReorderableWrapContent>
 
   @override
   void didChangeDependencies() {
-    _scrollController =
-        PrimaryScrollController.of(context) ?? ScrollController();
+    _scrollController = PrimaryScrollController.of(context) ?? ScrollController();
+//    _scrollController = ScrollController();
     super.didChangeDependencies();
   }
 
@@ -754,7 +754,6 @@ class _ReorderableWrapContentState extends State<_ReorderableWrapContent>
 
       // We build the draggable inside of a layout builder so that we can
       // constrain the size of the feedback dragging widget.
-
       Widget child = this.widget.needsLongPressDraggable
           ? LongPressDraggable<Key>(
               maxSimultaneousDrags: 1,
@@ -763,17 +762,15 @@ class _ReorderableWrapContentState extends State<_ReorderableWrapContent>
               feedback: feedbackBuilder,
               // Wrap toWrapWithSemantics with a widget that supports HitTestBehavior
               // to make sure the whole toWrapWithSemantics responds to pointer events, i.e. dragging
-              child: MetaData(
-                  child: toWrapWithSemantics,
-                  behavior: HitTestBehavior
-                      .opaque), //toWrapWithSemantics,//_dragging == toWrap.key ? const SizedBox() : toWrapWithSemantics,
+              child: MetaData(child: toWrapWithSemantics, behavior: HitTestBehavior.opaque), //toWrapWithSemantics,//_dragging == toWrap.key ? const SizedBox() : toWrapWithSemantics,
               childWhenDragging: IgnorePointer(
                   ignoring: true,
                   child: Opacity(
-                      opacity: 0.2,
-                      //child: toWrap,//Container(width: 0, height: 0, child: toWrap)
-                      child: _makeAppearingWidget(
-                          toWrap))), //ConstrainedBox(constraints: contentConstraints),//SizedBox(),
+                    opacity: 0.2,
+                    //child: toWrap,//Container(width: 0, height: 0, child: toWrap)
+                    child: _makeAppearingWidget(toWrap)
+                  )
+              ), //ConstrainedBox(constraints: contentConstraints),//SizedBox(),
               dragAnchor: DragAnchor.child,
               onDragStarted: onDragStarted,
               // When the drag ends inside a DragTarget widget, the drag
