@@ -1,3 +1,9 @@
+## [0.2.5] - 3 May 2019.
+
+* Bugfix: ReorderableWrap supports nested wraps.
+* Improvement: children of ReorderableWrap don't have to have a key anymore.
+* Included nested ReorderableWrap example
+
 ## [0.2.1] - 28 April 2019.
 
 * Bugfix: couldn't add/remove elements in ReorderableWrap.

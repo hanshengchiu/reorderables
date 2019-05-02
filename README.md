@@ -10,7 +10,7 @@ Various reorderable, a.k.a. drag and drop, Flutter widgets, including reorderabl
 reorder them within the widget. Parent widget only need to provide an `onReorder` function that is invoked with the old and new indexes of child being reordered.
 
 
-#### *Thanks those who bought me cups of coffee. Really appreciated. I've been busy working on other projects and might not be able to resolve issues promptly. Sorry about that, but I'll try. Nevertheless, please feel free to make pull requests. Switching between Python and Dart sometimes confused me. ;)*
+#### *Thanks those who bought me cups of coffee. Really appreciated. I've been busy working on other projects and might not be able to resolve issues promptly. Sorry about that. Please reach out to me if you need commercial support. Nevertheless, do feel free to make pull requests. Switching between Python and Dart sometimes confused me. ;)*
 
 
 ## Usage
@@ -31,6 +31,7 @@ This package includes ReorderableSliverList, ReorderableTable, ReorderableWrap, 
 <img src="https://github.com/hanshengchiu/reorderables/blob/master/example/gifs/reorderable_sliver_small.gif?raw=true" width="180" title="ReorderableSliverList">
 <img src="https://github.com/hanshengchiu/reorderables/blob/master/example/gifs/reorderable_table_small.gif?raw=true" width="180" title="ReorderableTable">
 <img src="https://github.com/hanshengchiu/reorderables/blob/master/example/gifs/reorderable_wrap_small.gif?raw=true" width="180" title="ReorderableWrap">
+<img src="https://github.com/hanshengchiu/reorderables/blob/master/example/gifs/nested_reorderable_wrap_small.gif?raw=true" width="180" title="Nested ReorderableWrap">
 <img src="https://github.com/hanshengchiu/reorderables/blob/master/example/gifs/reorderable_column1_small.gif?raw=true" width="180" title="ReorderableColumn #1">
 <img src="https://github.com/hanshengchiu/reorderables/blob/master/example/gifs/reorderable_column2_small.gif?raw=true" width="180" title="ReorderableColumn #2">
 <img src="https://github.com/hanshengchiu/reorderables/blob/master/example/gifs/reorderable_row_small.gif?raw=true" width="180" title="ReorderableRow">
@@ -188,6 +189,7 @@ whereas cells in a row of a list view don't align with  other rows.
 ### ReorderableWrap
 
 This widget can also limit the minimum and maximum amount of children in each run, on top of the size-based policy in Wrap's algorithm. See API references for more details.
+*Since v0.2.5, children of ReorderableWrap don't need to have a key explicitly specified.
 
 ``` dart
 class _WrapExampleState extends State<WrapExample> {
@@ -198,15 +200,15 @@ class _WrapExampleState extends State<WrapExample> {
   void initState() {
     super.initState();
     _tiles = <Widget>[
-      Icon(Icons.filter_1, key: ValueKey(1), size: _iconSize),
-      Icon(Icons.filter_2, key: ValueKey(2), size: _iconSize),
-      Icon(Icons.filter_3, key: ValueKey(3), size: _iconSize),
-      Icon(Icons.filter_4, key: ValueKey(4), size: _iconSize),
-      Icon(Icons.filter_5, key: ValueKey(5), size: _iconSize),
-      Icon(Icons.filter_6, key: ValueKey(6), size: _iconSize),
-      Icon(Icons.filter_7, key: ValueKey(7), size: _iconSize),
-      Icon(Icons.filter_8, key: ValueKey(8), size: _iconSize),
-      Icon(Icons.filter_9, key: ValueKey(9), size: _iconSize),
+      Icon(Icons.filter_1, size: _iconSize),
+      Icon(Icons.filter_2, size: _iconSize),
+      Icon(Icons.filter_3, size: _iconSize),
+      Icon(Icons.filter_4, size: _iconSize),
+      Icon(Icons.filter_5, size: _iconSize),
+      Icon(Icons.filter_6, size: _iconSize),
+      Icon(Icons.filter_7, size: _iconSize),
+      Icon(Icons.filter_8, size: _iconSize),
+      Icon(Icons.filter_9, size: _iconSize),
     ];
   }
 
@@ -219,13 +221,53 @@ class _WrapExampleState extends State<WrapExample> {
       });
     }
 
-    return ReorderableWrap(
+    var wrap = ReorderableWrap(
       spacing: 8.0,
       runSpacing: 4.0,
       padding: const EdgeInsets.all(8),
       children: _tiles,
       onReorder: _onReorder
     );
+
+    var column = Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        wrap,
+        ButtonBar(
+          alignment: MainAxisAlignment.start,
+          children: <Widget>[
+            IconButton(
+              iconSize: 50,
+              icon: Icon(Icons.add_circle),
+              color: Colors.deepOrange,
+              padding: const EdgeInsets.all(0.0),
+              onPressed: () {
+                var newTile = Icon(Icons.filter_9_plus, size: _iconSize);
+                setState(() {
+                  _tiles.add(newTile);
+                });
+              },
+            ),
+            IconButton(
+              iconSize: 50,
+              icon: Icon(Icons.remove_circle),
+              color: Colors.teal,
+              padding: const EdgeInsets.all(0.0),
+              onPressed: () {
+                setState(() {
+                  _tiles.removeAt(0);
+                });
+              },
+            ),
+          ],
+        ),
+      ],
+    );
+
+    return SingleChildScrollView(
+      child: column,
+    );
+
   }
 }
 ```
@@ -233,6 +275,111 @@ class _WrapExampleState extends State<WrapExample> {
 #### ReorderableWrap Demo
 
 <img src="https://github.com/hanshengchiu/reorderables/blob/master/example/gifs/reorderable_wrap_small.gif?raw=true" width="360" title="ReorderableWrap">
+
+### Nested ReorderableWrap
+
+It is also possible to nest multiple levels of ReorderableWrap. See `example/lib/nested_wrap_example.dart` for complete example code.
+
+``` dart
+class _NestedWrapExampleState extends State<NestedWrapExample> {
+//  List<Widget> _tiles;
+  Color _color;
+  Color _colorBrighter;
+
+  @override
+  void initState() {
+    super.initState();
+    _color = widget.color ?? Colors.primaries[widget.depth % Colors.primaries.length];
+    _colorBrighter = Color.lerp(_color, Colors.white, 0.6);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    void _onReorder(int oldIndex, int newIndex) {
+      setState(() {
+        widget._tiles.insert(newIndex, widget._tiles.removeAt(oldIndex));
+      });
+    }
+
+    var wrap = ReorderableWrap(
+      spacing: 8.0,
+      runSpacing: 4.0,
+      padding: const EdgeInsets.all(8),
+      children: widget._tiles,
+      onReorder: _onReorder
+    );
+
+    var buttonBar = Container(
+      color: _colorBrighter,
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: <Widget>[
+          IconButton(
+            iconSize: 42,
+            icon: Icon(Icons.add_circle),
+            color: Colors.deepOrange,
+            padding: const EdgeInsets.all(0.0),
+            onPressed: () {
+              setState(() {
+                widget._tiles.add(
+                  Card(
+                    child: Container(
+                      child: Text('${widget.valuePrefix}${widget._tiles.length}', textScaleFactor: 3 / math.sqrt(widget.depth + 1)),
+                      padding: EdgeInsets.all((24.0 / math.sqrt(widget.depth + 1)).roundToDouble()),
+                    ),
+                    color: _colorBrighter,
+                    elevation: 3,
+                  )
+                );
+              });
+            },
+          ),
+          IconButton(
+            iconSize: 42,
+            icon: Icon(Icons.remove_circle),
+            color: Colors.teal,
+            padding: const EdgeInsets.all(0.0),
+            onPressed: () {
+              setState(() {
+                widget._tiles.removeAt(0);
+              });
+            },
+          ),
+          IconButton(
+            iconSize: 42,
+            icon: Icon(Icons.add_to_photos),
+            color: Colors.pink,
+            padding: const EdgeInsets.all(0.0),
+            onPressed: () {
+              setState(() {
+                widget._tiles.add(NestedWrapExample(depth: widget.depth + 1, valuePrefix: '${widget.valuePrefix}${widget._tiles.length}.',));
+              });
+            },
+          ),
+          Text('Level ${widget.depth} / ${widget.valuePrefix}'),
+        ],
+      )
+    );
+
+    var column = Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        buttonBar,
+        wrap,
+      ]
+    );
+
+    return SingleChildScrollView(
+      child: Container(child: column, color: _color,),
+    );
+  }
+}
+```
+
+#### Nested ReorderableWrap Demo
+
+<img src="https://github.com/hanshengchiu/reorderables/blob/master/example/gifs/nested_reorderable_wrap_small.gif?raw=true" width="360" title="Nested ReorderableWrap">
 
 ### ReorderableColumn example #1
 
@@ -324,7 +471,7 @@ class _ColumnExample2State extends State<ColumnExample2> {
 
 ### ReorderableRow
 
-See exmaple/lib/row_example.dart
+See `exmaple/lib/row_example.dart`
 
 #### ReorderableRow Demo
 
@@ -332,9 +479,9 @@ See exmaple/lib/row_example.dart
 
 ## Support
 
-If you need consulting services, you can reach out to me by sending me message on LinkedIn [![Hansheng](https://img.shields.io/badge/Consult%20Me-E68700.svg)](https://www.linkedin.com/in/hschiu/) 
+If you need `commercial support`, please reach out to me by sending me message on LinkedIn [![Hansheng](https://img.shields.io/badge/Consult%20Me-E68700.svg)](https://www.linkedin.com/in/hschiu/) 
 
-If you like my work, you can support me by buying me a coffee or donate me via PayPal.
+Otherwise, you can also support me by buying me a coffee or donate me via PayPal.
 Your support is very much appreciated. :)
 
 [![Buy Me A Coffee](https://img.shields.io/badge/Buy%20Me%20A%20Coffee-yellow.svg)](https://www.buymeacoffee.com/q5gkeA4t2) 

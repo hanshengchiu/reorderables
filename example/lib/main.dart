@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import './table_example.dart';
 import './wrap_example.dart';
+import './nested_wrap_example.dart';
 import './column_example1.dart';
 import './column_example2.dart';
 import './row_example.dart';
@@ -43,6 +44,7 @@ class _MyHomePageState extends State<MyHomePage> {
   final List<Widget> _examples = [
     TableExample(),
     WrapExample(),
+    NestedWrapExample(),
     ColumnExample1(),
     ColumnExample2(),
     RowExample(),
@@ -70,6 +72,10 @@ class _MyHomePageState extends State<MyHomePage> {
           BottomNavigationBarItem(
             icon: Icon(Icons.apps, color: _bottomNavigationColor),
             title: Text('ReroderableWrap', maxLines: 2, style: TextStyle(color: _bottomNavigationColor)),
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.view_quilt, color: _bottomNavigationColor),
+            title: Text('Nested ReroderableWrap', maxLines: 3, style: TextStyle(color: _bottomNavigationColor)),
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.more_vert, color: _bottomNavigationColor),

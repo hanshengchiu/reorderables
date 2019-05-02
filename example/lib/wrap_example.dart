@@ -15,15 +15,15 @@ class _WrapExampleState extends State<WrapExample> {
   void initState() {
     super.initState();
     _tiles = <Widget>[
-      Icon(Icons.filter_1, key: ValueKey(1), size: _iconSize),
-      Icon(Icons.filter_2, key: ValueKey(2), size: _iconSize),
-      Icon(Icons.filter_3, key: ValueKey(3), size: _iconSize),
-      Icon(Icons.filter_4, key: ValueKey(4), size: _iconSize),
-      Icon(Icons.filter_5, key: ValueKey(5), size: _iconSize),
-      Icon(Icons.filter_6, key: ValueKey(6), size: _iconSize),
-      Icon(Icons.filter_7, key: ValueKey(7), size: _iconSize),
-      Icon(Icons.filter_8, key: ValueKey(8), size: _iconSize),
-      Icon(Icons.filter_9, key: ValueKey(9), size: _iconSize),
+      Icon(Icons.filter_1, size: _iconSize),
+      Icon(Icons.filter_2, size: _iconSize),
+      Icon(Icons.filter_3, size: _iconSize),
+      Icon(Icons.filter_4, size: _iconSize),
+      Icon(Icons.filter_5, size: _iconSize),
+      Icon(Icons.filter_6, size: _iconSize),
+      Icon(Icons.filter_7, size: _iconSize),
+      Icon(Icons.filter_8, size: _iconSize),
+      Icon(Icons.filter_9, size: _iconSize),
     ];
   }
 
@@ -52,18 +52,22 @@ class _WrapExampleState extends State<WrapExample> {
           alignment: MainAxisAlignment.start,
           children: <Widget>[
             IconButton(
+              iconSize: 50,
               icon: Icon(Icons.add_circle),
               color: Colors.deepOrange,
+              padding: const EdgeInsets.all(0.0),
               onPressed: () {
-                var newTile = Icon(Icons.filter_9_plus, key: ValueKey(_tiles.length+1), size: _iconSize);
+                var newTile = Icon(Icons.filter_9_plus, size: _iconSize);
                 setState(() {
                   _tiles.add(newTile);
                 });
               },
             ),
             IconButton(
+              iconSize: 50,
               icon: Icon(Icons.remove_circle),
               color: Colors.teal,
+              padding: const EdgeInsets.all(0.0),
               onPressed: () {
                 setState(() {
                   _tiles.removeAt(0);

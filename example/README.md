@@ -18,25 +18,29 @@ samples, guidance on mobile development, and a full API reference.
 ## Demo
 
 ### ReorderableTable
-
+`lib/table_example.dart`
 <img src="https://github.com/hanshengchiu/reorderables/blob/master/example/gifs/reorderable_table_small.gif?raw=true" width="360" title="ReorderableTable">
 
 ### ReorderableWrap
-
+`lib/wrap_example.dart`
 <img src="https://github.com/hanshengchiu/reorderables/blob/master/example/gifs/reorderable_wrap_small.gif?raw=true" width="360" title="ReorderableWrap">
 
-### ReorderableColumn
+### Nested ReorderableWrap
+`lib/nested_wrap_example.dart`
+<img src="https://github.com/hanshengchiu/reorderables/blob/master/example/gifs/nested_reorderable_wrap_small.gif?raw=true" width="360" title="Nested ReorderableWrap">
 
+### ReorderableColumn
+`lib/column_example1.dart` and `lib/column_example2.dart`
 <p>
 <img src="https://github.com/hanshengchiu/reorderables/blob/master/example/gifs/reorderable_column1_small.gif?raw=true" width="360" title="ReorderableColumn">
 <img src="https://github.com/hanshengchiu/reorderables/blob/master/example/gifs/reorderable_column2_small.gif?raw=true" width="360" title="ReorderableColumn">
 </p>
 
 ### ReorderableRow
-
+`lib/row_example.dart`
 <img src="https://github.com/hanshengchiu/reorderables/blob/master/example/gifs/reorderable_row_small.gif?raw=true" width="360" title="ReorderableRow">
 
 ### ReorderableSliverList
-
+`lib/sliver_example.dart`
 <img src="https://github.com/hanshengchiu/reorderables/blob/master/example/gifs/reorderable_sliver_small.gif?raw=true" width="360" title="ReorderableSliverList">
 
