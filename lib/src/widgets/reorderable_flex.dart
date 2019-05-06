@@ -11,7 +11,6 @@ import 'package:flutter/rendering.dart';
 
 //import 'debug.dart';
 //import 'material.dart';
-//import 'material_localizations.dart';
 
 import './passthrough_overlay.dart';
 import './typedefs.dart';
@@ -197,6 +196,7 @@ class _ReorderableFlexContentState extends State<_ReorderableFlexContent>
 
   // Controls scrolls and measures scroll progress.
   ScrollController _scrollController;
+  ScrollPosition _attachedScrollPosition;
 
   // This controls the entrance of the dragging widget into a new place.
   AnimationController _entranceController;
@@ -262,13 +262,33 @@ class _ReorderableFlexContentState extends State<_ReorderableFlexContent>
 
   @override
   void didChangeDependencies() {
-    _scrollController =
-        PrimaryScrollController.of(context) ?? ScrollController();
+    if (_scrollController != null && _attachedScrollPosition != null) {
+      _scrollController.detach(_attachedScrollPosition);
+      _attachedScrollPosition = null;
+    }
+
+    _scrollController = PrimaryScrollController.of(context) ?? ScrollController();
+
+    if (_scrollController.positions.isEmpty) {
+      ScrollableState scrollableState = Scrollable.of(context);
+      _attachedScrollPosition = scrollableState?.position;
+    } else {
+      _attachedScrollPosition = null;
+    }
+
+    if (_attachedScrollPosition != null) {
+      _scrollController.attach(_attachedScrollPosition);
+    }
+
     super.didChangeDependencies();
   }
 
   @override
   void dispose() {
+    if (_scrollController != null && _attachedScrollPosition != null) {
+      _scrollController.detach(_attachedScrollPosition);
+      _attachedScrollPosition = null;
+    }
     _entranceController.dispose();
     _ghostController.dispose();
     super.dispose();

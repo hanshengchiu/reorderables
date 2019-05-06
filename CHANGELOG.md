@@ -1,3 +1,7 @@
+## [0.2.6] - 6 May 2019.
+
+* Bugfix: "width is null"
+
 ## [0.2.5] - 3 May 2019.
 
 * Bugfix: ReorderableWrap supports nested wraps.

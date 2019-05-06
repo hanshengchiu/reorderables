@@ -11,7 +11,6 @@ import 'package:flutter/rendering.dart';
 
 //import 'debug.dart';
 //import 'material.dart';
-//import 'material_localizations.dart';
 
 import './passthrough_overlay.dart';
 import './typedefs.dart';
@@ -444,8 +443,7 @@ class _ReorderableWrapContentState extends State<_ReorderableWrapContent>
 
   @override
   void didChangeDependencies() {
-//    _scrollController = PrimaryScrollController.of(context) ?? ScrollController();
-    _scrollController = ScrollController();
+    _scrollController = PrimaryScrollController.of(context) ?? ScrollController();
     super.didChangeDependencies();
   }
 
