@@ -536,7 +536,17 @@ class _ReorderableSliverListState extends State<ReorderableSliverList>
   // Wraps children in Row or Column, so that the children flow in
   // the widget's scrollDirection.
   Widget _buildContainerForMainAxis({List<Widget> children}) {
-    return Column(mainAxisSize: MainAxisSize.min, children: children);
+    var column = Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: children
+    );
+    return column;
+//    return SingleChildScrollView(
+//      child:column,
+//      primary: false,
+//    );
+
 //    return Column(mainAxisSize: MainAxisSize.min, children: children, mainAxisAlignment: widget.mainAxisAlignment);
   }
 
@@ -929,6 +939,10 @@ class _ReorderableSliverListState extends State<ReorderableSliverList>
     return SliverList(
       delegate: widget.delegate
     );
+//    return SliverFixedExtentList(
+//      delegate: widget.delegate,
+//      itemExtent: 33
+//    );
 //    return SingleChildScrollView(
 //      key: _contentKey,
 //      scrollDirection: widget.scrollDirection,
@@ -938,15 +952,15 @@ class _ReorderableSliverListState extends State<ReorderableSliverList>
 //    );
   }
 
-  Widget defaultBuildItemsContainer(BuildContext context, Axis direction, List<Widget> children) {
-    switch (direction) {
-      case Axis.horizontal:
-        return Row(children: children);
-      case Axis.vertical:
-      default:
-        return Column(children: children);
-    }
-  }
+//  Widget defaultBuildItemsContainer(BuildContext context, Axis direction, List<Widget> children) {
+//    switch (direction) {
+//      case Axis.horizontal:
+//        return Row(children: children);
+//      case Axis.vertical:
+//      default:
+//        return Column(children: children);
+//    }
+//  }
 
   Widget defaultBuildDraggableFeedback(BuildContext context, BoxConstraints constraints, Widget child) {
     return Transform(
