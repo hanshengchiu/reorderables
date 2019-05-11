@@ -1,3 +1,8 @@
+## [0.2.7] - 11 May 2019.
+
+* Sliver's cross axis alignment defaults to start
+* Remove the use of global keys in reorderable sliver to allow nested sliver
+
 ## [0.2.6] - 6 May 2019.
 
 * Bugfix: "width is null"
