@@ -369,7 +369,7 @@ class _ReorderableWrapContentState extends State<_ReorderableWrapContent>
   // The member of widget.children currently being dragged.
   //
   // Null if no drag is underway.
-  int _dragging;
+//  int _dragging;
   Widget _draggingWidget;
 
   // The last computed size of the feedback widget being dragged.
@@ -584,7 +584,7 @@ class _ReorderableWrapContentState extends State<_ReorderableWrapContent>
     void onDragStarted() {
       setState(() {
         _draggingWidget = toWrap;
-        _dragging = index;//toWrap.key;
+//        _dragging = index;//toWrap.key;
         _dragStartIndex = index;
         _ghostDisplayIndex = displayIndex;
         _currentDisplayIndex = displayIndex;
@@ -635,7 +635,8 @@ class _ReorderableWrapContentState extends State<_ReorderableWrapContent>
       _ghostController.reverse(from: 0.1);
       _entranceController.reverse(from: 0);
 
-      _dragging = null;
+//      _dragging = null;
+      _dragStartIndex = -1;
     }
 
     void reorder(int startIndex, int endIndex) {
@@ -889,7 +890,7 @@ class _ReorderableWrapContentState extends State<_ReorderableWrapContent>
         }
 
         bool movingToAdjacentChild = nextDisplayIndex <= _currentDisplayIndex + 1 && nextDisplayIndex >= _currentDisplayIndex - 1;
-        bool willAccept = _dragging == toAccept &&
+        bool willAccept = _dragStartIndex == toAccept &&
 //          toAccept != toWrap.key &&
           toAccept != index &&
           (_entranceController.isCompleted || !movingToAdjacentChild) &&
