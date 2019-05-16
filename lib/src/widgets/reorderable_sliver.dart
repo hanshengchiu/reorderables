@@ -245,6 +245,7 @@ class ReorderableSliverList extends StatefulWidget {
     @required this.onReorder,
     this.buildItemsContainer,
     this.buildDraggableFeedback,
+    this.onNoReorder
   }): assert(onReorder != null && delegate != null),
       super(key: key);
 
@@ -263,6 +264,7 @@ class ReorderableSliverList extends StatefulWidget {
   /// Called when a child is dropped into a new position to shuffle the
   /// children.
   final ReorderCallback onReorder;
+  final NoReorderCallback onNoReorder;
 
   final BuildItemsContainer buildItemsContainer;
   final BuildDraggableFeedback buildDraggableFeedback;
@@ -578,6 +580,8 @@ class _ReorderableSliverListState extends State<ReorderableSliverList>
 //      debugPrint('startIndex:$startIndex endIndex:$endIndex');
       if (startIndex != endIndex)
         widget.onReorder(startIndex, endIndex);
+      else if (widget.onNoReorder != null)
+        widget.onNoReorder(startIndex);
       // Animates leftover space in the drop area closed.
       // TODO(djshuckerow): bring the animation in line with the Material
       // specifications.

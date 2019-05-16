@@ -1,3 +1,7 @@
+## [0.2.8] - 16 May 2019.
+
+* Added onNoReorder callback
+
 ## [0.2.7] - 11 May 2019.
 
 * Sliver's cross axis alignment defaults to start

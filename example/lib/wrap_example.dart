@@ -41,7 +41,11 @@ class _WrapExampleState extends State<WrapExample> {
       runSpacing: 4.0,
       padding: const EdgeInsets.all(8),
       children: _tiles,
-      onReorder: _onReorder
+      onReorder: _onReorder,
+      onNoReorder: (int index) {
+        //this callback is optional
+        debugPrint('${DateTime.now().toString().substring(5, 22)} reorder cancelled. index:$index');
+      },
     );
 
     var column = Column(

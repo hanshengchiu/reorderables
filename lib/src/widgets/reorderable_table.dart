@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import './tabluar_flex.dart';
 import './reorderable_flex.dart';
 import '../rendering/tabluar_flex.dart';
+import './typedefs.dart';
 
 class ReorderableTableRow extends TabluarRow {
   ReorderableTableRow({
@@ -68,6 +69,8 @@ class ReorderableTable extends StatelessWidget {
     this.footer,
     @required this.onReorder,
     this.decorateDraggableFeedback,
+    this.onNoReorder,
+    thi
   })  : assert(children != null),
         assert(defaultColumnWidth != null),
         assert(defaultVerticalAlignment != null),
@@ -173,6 +176,7 @@ class ReorderableTable extends StatelessWidget {
   /// Called when a child is dropped into a new position to shuffle the
   /// children.
   final ReorderCallback onReorder;
+  final NoReorderCallback onNoReorder;
   final DecorateDraggableFeedback decorateDraggableFeedback;
 
   @override
@@ -193,6 +197,7 @@ class ReorderableTable extends StatelessWidget {
         footer: footer,
         children: children,
         onReorder: onReorder,
+        onNoReorder: onNoReorder,
         direction: Axis.vertical,
         buildItemsContainer: (BuildContext containerContext, Axis direction,
             List<Widget> children) {

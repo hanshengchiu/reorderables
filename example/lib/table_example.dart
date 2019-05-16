@@ -72,6 +72,10 @@ class _TableExampleState extends State<TableExample> {
       header: headerRow,
       children: _itemRows,
       onReorder: _onReorder,
+      onNoReorder: (int index) {
+        //this callback is optional
+        debugPrint('${DateTime.now().toString().substring(5, 22)} reorder cancelled. index:$index');
+      },
     );
   }
 }

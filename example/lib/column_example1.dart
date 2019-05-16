@@ -34,6 +34,10 @@ class _ColumnExample1State extends State<ColumnExample1> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: _rows,
       onReorder: _onReorder,
+      onNoReorder: (int index) {
+        //this callback is optional
+        debugPrint('${DateTime.now().toString().substring(5, 22)} reorder cancelled. index:$index');
+      },
     );
   }
 }

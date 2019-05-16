@@ -52,6 +52,7 @@ class ReorderableFlex extends StatefulWidget {
     this.buildItemsContainer,
     this.buildDraggableFeedback,
     this.mainAxisAlignment = MainAxisAlignment.start,
+    this.onNoReorder,
   })  : assert(direction != null),
         assert(onReorder != null),
         assert(children != null),
@@ -84,6 +85,7 @@ class ReorderableFlex extends StatefulWidget {
   /// Called when a child is dropped into a new position to shuffle the
   /// children.
   final ReorderCallback onReorder;
+  final NoReorderCallback onNoReorder;
 
   final BuildItemsContainer buildItemsContainer;
   final BuildDraggableFeedback buildDraggableFeedback;
@@ -124,6 +126,7 @@ class _ReorderableFlexState extends State<ReorderableFlex> {
           direction: widget.direction,
           scrollDirection: widget.scrollDirection,
           onReorder: widget.onReorder,
+          onNoReorder: widget.onNoReorder,
           padding: widget.padding,
           buildItemsContainer: widget.buildItemsContainer,
           buildDraggableFeedback: widget.buildDraggableFeedback,
@@ -154,6 +157,7 @@ class _ReorderableFlexContent extends StatefulWidget {
     @required this.scrollDirection,
     @required this.padding,
     @required this.onReorder,
+    @required this.onNoReorder,
     @required this.buildItemsContainer,
     @required this.buildDraggableFeedback,
     @required this.mainAxisAlignment,
@@ -166,6 +170,7 @@ class _ReorderableFlexContent extends StatefulWidget {
   final Axis scrollDirection;
   final EdgeInsets padding;
   final ReorderCallback onReorder;
+  final NoReorderCallback onNoReorder;
   final BuildItemsContainer buildItemsContainer;
   final BuildDraggableFeedback buildDraggableFeedback;
 
@@ -406,7 +411,10 @@ class _ReorderableFlexContentState extends State<_ReorderableFlexContent>
     // Places the value from startIndex one space before the element at endIndex.
     void _reorder(int startIndex, int endIndex) {
 //      debugPrint('startIndex:$startIndex endIndex:$endIndex');
-      if (startIndex != endIndex) widget.onReorder(startIndex, endIndex);
+      if (startIndex != endIndex)
+        widget.onReorder(startIndex, endIndex);
+      else if (widget.onNoReorder != null)
+        widget.onNoReorder(startIndex);
       // Animates leftover space in the drop area closed.
       // TODO(djshuckerow): bring the animation in line with the Material
       // specifications.
@@ -894,13 +902,16 @@ class ReorderableRow extends ReorderableFlex {
       VerticalDirection verticalDirection = VerticalDirection.down,
       TextBaseline textBaseline,
       List<Widget> children = const <Widget>[],
-      BuildDraggableFeedback buildDraggableFeedback})
+      BuildDraggableFeedback buildDraggableFeedback,
+      NoReorderCallback onNoReorder,
+      })
       : super(
           key: key,
           header: header,
           footer: footer,
           children: children,
           onReorder: onReorder,
+          onNoReorder: onNoReorder,
           direction: Axis.horizontal,
           scrollDirection: Axis.horizontal,
           padding: padding,
@@ -960,13 +971,16 @@ class ReorderableColumn extends ReorderableFlex {
       VerticalDirection verticalDirection = VerticalDirection.down,
       TextBaseline textBaseline,
       List<Widget> children = const <Widget>[],
-      BuildDraggableFeedback buildDraggableFeedback})
+      BuildDraggableFeedback buildDraggableFeedback,
+      NoReorderCallback onNoReorder,
+      })
       : super(
           key: key,
           header: header,
           footer: footer,
           children: children,
           onReorder: onReorder,
+          onNoReorder: onNoReorder,
           direction: Axis.vertical,
           padding: padding,
           buildItemsContainer:

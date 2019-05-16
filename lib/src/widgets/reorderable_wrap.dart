@@ -57,6 +57,7 @@ class ReorderableWrap extends StatefulWidget {
     this.verticalDirection = VerticalDirection.down,
     this.minMainAxisCount,
     this.maxMainAxisCount,
+    this.onNoReorder,
   })  : assert(direction != null),
         assert(onReorder != null),
         assert(children != null),
@@ -90,6 +91,7 @@ class ReorderableWrap extends StatefulWidget {
   /// Called when a child is dropped into a new position to shuffle the
   /// children.
   final ReorderCallback onReorder;
+  final NoReorderCallback onNoReorder;
 
   final BuildItemsContainer buildItemsContainer;
   final BuildDraggableFeedback buildDraggableFeedback;
@@ -259,6 +261,7 @@ class _ReorderableWrapState extends State<ReorderableWrap> {
           direction: widget.direction,
           scrollDirection: widget.scrollDirection,
           onReorder: widget.onReorder,
+          onNoReorder: widget.onNoReorder,
           padding: widget.padding,
           buildItemsContainer: widget.buildItemsContainer,
           buildDraggableFeedback: widget.buildDraggableFeedback,
@@ -298,6 +301,7 @@ class _ReorderableWrapContent extends StatefulWidget {
     @required this.scrollDirection,
     @required this.padding,
     @required this.onReorder,
+    @required this.onNoReorder,
     @required this.buildItemsContainer,
     @required this.buildDraggableFeedback,
     @required this.needsLongPressDraggable,
@@ -319,6 +323,7 @@ class _ReorderableWrapContent extends StatefulWidget {
   final Axis scrollDirection;
   final EdgeInsets padding;
   final ReorderCallback onReorder;
+  final NoReorderCallback onNoReorder;
   final BuildItemsContainer buildItemsContainer;
   final BuildDraggableFeedback buildDraggableFeedback;
   final bool needsLongPressDraggable;
@@ -628,7 +633,10 @@ class _ReorderableWrapContentState extends State<_ReorderableWrapContent>
     // Places the value from startIndex one space before the element at endIndex.
     void _reorder(int startIndex, int endIndex) {
 //      debugPrint('_reorder: startIndex:$startIndex endIndex:$endIndex');
-      if (startIndex != endIndex) widget.onReorder(startIndex, endIndex);
+      if (startIndex != endIndex)
+        widget.onReorder(startIndex, endIndex);
+      else if (widget.onNoReorder != null)
+        widget.onNoReorder(startIndex);
       // Animates leftover space in the drop area closed.
       // TODO(djshuckerow): bring the animation in line with the Material
       // specifications.

@@ -43,7 +43,11 @@ class _NestedWrapExampleState extends State<NestedWrapExample> {
       runSpacing: 4.0,
       padding: const EdgeInsets.all(8),
       children: widget._tiles,
-      onReorder: _onReorder
+      onReorder: _onReorder,
+      onNoReorder: (int index) {
+        //this callback is optional
+        debugPrint('${DateTime.now().toString().substring(5, 22)} reorder cancelled. index:$index');
+      },
     );
 
     var buttonBar = Container(
