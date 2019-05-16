@@ -1,3 +1,7 @@
+## [0.2.9] - 16 May 2019.
+
+* Allows use of CupertinoApp
+
 ## [0.2.8] - 16 May 2019.
 
 * Added onNoReorder callback
