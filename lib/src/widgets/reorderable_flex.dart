@@ -456,36 +456,37 @@ class _ReorderableFlexContentState extends State<_ReorderableFlexContent>
       // before index+2, which is after the space at index+1.
       void moveAfter() => reorder(index, index + 2);
 
-      final MaterialLocalizations localizations =
-          MaterialLocalizations.of(context);
+      final MaterialLocalizations localizations = MaterialLocalizations.of(context);
 
-      // If the item can move to before its current position in the list.
-      if (index > 0) {
-        semanticsActions[CustomSemanticsAction(
+      if (localizations != null) {
+        // If the item can move to before its current position in the list.
+        if (index > 0) {
+          semanticsActions[CustomSemanticsAction(
             label: localizations.reorderItemToStart)] = moveToStart;
-        String reorderItemBefore = localizations.reorderItemUp;
-        if (widget.direction == Axis.horizontal) {
-          reorderItemBefore = Directionality.of(context) == TextDirection.ltr
+          String reorderItemBefore = localizations.reorderItemUp;
+          if (widget.direction == Axis.horizontal) {
+            reorderItemBefore = Directionality.of(context) == TextDirection.ltr
               ? localizations.reorderItemLeft
               : localizations.reorderItemRight;
-        }
-        semanticsActions[CustomSemanticsAction(label: reorderItemBefore)] =
+          }
+          semanticsActions[CustomSemanticsAction(label: reorderItemBefore)] =
             moveBefore;
-      }
+        }
 
-      // If the item can move to after its current position in the list.
-      if (index < widget.children.length - 1) {
-        String reorderItemAfter = localizations.reorderItemDown;
-        if (widget.direction == Axis.horizontal) {
-          reorderItemAfter = Directionality.of(context) == TextDirection.ltr
+        // If the item can move to after its current position in the list.
+        if (index < widget.children.length - 1) {
+          String reorderItemAfter = localizations.reorderItemDown;
+          if (widget.direction == Axis.horizontal) {
+            reorderItemAfter = Directionality.of(context) == TextDirection.ltr
               ? localizations.reorderItemRight
               : localizations.reorderItemLeft;
-        }
-        semanticsActions[CustomSemanticsAction(label: reorderItemAfter)] =
+          }
+          semanticsActions[CustomSemanticsAction(label: reorderItemAfter)] =
             moveAfter;
-        semanticsActions[
-                CustomSemanticsAction(label: localizations.reorderItemToEnd)] =
+          semanticsActions[
+          CustomSemanticsAction(label: localizations.reorderItemToEnd)] =
             moveToEnd;
+        }
       }
 
       // We pass toWrap with a GlobalKey into the Draggable so that when a list
@@ -763,7 +764,7 @@ class _ReorderableFlexContentState extends State<_ReorderableFlexContent>
 
   @override
   Widget build(BuildContext context) {
-    assert(debugCheckHasMaterialLocalizations(context));
+//    assert(debugCheckHasMaterialLocalizations(context));
     // We use the layout builder to constrain the cross-axis size of dragging child widgets.
 //    return LayoutBuilder(builder: (BuildContext context, BoxConstraints constraints) {
     final List<Widget> wrappedChildren = <Widget>[];
