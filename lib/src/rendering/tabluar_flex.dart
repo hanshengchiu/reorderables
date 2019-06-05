@@ -924,7 +924,7 @@ class RenderTabluarFlex extends RenderFlex {
       }
       paintOverflowIndicator(
           context, offset, Offset.zero & size, overflowChildRect,
-          overflowHints: debugOverflowHints);
+          overflowHints: List<DiagnosticsNode>.of([DiagnosticsNode.message(debugOverflowHints)]));
       return true;
     }());
   }
