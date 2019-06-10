@@ -73,7 +73,7 @@ class ReorderableSliverChildBuilderDelegate extends SliverChildBuilderDelegate w
       exception: exception,
       stack: stackTrace,
       library: 'reorderables widgets library',
-      context: 'building',
+      context: DiagnosticsNode.message('building'),
       informationCollector: null,
     );
     FlutterError.reportError(details);

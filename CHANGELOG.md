@@ -1,3 +1,7 @@
+## [0.2.10] - 10 June 2019.
+
+* Bugfix: DiagnosticsNode instead of String for newer version of Flutter
+
 ## [0.2.9] - 16 May 2019.
 
 * Allows use of CupertinoApp

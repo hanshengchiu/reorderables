@@ -894,7 +894,8 @@ class RenderTabluarFlex extends RenderFlex {
     assert(() {
       // Only set this if it's null to save work. It gets reset to null if the
       // _direction changes.
-      final String debugOverflowHints =
+      final List<DiagnosticsNode> debugOverflowHints = <DiagnosticsNode>[];
+      debugOverflowHints.add(ErrorDescription(
           'The overflowing $runtimeType has an orientation of $direction.\n'
           'The edge of the $runtimeType that is overflowing has been marked '
           'in the rendering with a yellow and black striped pattern. This is '
@@ -902,11 +903,14 @@ class RenderTabluarFlex extends RenderFlex {
           'Consider applying a flex factor (e.g. using an Expanded widget) to '
           'force the children of the $runtimeType to fit within the available '
           'space instead of being sized to their natural size.\n'
+      ));
+      debugOverflowHints.add(ErrorHint(
           'This is considered an error condition because it indicates that there '
           'is content that cannot be seen. If the content is legitimately bigger '
           'than the available space, consider clipping it with a ClipRect widget '
           'before putting it in the flex, or using a scrollable container rather '
-          'than a Flex, like a ListView.';
+          'than a Flex, like a ListView.'
+      ));
 
       // Simulate a child rect that overflows by the right amount. This child
       // rect is never used for drawing, just for determining the overflow
