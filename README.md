@@ -226,7 +226,15 @@ class _WrapExampleState extends State<WrapExample> {
       runSpacing: 4.0,
       padding: const EdgeInsets.all(8),
       children: _tiles,
-      onReorder: _onReorder
+      onReorder: _onReorder,
+       onNoReorder: (int index) {
+        //this callback is optional
+        debugPrint('${DateTime.now().toString().substring(5, 22)} reorder cancelled. index:$index');
+      },
+      onReorderStarted: (int index) {
+        //this callback is optional
+        debugPrint('${DateTime.now().toString().substring(5, 22)} reorder started: index:$index');
+      }
     );
 
     var column = Column(
@@ -476,6 +484,11 @@ See `exmaple/lib/row_example.dart`
 #### ReorderableRow Demo
 
 <img src="https://github.com/hanshengchiu/reorderables/blob/master/example/gifs/reorderable_row_small.gif?raw=true" width="360" title="ReorderableRow">
+
+## Issues
+
+The development of this package has been based on Flutter channel beta. Supporting master or dev channels is not intended as they change frequently. 
+Kindly make sure that you are at least on beta channel when submitting issues.
 
 ## Support
 

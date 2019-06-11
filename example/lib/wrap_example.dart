@@ -46,6 +46,10 @@ class _WrapExampleState extends State<WrapExample> {
         //this callback is optional
         debugPrint('${DateTime.now().toString().substring(5, 22)} reorder cancelled. index:$index');
       },
+      onReorderStarted: (int index) {
+        //this callback is optional
+        debugPrint('${DateTime.now().toString().substring(5, 22)} reorder started: index:$index');
+      }
     );
 
     var column = Column(

@@ -1,3 +1,11 @@
+## [0.2.11] - 11 June 2019.
+
+* ReorderableRow and ReorderableColumn:
+Set needsLongPressDraggable to false to use Draggable.
+Provide scrollController if use of external scroller controller is preferred.
+* Added onReorderStarted callback in ReorderableWrap
+* updated README
+
 ## [0.2.10] - 10 June 2019.
 
 * Bugfix: DiagnosticsNode instead of String for newer version of Flutter

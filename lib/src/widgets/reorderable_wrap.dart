@@ -35,7 +35,7 @@ import '../rendering/wrap.dart';
 ///  * [Wrap], which displays its children in multiple horizontal or vertical
 ///  runs.
 class ReorderableWrap extends StatefulWidget {
-  /// Creates a reorderable list.
+  /// Creates a reorderable wrap.
   ReorderableWrap({
     Key key,
     this.header,
@@ -58,6 +58,7 @@ class ReorderableWrap extends StatefulWidget {
     this.minMainAxisCount,
     this.maxMainAxisCount,
     this.onNoReorder,
+    this.onReorderStarted,
   })  : assert(direction != null),
         assert(onReorder != null),
         assert(children != null),
@@ -92,6 +93,9 @@ class ReorderableWrap extends StatefulWidget {
   /// children.
   final ReorderCallback onReorder;
   final NoReorderCallback onNoReorder;
+
+  /// Called when the draggable starts being dragged.
+  final ReorderStartedCallback onReorderStarted;
 
   final BuildItemsContainer buildItemsContainer;
   final BuildDraggableFeedback buildDraggableFeedback;
@@ -262,6 +266,7 @@ class _ReorderableWrapState extends State<ReorderableWrap> {
           scrollDirection: widget.scrollDirection,
           onReorder: widget.onReorder,
           onNoReorder: widget.onNoReorder,
+          onReorderStarted: widget.onReorderStarted,
           padding: widget.padding,
           buildItemsContainer: widget.buildItemsContainer,
           buildDraggableFeedback: widget.buildDraggableFeedback,
@@ -302,6 +307,7 @@ class _ReorderableWrapContent extends StatefulWidget {
     @required this.padding,
     @required this.onReorder,
     @required this.onNoReorder,
+    @required this.onReorderStarted,
     @required this.buildItemsContainer,
     @required this.buildDraggableFeedback,
     @required this.needsLongPressDraggable,
@@ -324,6 +330,7 @@ class _ReorderableWrapContent extends StatefulWidget {
   final EdgeInsets padding;
   final ReorderCallback onReorder;
   final NoReorderCallback onNoReorder;
+  final ReorderStartedCallback onReorderStarted;
   final BuildItemsContainer buildItemsContainer;
   final BuildDraggableFeedback buildDraggableFeedback;
   final bool needsLongPressDraggable;
@@ -627,6 +634,9 @@ class _ReorderableWrapContentState extends State<_ReorderableWrapContent>
         }
 
 //        debugPrint('onDragStarted: index:$index _ghostDisplayIndex:$_ghostDisplayIndex _currentDisplayIndex:$_currentDisplayIndex _dragStartIndex:$_dragStartIndex');
+        if (widget.onReorderStarted != null) {
+          widget.onReorderStarted(index);
+        }
       });
     }
 
@@ -801,9 +811,7 @@ class _ReorderableWrapContentState extends State<_ReorderableWrapContent>
               // When the drag does not end inside a DragTarget widget, the
               // drag fails, but we still reorder the widget to the last position it
               // had been dragged to.
-              onDraggableCanceled: (Velocity velocity, Offset offset) {
-                onDragEnded();
-              },
+              onDraggableCanceled: (Velocity velocity, Offset offset) => onDragEnded(),
             )
           : Draggable<int>(
               maxSimultaneousDrags: 1,
@@ -822,12 +830,7 @@ class _ReorderableWrapContentState extends State<_ReorderableWrapContent>
               dragAnchor: DragAnchor.child,
               onDragStarted: onDragStarted,
               onDragCompleted: onDragEnded,
-              onDraggableCanceled: (
-                Velocity velocity,
-                Offset offset,
-              ) {
-                onDragEnded();
-              },
+              onDraggableCanceled: (Velocity velocity, Offset offset) => onDragEnded(),
             );
 
       // The target for dropping at the end of the list doesn't need to be
