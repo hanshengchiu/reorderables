@@ -68,17 +68,17 @@ class ReorderableSliverChildBuilderDelegate extends SliverChildBuilderDelegate w
   bool shouldRebuild(covariant ReorderableSliverChildBuilderDelegate oldDelegate) => true;
 
   // Return an ErrorWidget for the given Exception
-  ErrorWidget _createErrorWidget(dynamic exception, StackTrace stackTrace) {
-    final FlutterErrorDetails details = FlutterErrorDetails(
-      exception: exception,
-      stack: stackTrace,
-      library: 'reorderables widgets library',
-      context: DiagnosticsNode.message('building'),
-      informationCollector: null,
-    );
-    FlutterError.reportError(details);
-    return ErrorWidget.builder(details);
-  }
+//  ErrorWidget _createErrorWidget(dynamic exception, StackTrace stackTrace) {
+//    final FlutterErrorDetails details = FlutterErrorDetails(
+//      exception: exception,
+//      stack: stackTrace,
+//      library: 'reorderables widgets library',
+//      context: DiagnosticsNode.message('building'),
+//      informationCollector: null,
+//    );
+//    FlutterError.reportError(details);
+//    return ErrorWidget.builder(details);
+//  }
 
   @override
   Widget build(BuildContext context, int index) {
@@ -86,12 +86,12 @@ class ReorderableSliverChildBuilderDelegate extends SliverChildBuilderDelegate w
     assert(builder != null);
     if (index < 0 || (childCount != null && index >= childCount))
       return null;
-    Widget child;
-    try {
-      child = builder(context, index);
-    } catch (exception, stackTrace) {
-      child = _createErrorWidget(exception, stackTrace);
-    }
+    Widget child = builder(context, index);
+//    try {
+//      child = builder(context, index);
+//    } catch (exception, stackTrace) {
+//      child = _createErrorWidget(exception, stackTrace);
+//    }
     if (child == null)
       return null;
     if (addRepaintBoundaries)

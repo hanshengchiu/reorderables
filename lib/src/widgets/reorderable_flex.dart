@@ -952,7 +952,7 @@ class ReorderableRow extends ReorderableFlex {
     BuildDraggableFeedback buildDraggableFeedback,
     NoReorderCallback onNoReorder,
     ScrollController scrollController,
-    bool needsLongPressDraggable,
+    bool needsLongPressDraggable = true,
       })
       : super(
           key: key,
@@ -1025,7 +1025,7 @@ class ReorderableColumn extends ReorderableFlex {
     BuildDraggableFeedback buildDraggableFeedback,
     NoReorderCallback onNoReorder,
     ScrollController scrollController,
-    bool needsLongPressDraggable,
+    bool needsLongPressDraggable = true,
       })
       : super(
           key: key,

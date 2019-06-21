@@ -891,46 +891,46 @@ class RenderTabluarFlex extends RenderFlex {
     context.pushClipRect(
         needsCompositing, offset, Offset.zero & size, defaultPaint);
 
-    assert(() {
-      // Only set this if it's null to save work. It gets reset to null if the
-      // _direction changes.
-      final List<DiagnosticsNode> debugOverflowHints = <DiagnosticsNode>[];
-      debugOverflowHints.add(ErrorDescription(
-          'The overflowing $runtimeType has an orientation of $direction.\n'
-          'The edge of the $runtimeType that is overflowing has been marked '
-          'in the rendering with a yellow and black striped pattern. This is '
-          'usually caused by the contents being too big for the $runtimeType. '
-          'Consider applying a flex factor (e.g. using an Expanded widget) to '
-          'force the children of the $runtimeType to fit within the available '
-          'space instead of being sized to their natural size.\n'
-      ));
-      debugOverflowHints.add(ErrorHint(
-          'This is considered an error condition because it indicates that there '
-          'is content that cannot be seen. If the content is legitimately bigger '
-          'than the available space, consider clipping it with a ClipRect widget '
-          'before putting it in the flex, or using a scrollable container rather '
-          'than a Flex, like a ListView.'
-      ));
-
-      // Simulate a child rect that overflows by the right amount. This child
-      // rect is never used for drawing, just for determining the overflow
-      // location and amount.
-      Rect overflowChildRect;
-      switch (direction) {
-        case Axis.horizontal:
-          overflowChildRect =
-              Rect.fromLTWH(0.0, 0.0, size.width + _overflow, 0.0);
-          break;
-        case Axis.vertical:
-          overflowChildRect =
-              Rect.fromLTWH(0.0, 0.0, 0.0, size.height + _overflow);
-          break;
-      }
-      paintOverflowIndicator(
-          context, offset, Offset.zero & size, overflowChildRect,
-          overflowHints: debugOverflowHints);
-      return true;
-    }());
+//    assert(() {
+//      // Only set this if it's null to save work. It gets reset to null if the
+//      // _direction changes.
+//      final List<DiagnosticsNode> debugOverflowHints = <DiagnosticsNode>[];
+//      debugOverflowHints.add(ErrorDescription(
+//          'The overflowing $runtimeType has an orientation of $direction.\n'
+//          'The edge of the $runtimeType that is overflowing has been marked '
+//          'in the rendering with a yellow and black striped pattern. This is '
+//          'usually caused by the contents being too big for the $runtimeType. '
+//          'Consider applying a flex factor (e.g. using an Expanded widget) to '
+//          'force the children of the $runtimeType to fit within the available '
+//          'space instead of being sized to their natural size.\n'
+//      ));
+//      debugOverflowHints.add(ErrorHint(
+//          'This is considered an error condition because it indicates that there '
+//          'is content that cannot be seen. If the content is legitimately bigger '
+//          'than the available space, consider clipping it with a ClipRect widget '
+//          'before putting it in the flex, or using a scrollable container rather '
+//          'than a Flex, like a ListView.'
+//      ));
+//
+//      // Simulate a child rect that overflows by the right amount. This child
+//      // rect is never used for drawing, just for determining the overflow
+//      // location and amount.
+//      Rect overflowChildRect;
+//      switch (direction) {
+//        case Axis.horizontal:
+//          overflowChildRect =
+//              Rect.fromLTWH(0.0, 0.0, size.width + _overflow, 0.0);
+//          break;
+//        case Axis.vertical:
+//          overflowChildRect =
+//              Rect.fromLTWH(0.0, 0.0, 0.0, size.height + _overflow);
+//          break;
+//      }
+//      paintOverflowIndicator(
+//          context, offset, Offset.zero & size, overflowChildRect,
+//          overflowHints: debugOverflowHints);
+//      return true;
+//    }());
   }
 
   @override

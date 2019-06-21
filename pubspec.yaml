@@ -1,11 +1,12 @@
 name: reorderables
 description: Reorderable table, row, column, wrap, sliver list that allow drag and drop of their children.
-version: 0.2.11
+version: 0.2.12
 author: Hansheng Chiu <hansheng.chiu@gmail.com>
 homepage: https://github.com/hanshengchiu/reorderables
 
 environment:
   sdk: ">=2.1.0 <3.0.0"
+#  flutter: ">=1.6.3"
 
 dependencies:
   flutter:

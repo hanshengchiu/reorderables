@@ -487,8 +487,8 @@ See `exmaple/lib/row_example.dart`
 
 ## Issues
 
-The development of this package has been based on Flutter channel beta. Supporting master or dev channels is not intended as they change frequently. 
-Kindly make sure that you are at least on beta channel when submitting issues.
+I've switched to Flutter channel stable from beta in order avoid compatibility issues. Supporting master or dev channels is not intended as they change frequently. 
+Kindly make sure that you are using stable channel when submitting issues.
 
 ## Support
 

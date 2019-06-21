@@ -1,3 +1,10 @@
+## [0.2.12] - 22 June 2019.
+* Removed dependency of FlutterErrorDetails and other ErrorXXX classes.
+* Bugfix: needsLongPressDraggable had no default value.
+
+## [0.2.11+1] - 11 June 2019.
+* Flutter version dependency in pubspec
+
 ## [0.2.11] - 11 June 2019.
 
 * ReorderableRow and ReorderableColumn:
