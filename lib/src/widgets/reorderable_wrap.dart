@@ -40,6 +40,7 @@ class ReorderableWrap extends StatefulWidget {
     Key key,
     this.header,
     this.footer,
+    this.controller,
     @required this.children,
     @required this.onReorder,
     this.direction = Axis.horizontal,
@@ -73,6 +74,11 @@ class ReorderableWrap extends StatefulWidget {
   /// If null, no header will appear before the list.
   final Widget header;
   final Widget footer;
+
+  /// A custom scroll [controller].
+  /// To control the initial scroll offset of the scroll view, provide a
+  /// [controller] with its [ScrollController.initialScrollOffset] property set.
+  final ScrollController controller;
 
   /// The widgets to display.
   final List<Widget> children;
@@ -280,6 +286,7 @@ class _ReorderableWrapState extends State<ReorderableWrap> {
           verticalDirection: widget.verticalDirection,
           minMainAxisCount: widget.minMainAxisCount,
           maxMainAxisCount: widget.maxMainAxisCount,
+          controller: widget.controller,
         );
       },
     );
@@ -301,6 +308,7 @@ class _ReorderableWrapContent extends StatefulWidget {
   const _ReorderableWrapContent({
     this.header,
     this.footer,
+    this.controller,
     @required this.children,
     @required this.direction,
     @required this.scrollDirection,
@@ -324,6 +332,7 @@ class _ReorderableWrapContent extends StatefulWidget {
 
   final Widget header;
   final Widget footer;
+  final ScrollController controller;
   final List<Widget> children;
   final Axis direction;
   final Axis scrollDirection;
@@ -455,7 +464,7 @@ class _ReorderableWrapContentState extends State<_ReorderableWrapContent>
 
   @override
   void didChangeDependencies() {
-    _scrollController = PrimaryScrollController.of(context) ?? ScrollController();
+    _scrollController = widget.controller ?? (PrimaryScrollController.of(context) ?? ScrollController());
     super.didChangeDependencies();
   }
 
