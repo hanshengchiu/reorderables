@@ -245,7 +245,7 @@ class ReorderableSliverList extends StatefulWidget {
       {Key key,
       @required this.delegate,
       @required this.onReorder,
-      this.itemPadding = 0.0,
+      this.itemPadding = const EdgeInsets.all(0.0),
       this.buildItemsContainer,
       this.buildDraggableFeedback,
       this.onNoReorder})
@@ -268,7 +268,7 @@ class ReorderableSliverList extends StatefulWidget {
   /// children.
   final ReorderCallback onReorder;
   final NoReorderCallback onNoReorder;
-  final double itemPadding;
+  final EdgeInsets itemPadding;
   final BuildItemsContainer buildItemsContainer;
   final BuildDraggableFeedback buildDraggableFeedback;
 
@@ -900,7 +900,7 @@ class _ReorderableSliverListState extends State<ReorderableSliverList>
         if (_dragStartIndex == -1) {
           return _buildContainerForMainAxis(
               children: [dragTarget],
-              padding: EdgeInsets.all(widget.itemPadding));
+              padding: widget.itemPadding);
         } else if (_currentIndex > _ghostIndex) {
           //the ghost is moving down, i.e. the tile below the ghost is moving up
 //          debugPrint('index:$index item moving up / ghost moving down');
@@ -908,17 +908,17 @@ class _ReorderableSliverListState extends State<ReorderableSliverList>
           if (shiftedIndex == _currentIndex && index == _ghostIndex) {
             return _buildContainerForMainAxis(
                 children: [ghostSpacing, dragTarget, entranceSpacing],
-                padding: EdgeInsets.all(widget.itemPadding));
+                padding: widget.itemPadding);
           } else if (shiftedIndex == _currentIndex) {
             return _buildContainerForMainAxis(
                 children: [dragTarget, entranceSpacing],
-                padding: EdgeInsets.all(widget.itemPadding));
+                padding: widget.itemPadding);
           } else if (index == _ghostIndex) {
             return _buildContainerForMainAxis(
                 children: shiftedIndex <= index
                     ? [dragTarget, ghostSpacing]
                     : [ghostSpacing, dragTarget],
-                padding: EdgeInsets.all(widget.itemPadding));
+                padding: widget.itemPadding);
           }
         } else if (_currentIndex < _ghostIndex) {
           //the ghost is moving up, i.e. the tile above the ghost is moving down
@@ -927,17 +927,17 @@ class _ReorderableSliverListState extends State<ReorderableSliverList>
           if (shiftedIndex == _currentIndex && index == _ghostIndex) {
             return _buildContainerForMainAxis(
                 children: [entranceSpacing, dragTarget, ghostSpacing],
-                padding: EdgeInsets.all(widget.itemPadding));
+                padding: widget.itemPadding);
           } else if (shiftedIndex == _currentIndex) {
             return _buildContainerForMainAxis(
                 children: [entranceSpacing, dragTarget],
-                padding: EdgeInsets.all(widget.itemPadding));
+                padding: widget.itemPadding);
           } else if (index == _ghostIndex) {
             return _buildContainerForMainAxis(
                 children: shiftedIndex >= index
                     ? [ghostSpacing, dragTarget]
                     : [dragTarget, ghostSpacing],
-                padding: EdgeInsets.all(widget.itemPadding));
+                padding: widget.itemPadding);
           }
         } else {
 //          debugPrint('index:$index using _entranceController: spacing on top:${!(_dragStartIndex < _currentIndex)}');
@@ -946,13 +946,13 @@ class _ReorderableSliverListState extends State<ReorderableSliverList>
               children: _dragStartIndex < _currentIndex
                   ? [dragTarget, entranceSpacing]
                   : [entranceSpacing, dragTarget],
-              padding: EdgeInsets.all(widget.itemPadding));
+              padding: widget.itemPadding);
         }
       }
 
       //we still wrap dragTarget with a container so that widget's depths are the same and it prevent's layout alignment issue
       return _buildContainerForMainAxis(
-          children: [dragTarget], padding: EdgeInsets.all(widget.itemPadding));
+          children: [dragTarget], padding: widget.itemPadding);
     });
   }
 
