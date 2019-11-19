@@ -1,11 +1,10 @@
 //import 'dart:math' as math;
 import 'package:flutter/material.dart';
-//import 'package:flutter/widgets.dart';
 
-import './tabluar_flex.dart';
 import './reorderable_flex.dart';
-import '../rendering/tabluar_flex.dart';
+import './tabluar_flex.dart';
 import './typedefs.dart';
+import '../rendering/tabluar_flex.dart';
 
 class ReorderableTableRow extends TabluarRow {
   ReorderableTableRow({
@@ -56,22 +55,22 @@ class ReorderableTable extends StatelessWidget {
   ///
   /// The [children], [defaultColumnWidth], and [defaultVerticalAlignment]
   /// arguments must not be null.
-  ReorderableTable({
-    Key key,
-    this.children = const <ReorderableTableRow>[],
-    this.columnWidths,
-    this.defaultColumnWidth = const FlexColumnWidth(1.0),
-    this.textDirection,
-    this.border,
-    this.defaultVerticalAlignment = TableCellVerticalAlignment.top,
-    this.textBaseline,
-    this.header,
-    this.footer,
-    @required this.onReorder,
-    this.decorateDraggableFeedback,
-    this.onNoReorder,
-    thi
-  })  : assert(children != null),
+  ReorderableTable(
+      {Key key,
+      this.children = const <ReorderableTableRow>[],
+      this.columnWidths,
+      this.defaultColumnWidth = const FlexColumnWidth(1.0),
+      this.textDirection,
+      this.border,
+      this.defaultVerticalAlignment = TableCellVerticalAlignment.top,
+      this.textBaseline,
+      this.header,
+      this.footer,
+      @required this.onReorder,
+      this.decorateDraggableFeedback,
+      this.onNoReorder,
+      thi})
+      : assert(children != null),
         assert(defaultColumnWidth != null),
         assert(defaultVerticalAlignment != null),
         assert(() {
