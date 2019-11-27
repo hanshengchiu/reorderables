@@ -17,6 +17,7 @@ import './typedefs.dart';
 import './wrap.dart';
 import './transitions.dart';
 import '../rendering/wrap.dart';
+import 'reorderable_mixin.dart';
 
 
 /// Reorderable (drag and drop) version of [Wrap], A widget that displays its
@@ -350,7 +351,7 @@ class _ReorderableWrapContent extends StatefulWidget {
 }
 
 class _ReorderableWrapContentState extends State<_ReorderableWrapContent>
-    with TickerProviderStateMixin<_ReorderableWrapContent> {
+    with TickerProviderStateMixin<_ReorderableWrapContent>, ReorderableMixin {
   // The extent along the [widget.scrollDirection] axis to allow a child to
   // drop into when the user reorders list children.
   //
@@ -747,15 +748,7 @@ class _ReorderableWrapContentState extends State<_ReorderableWrapContent>
     }
 
     Widget _makeAppearingWidget(Widget child) {
-      return SizeTransitionWithIntrinsicSize(
-        sizeFactor: _entranceController,
-        axis: widget.direction,
-        child: FadeTransition(
-          opacity: _entranceController,
-          child: child,
-//          child: Column(children: [child, Text('appearing $index')])
-        ), //Column(children: [spacing, Text('eeeeee $index')])
-      );
+      return makeAppearingWidget(child, _entranceController, null, widget.direction,);
     }
 
     Widget _makeDisappearingWidget(Widget child) {
