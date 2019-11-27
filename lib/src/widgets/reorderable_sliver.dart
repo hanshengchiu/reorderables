@@ -696,21 +696,10 @@ class _ReorderableSliverListState extends State<ReorderableSliverList>
     }
 
     Widget _makeAppearingWidget(Widget child) {
-      return makeAppearingWidget(
-        child, _entranceController, _draggingFeedbackSize, Axis.vertical,);
+      return makeAppearingWidget(child, _entranceController, _draggingFeedbackSize, Axis.vertical,);
     }
     Widget _makeDisappearingWidget(Widget child) {
-      var transition = SizeTransition(
-        sizeFactor: _ghostController,
-        axis: Axis.vertical,//widget.direction,
-        child: FadeTransition(
-          opacity: _ghostController,
-          child: child
-        ),
-      );
-
-      BoxConstraints contentSizeConstraints = BoxConstraints.loose(_draggingFeedbackSize);
-      return ConstrainedBox(constraints: contentSizeConstraints, child: transition);
+      return makeDisappearingWidget(child, _ghostController, _draggingFeedbackSize, Axis.vertical,);
     }
 
     Widget buildDragTarget(BuildContext context, List<int> acceptedCandidates, List<dynamic> rejectedCandidates) {

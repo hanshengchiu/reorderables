@@ -525,16 +525,8 @@ class _ReorderableFlexContentState extends State<_ReorderableFlexContent>
     }
 
     Widget _makeDisappearingWidget(Widget child) {
-      var transition = SizeTransition(
-        sizeFactor: _ghostController,
-        axis: widget.direction,
-        child: FadeTransition(opacity: _ghostController, child: child),
-      );
-
-      BoxConstraints contentSizeConstraints =
-          BoxConstraints.loose(_draggingFeedbackSize);
-      return ConstrainedBox(
-          constraints: contentSizeConstraints, child: transition);
+      return makeDisappearingWidget(
+        child, _ghostController, _draggingFeedbackSize, widget.direction,);
     }
 
     Widget buildDragTarget(BuildContext context, List<Key> acceptedCandidates,

@@ -30,4 +30,34 @@ mixin ReorderableMixin {
       return ConstrainedBox(constraints: contentSizeConstraints, child: transition);
     }
   }
+
+  @protected
+  Widget makeDisappearingWidget(
+      Widget child,
+      AnimationController ghostController,
+      Size draggingFeedbackSize,
+      Axis direction,
+      ) {
+    if (null == draggingFeedbackSize) {
+      return SizeTransitionWithIntrinsicSize(
+        sizeFactor: ghostController,
+        axis: direction,
+        child: FadeTransition(
+          opacity: ghostController,
+          child: child,
+        ),
+      );
+    } else {
+      var transition = SizeTransition(
+        sizeFactor: ghostController,
+        axis: direction,
+        child: FadeTransition(opacity: ghostController, child: child),
+      );
+
+      BoxConstraints contentSizeConstraints =
+      BoxConstraints.loose(draggingFeedbackSize);
+      return ConstrainedBox(
+          constraints: contentSizeConstraints, child: transition);
+    }
+  }
 }

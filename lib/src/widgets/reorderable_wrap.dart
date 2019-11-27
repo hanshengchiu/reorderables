@@ -752,15 +752,7 @@ class _ReorderableWrapContentState extends State<_ReorderableWrapContent>
     }
 
     Widget _makeDisappearingWidget(Widget child) {
-      return SizeTransitionWithIntrinsicSize(
-        sizeFactor: _ghostController,
-        axis: widget.direction,
-        child: FadeTransition(
-          opacity: _ghostController,
-          child: child,
-//          child: Column(children: [child, Text('disappearing $index')])
-        ),
-      );
+      return makeDisappearingWidget(child, _ghostController, null, widget.direction,);
     }
 
     //Widget buildDragTarget(BuildContext context, List<Key> acceptedCandidates, List<dynamic> rejectedCandidates) {
