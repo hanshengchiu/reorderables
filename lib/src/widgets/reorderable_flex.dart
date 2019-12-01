@@ -49,6 +49,7 @@ class ReorderableFlex extends StatefulWidget {
     this.buildDraggableFeedback,
     this.mainAxisAlignment = MainAxisAlignment.start,
     this.onNoReorder,
+    this.onReorderStarted,
     this.scrollController,
     this.needsLongPressDraggable = true,
   })  : assert(direction != null),
@@ -85,6 +86,7 @@ class ReorderableFlex extends StatefulWidget {
   /// children.
   final ReorderCallback onReorder;
   final NoReorderCallback onNoReorder;
+  final ReorderStartedCallback onReorderStarted;
 
   final BuildItemsContainer buildItemsContainer;
   final BuildDraggableFeedback buildDraggableFeedback;
@@ -128,6 +130,7 @@ class _ReorderableFlexState extends State<ReorderableFlex> {
           scrollDirection: widget.scrollDirection,
           onReorder: widget.onReorder,
           onNoReorder: widget.onNoReorder,
+          onReorderStarted: widget.onReorderStarted,
           padding: widget.padding,
           buildItemsContainer: widget.buildItemsContainer,
           buildDraggableFeedback: widget.buildDraggableFeedback,
@@ -161,6 +164,7 @@ class _ReorderableFlexContent extends StatefulWidget {
     @required this.padding,
     @required this.onReorder,
     @required this.onNoReorder,
+    @required this.onReorderStarted,
     @required this.buildItemsContainer,
     @required this.buildDraggableFeedback,
     @required this.mainAxisAlignment,
@@ -177,6 +181,7 @@ class _ReorderableFlexContent extends StatefulWidget {
   final EdgeInsets padding;
   final ReorderCallback onReorder;
   final NoReorderCallback onNoReorder;
+  final ReorderStartedCallback onReorderStarted;
   final BuildItemsContainer buildItemsContainer;
   final BuildDraggableFeedback buildDraggableFeedback;
 
@@ -412,6 +417,10 @@ class _ReorderableFlexContentState extends State<_ReorderableFlexContent>
         _currentIndex = index;
         _entranceController.value = 1.0;
         _draggingFeedbackSize = keyIndexGlobalKey.currentContext.size;
+
+        if (widget.onReorderStarted != null) {
+          widget.onReorderStarted(index);
+        }
       });
     }
 
@@ -929,6 +938,7 @@ class ReorderableRow extends ReorderableFlex {
     List<Widget> children = const <Widget>[],
     BuildDraggableFeedback buildDraggableFeedback,
     NoReorderCallback onNoReorder,
+    ReorderStartedCallback onReorderStarted,
     ScrollController scrollController,
     bool needsLongPressDraggable = true,
       })
@@ -939,6 +949,7 @@ class ReorderableRow extends ReorderableFlex {
           children: children,
           onReorder: onReorder,
           onNoReorder: onNoReorder,
+          onReorderStarted: onReorderStarted,
           direction: Axis.horizontal,
           scrollDirection: Axis.horizontal,
           padding: padding,
@@ -1002,6 +1013,7 @@ class ReorderableColumn extends ReorderableFlex {
     List<Widget> children = const <Widget>[],
     BuildDraggableFeedback buildDraggableFeedback,
     NoReorderCallback onNoReorder,
+    ReorderStartedCallback onReorderStarted,
     ScrollController scrollController,
     bool needsLongPressDraggable = true,
       })
@@ -1012,6 +1024,7 @@ class ReorderableColumn extends ReorderableFlex {
           children: children,
           onReorder: onReorder,
           onNoReorder: onNoReorder,
+          onReorderStarted: onReorderStarted,
           direction: Axis.vertical,
           padding: padding,
           buildItemsContainer:

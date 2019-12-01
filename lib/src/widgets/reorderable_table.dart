@@ -70,6 +70,7 @@ class ReorderableTable extends StatelessWidget {
     @required this.onReorder,
     this.decorateDraggableFeedback,
     this.onNoReorder,
+    this.onReorderStarted,
     thi
   })  : assert(children != null),
         assert(defaultColumnWidth != null),
@@ -177,6 +178,8 @@ class ReorderableTable extends StatelessWidget {
   /// children.
   final ReorderCallback onReorder;
   final NoReorderCallback onNoReorder;
+  final ReorderStartedCallback onReorderStarted;
+
   final DecorateDraggableFeedback decorateDraggableFeedback;
 
   @override
@@ -198,6 +201,7 @@ class ReorderableTable extends StatelessWidget {
         children: children,
         onReorder: onReorder,
         onNoReorder: onNoReorder,
+        onReorderStarted: onReorderStarted,
         direction: Axis.vertical,
         buildItemsContainer: (BuildContext containerContext, Axis direction,
             List<Widget> children) {

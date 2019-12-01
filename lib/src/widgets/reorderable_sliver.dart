@@ -246,7 +246,8 @@ class ReorderableSliverList extends StatefulWidget {
     @required this.onReorder,
     this.buildItemsContainer,
     this.buildDraggableFeedback,
-    this.onNoReorder
+    this.onNoReorder,
+    this.onReorderStarted,
   }): assert(onReorder != null && delegate != null),
       super(key: key);
 
@@ -266,6 +267,7 @@ class ReorderableSliverList extends StatefulWidget {
   /// children.
   final ReorderCallback onReorder;
   final NoReorderCallback onNoReorder;
+  final ReorderStartedCallback onReorderStarted;
 
   final BuildItemsContainer buildItemsContainer;
   final BuildDraggableFeedback buildDraggableFeedback;
@@ -573,6 +575,10 @@ class _ReorderableSliverListState extends State<ReorderableSliverList>
         _entranceController.value = 1.0;
         _draggingFeedbackSize = draggableContext.size;//keyIndexGlobalKey.currentContext.size;
 //        _draggingContext = draggableContext;
+
+        if (widget.onReorderStarted != null) {
+          widget.onReorderStarted(index);
+        }
       });
     }
 
