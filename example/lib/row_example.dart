@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import 'package:reorderables/reorderables.dart';
 
 class RowExample extends StatefulWidget {
@@ -15,8 +14,12 @@ class _RowExampleState extends State<RowExample> {
     super.initState();
     _columns = <Widget>[
       Image.asset('assets/river1.jpg', key: ValueKey('river1.jpg')),
-      Image.asset('assets/river2.jpg', key: ValueKey('river2.jpg')),
-      Image.asset('assets/river3.jpg', key: ValueKey('river3.jpg')),
+      SizedBox(
+        width: 400,
+        key: ValueKey('river2.jpg'),
+        child: Image.asset('assets/river2.jpg'),
+      ),
+//      Image.asset('assets/river3.jpg', key: ValueKey('river3.jpg')),
     ];
   }
 
