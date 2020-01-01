@@ -17,6 +17,7 @@ import 'package:flutter/rendering.dart';
 //import 'material.dart';
 import './basic.dart';
 import './typedefs.dart';
+import 'reorderable_mixin.dart';
 
 int _kDefaultSemanticIndexCallback(Widget _, int localIndex) => localIndex;
 
@@ -274,7 +275,7 @@ class ReorderableSliverList extends StatefulWidget {
 }
 
 class _ReorderableSliverListState extends State<ReorderableSliverList>
-  with TickerProviderStateMixin<ReorderableSliverList>
+  with TickerProviderStateMixin<ReorderableSliverList>, ReorderableMixin
 {
 
   // The extent along the [widget.scrollDirection] axis to allow a child to
@@ -695,30 +696,10 @@ class _ReorderableSliverListState extends State<ReorderableSliverList>
     }
 
     Widget _makeAppearingWidget(Widget child) {
-      var transition = SizeTransition(
-        sizeFactor: _entranceController,
-        axis: Axis.vertical,//widget.direction,
-        child: FadeTransition(
-          opacity: _entranceController,
-          child: child
-        ),//Column(children: [spacing, Text('eeeeee $index')])
-      );
-
-      BoxConstraints contentSizeConstraints = BoxConstraints.loose(_draggingFeedbackSize);
-      return ConstrainedBox(constraints: contentSizeConstraints, child: transition);
+      return makeAppearingWidget(child, _entranceController, _draggingFeedbackSize, Axis.vertical,);
     }
     Widget _makeDisappearingWidget(Widget child) {
-      var transition = SizeTransition(
-        sizeFactor: _ghostController,
-        axis: Axis.vertical,//widget.direction,
-        child: FadeTransition(
-          opacity: _ghostController,
-          child: child
-        ),
-      );
-
-      BoxConstraints contentSizeConstraints = BoxConstraints.loose(_draggingFeedbackSize);
-      return ConstrainedBox(constraints: contentSizeConstraints, child: transition);
+      return makeDisappearingWidget(child, _ghostController, _draggingFeedbackSize, Axis.vertical,);
     }
 
     Widget buildDragTarget(BuildContext context, List<int> acceptedCandidates, List<dynamic> rejectedCandidates) {
