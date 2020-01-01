@@ -51,6 +51,7 @@ class ReorderableFlex extends StatefulWidget {
     this.onNoReorder,
     this.scrollController,
     this.needsLongPressDraggable = true,
+    this.draggingWidgetOpacity,
   })  : assert(direction != null),
         assert(onReorder != null),
         assert(children != null),
@@ -92,6 +93,7 @@ class ReorderableFlex extends StatefulWidget {
   final MainAxisAlignment mainAxisAlignment;
 
   final bool needsLongPressDraggable;
+  final double draggingWidgetOpacity;
 
   @override
   _ReorderableFlexState createState() => _ReorderableFlexState();
@@ -134,6 +136,7 @@ class _ReorderableFlexState extends State<ReorderableFlex> {
           mainAxisAlignment: widget.mainAxisAlignment,
           scrollController: widget.scrollController,
           needsLongPressDraggable: widget.needsLongPressDraggable,
+          draggingWidgetOpacity: widget.draggingWidgetOpacity,
         );
       },
     );
@@ -166,6 +169,7 @@ class _ReorderableFlexContent extends StatefulWidget {
     @required this.mainAxisAlignment,
     @required this.scrollController,
     @required this.needsLongPressDraggable,
+    @required this.draggingWidgetOpacity,
   });
 
   final Widget header;
@@ -182,6 +186,7 @@ class _ReorderableFlexContent extends StatefulWidget {
 
   final MainAxisAlignment mainAxisAlignment;
   final bool needsLongPressDraggable;
+  final double draggingWidgetOpacity;
 
   @override
   _ReorderableFlexContentState createState() => _ReorderableFlexContentState();
@@ -710,7 +715,7 @@ class _ReorderableFlexContentState extends State<_ReorderableFlexContent>
       // Determine the size of the drop area to show under the dragging widget.
       Widget spacing = _draggingWidget == null
           ? SizedBox.fromSize(size: _dropAreaSize)
-          : Opacity(opacity: 0.2, child: _draggingWidget);
+          : Opacity(opacity: widget.draggingWidgetOpacity, child: _draggingWidget);
 //      Widget spacing = SizedBox.fromSize(
 //        size: _dropAreaSize,
 //        child: _draggingWidget != null ? Opacity(opacity: 0.2, child: _draggingWidget) : null,
@@ -931,6 +936,7 @@ class ReorderableRow extends ReorderableFlex {
     NoReorderCallback onNoReorder,
     ScrollController scrollController,
     bool needsLongPressDraggable = true,
+    double draggingWidgetOpacity = 0.2,
       })
       : super(
           key: key,
@@ -958,6 +964,7 @@ class ReorderableRow extends ReorderableFlex {
           mainAxisAlignment: mainAxisAlignment,
           scrollController: scrollController,
           needsLongPressDraggable: needsLongPressDraggable,
+          draggingWidgetOpacity:draggingWidgetOpacity,
         );
 }
 
@@ -1004,6 +1011,7 @@ class ReorderableColumn extends ReorderableFlex {
     NoReorderCallback onNoReorder,
     ScrollController scrollController,
     bool needsLongPressDraggable = true,
+    double draggingWidgetOpacity = 0.2,
       })
       : super(
           key: key,
@@ -1030,5 +1038,6 @@ class ReorderableColumn extends ReorderableFlex {
           mainAxisAlignment: mainAxisAlignment,
           scrollController: scrollController,
           needsLongPressDraggable: needsLongPressDraggable,
+          draggingWidgetOpacity:draggingWidgetOpacity,
         );
 }
