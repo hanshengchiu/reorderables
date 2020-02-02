@@ -246,7 +246,8 @@ class ReorderableSliverList extends StatefulWidget {
     @required this.onReorder,
     this.buildItemsContainer,
     this.buildDraggableFeedback,
-    this.onNoReorder
+    this.onNoReorder,
+    this.enabled = true,
   }): assert(onReorder != null && delegate != null),
       super(key: key);
 
@@ -269,6 +270,9 @@ class ReorderableSliverList extends StatefulWidget {
 
   final BuildItemsContainer buildItemsContainer;
   final BuildDraggableFeedback buildDraggableFeedback;
+
+  /// Sets whether the children are reorderable or not
+  final bool enabled;
 
   @override
   _ReorderableSliverListState createState() => _ReorderableSliverListState();
@@ -718,7 +722,7 @@ class _ReorderableSliverListState extends State<ReorderableSliverList>
       // We build the draggable inside of a layout builder so that we can
       // constrain the size of the feedback dragging widget.
       Widget child = LongPressDraggable<int>(
-        maxSimultaneousDrags: 1,
+        maxSimultaneousDrags: widget.enabled?1:0,
         axis: Axis.vertical,//widget.direction,
         data: index,//toWrap.key,
         ignoringFeedbackSemantics: false,
