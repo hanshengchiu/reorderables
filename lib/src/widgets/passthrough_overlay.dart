@@ -237,7 +237,8 @@ class PassthroughOverlay extends StatefulWidget {
   /// OverlayState overlay = Overlay.of(context);
   /// ```
   static PassthroughOverlayState of(BuildContext context, { Widget debugRequiredFor }) {
-    final PassthroughOverlayState result = context.ancestorStateOfType(const TypeMatcher<PassthroughOverlayState>());
+    final PassthroughOverlayState result =
+        context.findAncestorStateOfType<PassthroughOverlayState>();
     assert(() {
       if (debugRequiredFor != null && result == null) {
         final String additional = context.widget != debugRequiredFor
