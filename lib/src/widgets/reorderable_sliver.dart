@@ -748,8 +748,8 @@ class _ReorderableSliverListState extends State<ReorderableSliverList>
         childWhenDragging: IgnorePointer(
           ignoring: true,
           child: SizedBox(
-            // 200 was the first value I tried and it worked. ¯\_(ツ)_/¯
-            width: 200,
+            // Small values (<50) cause an error when used with ListTile.
+            width: double.infinity,
             child: Opacity(
                 opacity: 0,
 //            child: _makeAppearingWidget(toWrap)
