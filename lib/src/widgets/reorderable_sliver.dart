@@ -17,7 +17,7 @@ import 'package:flutter/rendering.dart';
 //import 'material.dart';
 import './basic.dart';
 import './typedefs.dart';
-import 'reorderable_mixin.dart';
+import './reorderable_mixin.dart';
 
 int _kDefaultSemanticIndexCallback(Widget _, int localIndex) => localIndex;
 
@@ -751,12 +751,17 @@ class _ReorderableSliverListState extends State<ReorderableSliverList>
         child: MetaData(child: toWrapWithSemantics, behavior: HitTestBehavior.opaque),//toWrapWithSemantics,//_dragging == toWrap.key ? const SizedBox() : toWrapWithSemantics,
         childWhenDragging: IgnorePointer(
           ignoring: true,
-          child: Opacity(
-            opacity: 0,
+          child: SizedBox(
+            // Small values (<50) cause an error when used with ListTile.
+            width: double.infinity,
+            child: Opacity(
+                opacity: 0,
 //            child: _makeAppearingWidget(toWrap)
-            child: Container(width: 0, height: 0, child: toWrap)
-        )
-        ),//ConstrainedBox(constraints: contentConstraints),//SizedBox(),
+                child: Container(width: 0, height: 0, child: toWrap)
+            )
+          )
+        ),
+        //ConstrainedBox(constraints: contentConstraints),//SizedBox(),
         dragAnchor: DragAnchor.child,
         onDragStarted: onDragStarted,
         // When the drag ends inside a DragTarget widget, the drag
