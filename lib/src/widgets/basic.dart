@@ -14,8 +14,8 @@ class SafeStatefulBuilder extends StatefulWidget {
   const SafeStatefulBuilder({
     Key key,
     @required this.builder,
-  }) : assert(builder != null),
-      super(key: key);
+  })  : assert(builder != null),
+        super(key: key);
 
   /// Called to obtain the child widget.
   ///
@@ -30,7 +30,8 @@ class SafeStatefulBuilder extends StatefulWidget {
   _SafeStatefulBuilderState createState() => _SafeStatefulBuilderState();
 }
 
-class _SafeStatefulBuilderState extends State<SafeStatefulBuilder> with SafeStateMixin<SafeStatefulBuilder> {
+class _SafeStatefulBuilderState extends State<SafeStatefulBuilder>
+    with SafeStateMixin<SafeStatefulBuilder> {
   @override
   Widget build(BuildContext context) => widget.builder(context, setState);
 }

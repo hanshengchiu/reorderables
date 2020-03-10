@@ -56,22 +56,22 @@ class ReorderableTable extends StatelessWidget {
   ///
   /// The [children], [defaultColumnWidth], and [defaultVerticalAlignment]
   /// arguments must not be null.
-  ReorderableTable({
-    Key key,
-    this.children = const <ReorderableTableRow>[],
-    this.columnWidths,
-    this.defaultColumnWidth = const FlexColumnWidth(1.0),
-    this.textDirection,
-    this.border,
-    this.defaultVerticalAlignment = TableCellVerticalAlignment.top,
-    this.textBaseline,
-    this.header,
-    this.footer,
-    @required this.onReorder,
-    this.decorateDraggableFeedback,
-    this.onNoReorder,
-    thi
-  })  : assert(children != null),
+  ReorderableTable(
+      {Key key,
+      this.children = const <ReorderableTableRow>[],
+      this.columnWidths,
+      this.defaultColumnWidth = const FlexColumnWidth(1.0),
+      this.textDirection,
+      this.border,
+      this.defaultVerticalAlignment = TableCellVerticalAlignment.top,
+      this.textBaseline,
+      this.header,
+      this.footer,
+      @required this.onReorder,
+      this.decorateDraggableFeedback,
+      this.onNoReorder,
+      thi})
+      : assert(children != null),
         assert(defaultColumnWidth != null),
         assert(defaultVerticalAlignment != null),
         assert(() {
