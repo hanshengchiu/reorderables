@@ -51,7 +51,7 @@ class ReorderableFlex extends StatefulWidget {
     this.onNoReorder,
     this.scrollController,
     this.needsLongPressDraggable = true,
-    this.draggingWidgetOpacity,
+    this.draggingWidgetOpacity = 0.2,
   })  : assert(direction != null),
         assert(onReorder != null),
         assert(children != null),
@@ -964,7 +964,7 @@ class ReorderableRow extends ReorderableFlex {
           mainAxisAlignment: mainAxisAlignment,
           scrollController: scrollController,
           needsLongPressDraggable: needsLongPressDraggable,
-          draggingWidgetOpacity:draggingWidgetOpacity,
+          draggingWidgetOpacity: draggingWidgetOpacity,
         );
 }
 
@@ -1038,6 +1038,6 @@ class ReorderableColumn extends ReorderableFlex {
           mainAxisAlignment: mainAxisAlignment,
           scrollController: scrollController,
           needsLongPressDraggable: needsLongPressDraggable,
-          draggingWidgetOpacity:draggingWidgetOpacity,
+          draggingWidgetOpacity: draggingWidgetOpacity,
         );
 }
