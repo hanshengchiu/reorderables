@@ -5,14 +5,10 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-
-//import 'package:flutter/widgets.dart';
 import 'package:flutter/rendering.dart';
 
-//import 'debug.dart';
-//import 'material.dart';
-
 import './passthrough_overlay.dart';
+import './reorderable_mixin.dart';
 import './typedefs.dart';
 
 /// Reorderable (drag and drop) version of [Flex], a widget that displays its
@@ -55,6 +51,7 @@ class ReorderableFlex extends StatefulWidget {
     this.onNoReorder,
     this.scrollController,
     this.needsLongPressDraggable = true,
+    this.draggingWidgetOpacity,
   })  : assert(direction != null),
         assert(onReorder != null),
         assert(children != null),
@@ -96,6 +93,7 @@ class ReorderableFlex extends StatefulWidget {
   final MainAxisAlignment mainAxisAlignment;
 
   final bool needsLongPressDraggable;
+  final double draggingWidgetOpacity;
 
   @override
   _ReorderableFlexState createState() => _ReorderableFlexState();
@@ -138,6 +136,7 @@ class _ReorderableFlexState extends State<ReorderableFlex> {
           mainAxisAlignment: widget.mainAxisAlignment,
           scrollController: widget.scrollController,
           needsLongPressDraggable: widget.needsLongPressDraggable,
+          draggingWidgetOpacity: widget.draggingWidgetOpacity,
         );
       },
     );
@@ -170,6 +169,7 @@ class _ReorderableFlexContent extends StatefulWidget {
     @required this.mainAxisAlignment,
     @required this.scrollController,
     @required this.needsLongPressDraggable,
+    @required this.draggingWidgetOpacity,
   });
 
   final Widget header;
@@ -186,13 +186,14 @@ class _ReorderableFlexContent extends StatefulWidget {
 
   final MainAxisAlignment mainAxisAlignment;
   final bool needsLongPressDraggable;
+  final double draggingWidgetOpacity;
 
   @override
   _ReorderableFlexContentState createState() => _ReorderableFlexContentState();
 }
 
 class _ReorderableFlexContentState extends State<_ReorderableFlexContent>
-    with TickerProviderStateMixin<_ReorderableFlexContent> {
+    with TickerProviderStateMixin<_ReorderableFlexContent>, ReorderableMixin {
   // The extent along the [widget.scrollDirection] axis to allow a child to
   // drop into when the user reorders list children.
   //
@@ -524,31 +525,13 @@ class _ReorderableFlexContentState extends State<_ReorderableFlexContent>
     }
 
     Widget _makeAppearingWidget(Widget child) {
-      var transition = SizeTransition(
-        sizeFactor: _entranceController,
-        axis: widget.direction,
-        child: FadeTransition(
-            opacity: _entranceController,
-            child: child), //Column(children: [spacing, Text('eeeeee $index')])
-      );
-
-      BoxConstraints contentSizeConstraints =
-          BoxConstraints.loose(_draggingFeedbackSize);
-      return ConstrainedBox(
-          constraints: contentSizeConstraints, child: transition);
+      return makeAppearingWidget(
+        child, _entranceController, _draggingFeedbackSize, widget.direction,);
     }
 
     Widget _makeDisappearingWidget(Widget child) {
-      var transition = SizeTransition(
-        sizeFactor: _ghostController,
-        axis: widget.direction,
-        child: FadeTransition(opacity: _ghostController, child: child),
-      );
-
-      BoxConstraints contentSizeConstraints =
-          BoxConstraints.loose(_draggingFeedbackSize);
-      return ConstrainedBox(
-          constraints: contentSizeConstraints, child: transition);
+      return makeDisappearingWidget(
+        child, _ghostController, _draggingFeedbackSize, widget.direction,);
     }
 
     Widget buildDragTarget(BuildContext context, List<Key> acceptedCandidates,
@@ -724,7 +707,7 @@ class _ReorderableFlexContentState extends State<_ReorderableFlexContent>
           return willAccept; //_dragging == toAccept && toAccept != toWrap.key;
         },
         onAccept: (Key accepted) {},
-        onLeave: (Key leaving) {},
+        onLeave: (Object leaving) {},
       );
 
       dragTarget = KeyedSubtree(key: keyIndexGlobalKey, child: dragTarget);
@@ -732,7 +715,7 @@ class _ReorderableFlexContentState extends State<_ReorderableFlexContent>
       // Determine the size of the drop area to show under the dragging widget.
       Widget spacing = _draggingWidget == null
           ? SizedBox.fromSize(size: _dropAreaSize)
-          : Opacity(opacity: 0.2, child: _draggingWidget);
+          : Opacity(opacity: widget.draggingWidgetOpacity, child: _draggingWidget);
 //      Widget spacing = SizedBox.fromSize(
 //        size: _dropAreaSize,
 //        child: _draggingWidget != null ? Opacity(opacity: 0.2, child: _draggingWidget) : null,
@@ -953,6 +936,7 @@ class ReorderableRow extends ReorderableFlex {
     NoReorderCallback onNoReorder,
     ScrollController scrollController,
     bool needsLongPressDraggable = true,
+    double draggingWidgetOpacity = 0.2,
       })
       : super(
           key: key,
@@ -980,6 +964,7 @@ class ReorderableRow extends ReorderableFlex {
           mainAxisAlignment: mainAxisAlignment,
           scrollController: scrollController,
           needsLongPressDraggable: needsLongPressDraggable,
+          draggingWidgetOpacity:draggingWidgetOpacity,
         );
 }
 
@@ -1026,6 +1011,7 @@ class ReorderableColumn extends ReorderableFlex {
     NoReorderCallback onNoReorder,
     ScrollController scrollController,
     bool needsLongPressDraggable = true,
+    double draggingWidgetOpacity = 0.2,
       })
       : super(
           key: key,
@@ -1052,5 +1038,6 @@ class ReorderableColumn extends ReorderableFlex {
           mainAxisAlignment: mainAxisAlignment,
           scrollController: scrollController,
           needsLongPressDraggable: needsLongPressDraggable,
+          draggingWidgetOpacity:draggingWidgetOpacity,
         );
 }

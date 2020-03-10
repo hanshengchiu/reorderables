@@ -1,3 +1,5 @@
+** Maintainer wanted (kindly drop me message on LinkedIn). Wanted to make this package better, but I really don't have much time for fixing issues without making some money for living...
+
 # reorderables
 
 [![pub package](https://img.shields.io/pub/v/reorderables.svg)](https://pub.dartlang.org/packages/reorderables)

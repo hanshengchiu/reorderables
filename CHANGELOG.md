@@ -1,3 +1,6 @@
+## [0.3.0] - 19 June 2020.
+* Fix: Bad type in onLeave 
+
 ## [0.2.12] - 22 June 2019.
 * Removed dependency of FlutterErrorDetails and other ErrorXXX classes.
 * Bugfix: needsLongPressDraggable had no default value.
