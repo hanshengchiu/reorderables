@@ -12,7 +12,9 @@ import './passthrough_overlay.dart';
 import './transitions.dart';
 import './typedefs.dart';
 import './wrap.dart';
+//import './transitions.dart';
 import '../rendering/wrap.dart';
+import 'reorderable_mixin.dart';
 
 /// Reorderable (drag and drop) version of [Wrap], A widget that displays its
 /// children in multiple horizontal or vertical runs.
@@ -35,6 +37,7 @@ class ReorderableWrap extends StatefulWidget {
     Key key,
     this.header,
     this.footer,
+    this.controller,
     @required this.children,
     @required this.onReorder,
     this.direction = Axis.horizontal,
@@ -68,6 +71,11 @@ class ReorderableWrap extends StatefulWidget {
   /// If null, no header will appear before the list.
   final Widget header;
   final Widget footer;
+
+  /// A custom scroll [controller].
+  /// To control the initial scroll offset of the scroll view, provide a
+  /// [controller] with its [ScrollController.initialScrollOffset] property set.
+  final ScrollController controller;
 
   /// The widgets to display.
   final List<Widget> children;
@@ -275,6 +283,7 @@ class _ReorderableWrapState extends State<ReorderableWrap> {
           verticalDirection: widget.verticalDirection,
           minMainAxisCount: widget.minMainAxisCount,
           maxMainAxisCount: widget.maxMainAxisCount,
+          controller: widget.controller,
         );
       },
     );
@@ -296,6 +305,7 @@ class _ReorderableWrapContent extends StatefulWidget {
   const _ReorderableWrapContent({
     this.header,
     this.footer,
+    this.controller,
     @required this.children,
     @required this.direction,
     @required this.scrollDirection,
@@ -319,6 +329,7 @@ class _ReorderableWrapContent extends StatefulWidget {
 
   final Widget header;
   final Widget footer;
+  final ScrollController controller;
   final List<Widget> children;
   final Axis direction;
   final Axis scrollDirection;
@@ -345,7 +356,7 @@ class _ReorderableWrapContent extends StatefulWidget {
 }
 
 class _ReorderableWrapContentState extends State<_ReorderableWrapContent>
-    with TickerProviderStateMixin<_ReorderableWrapContent> {
+    with TickerProviderStateMixin<_ReorderableWrapContent>, ReorderableMixin {
   // The extent along the [widget.scrollDirection] axis to allow a child to
   // drop into when the user reorders list children.
   //
@@ -450,8 +461,8 @@ class _ReorderableWrapContentState extends State<_ReorderableWrapContent>
 
   @override
   void didChangeDependencies() {
-    _scrollController =
-        PrimaryScrollController.of(context) ?? ScrollController();
+    _scrollController = 
+        widget.controller ?? (PrimaryScrollController.of(context) ?? ScrollController());
     super.didChangeDependencies();
   }
 
@@ -742,27 +753,11 @@ class _ReorderableWrapContentState extends State<_ReorderableWrapContent>
     }
 
     Widget _makeAppearingWidget(Widget child) {
-      return SizeTransitionWithIntrinsicSize(
-        sizeFactor: _entranceController,
-        axis: widget.direction,
-        child: FadeTransition(
-          opacity: _entranceController,
-          child: child,
-//          child: Column(children: [child, Text('appearing $index')])
-        ), //Column(children: [spacing, Text('eeeeee $index')])
-      );
+      return makeAppearingWidget(child, _entranceController, null, widget.direction,);
     }
 
     Widget _makeDisappearingWidget(Widget child) {
-      return SizeTransitionWithIntrinsicSize(
-        sizeFactor: _ghostController,
-        axis: widget.direction,
-        child: FadeTransition(
-          opacity: _ghostController,
-          child: child,
-//          child: Column(children: [child, Text('disappearing $index')])
-        ),
-      );
+      return makeDisappearingWidget(child, _ghostController, null, widget.direction,);
     }
 
     //Widget buildDragTarget(BuildContext context, List<Key> acceptedCandidates, List<dynamic> rejectedCandidates) {
@@ -793,8 +788,7 @@ class _ReorderableWrapContentState extends State<_ReorderableWrapContent>
         child = this.widget.needsLongPressDraggable
             ? LongPressDraggable<int>(
                 maxSimultaneousDrags: 1,
-                data: index,
-                //toWrap.key,
+                data: index, //toWrap.key,
                 ignoringFeedbackSemantics: false,
                 feedback: feedbackBuilder,
                 // Wrap toWrapWithSemantics with a widget that supports HitTestBehavior
@@ -823,8 +817,7 @@ class _ReorderableWrapContentState extends State<_ReorderableWrapContent>
               )
             : Draggable<int>(
                 maxSimultaneousDrags: 1,
-                data: index,
-                //toWrap.key,
+                data: index, //toWrap.key,
                 ignoringFeedbackSemantics: false,
                 feedback: feedbackBuilder,
                 child: MetaData(
@@ -976,7 +969,7 @@ class _ReorderableWrapContentState extends State<_ReorderableWrapContent>
             SizedBox(),
         onWillAccept: (int toAccept) => _onWillAccept(toAccept, true),
         onAccept: (int accepted) {},
-        onLeave: (int leaving) {},
+        onLeave: (Object leaving) {},
       );
       Widget nextDragTarget = DragTarget<int>(
         builder: (BuildContext context, List<int> acceptedCandidates,
@@ -984,7 +977,7 @@ class _ReorderableWrapContentState extends State<_ReorderableWrapContent>
             SizedBox(),
         onWillAccept: (int toAccept) => _onWillAccept(toAccept, false),
         onAccept: (int accepted) {},
-        onLeave: (int leaving) {},
+        onLeave: (Object leaving) {},
       );
 
       Widget dragTarget = Stack(
@@ -1048,7 +1041,7 @@ class _ReorderableWrapContentState extends State<_ReorderableWrapContent>
 //          return willAccept;//_dragging == toAccept && toAccept != toWrap.key;
 //        },
 //        onAccept: (Key accepted) {},
-//        onLeave: (Key leaving) {},
+//        onLeave: (Object leaving) {},
 //      );
 
 //      dragTarget = KeyedSubtree(
