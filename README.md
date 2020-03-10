@@ -1,4 +1,4 @@
-** Maintainer wanted (kindly drop me message on LinkedIn). Wanted to make this package better, but I really don't have much time for fixing issues without making some money for living...
+** Kindly submit PR if you encounter issues. Updates might be slow...
 
 # reorderables
 
@@ -10,9 +10,6 @@
 
 Various reorderable, a.k.a. drag and drop, Flutter widgets, including reorderable table, row, column, wrap, and sliver list, that make their children draggable and 
 reorder them within the widget. Parent widget only need to provide an `onReorder` function that is invoked with the old and new indexes of child being reordered.
-
-
-#### *Thanks those who bought me cups of coffee. Really appreciated. I've been busy working on other projects and might not be able to resolve issues promptly. Sorry about that. Please reach out to me if you need commercial support. Nevertheless, do feel free to make pull requests. Switching between Python and Dart sometimes confused me. ;)*
 
 
 ## Usage

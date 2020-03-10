@@ -1,4 +1,7 @@
-## [0.3.0] - 19 June 2020.
+## [0.3.1] - 10 March 2020.
+* Supports making individual child non-reorderable. See ReorderableColumn example 1.
+
+## [0.3.0] - 10 Jan 2020.
 * Fix: Bad type in onLeave 
 
 ## [0.2.12] - 22 June 2019.
