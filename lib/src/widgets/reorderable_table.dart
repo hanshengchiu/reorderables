@@ -1,11 +1,10 @@
 //import 'dart:math' as math;
 import 'package:flutter/material.dart';
-//import 'package:flutter/widgets.dart';
 
-import './tabluar_flex.dart';
 import './reorderable_flex.dart';
-import '../rendering/tabluar_flex.dart';
+import './tabluar_flex.dart';
 import './typedefs.dart';
+import '../rendering/tabluar_flex.dart';
 
 class ReorderableTableRow extends TabluarRow {
   ReorderableTableRow({

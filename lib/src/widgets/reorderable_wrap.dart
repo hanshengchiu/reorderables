@@ -5,14 +5,11 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-
-//import 'package:flutter/widgets.dart';
 import 'package:flutter/rendering.dart';
-
-//import 'debug.dart';
-//import 'material.dart';
+import 'package:reorderables/reorderables.dart';
 
 import './passthrough_overlay.dart';
+import './transitions.dart';
 import './typedefs.dart';
 import './wrap.dart';
 //import './transitions.dart';
@@ -777,58 +774,69 @@ class _ReorderableWrapContentState extends State<_ReorderableWrapContent>
             context, contentSizeConstraints, toWrap);
       });
 
-      // We build the draggable inside of a layout builder so that we can
-      // constrain the size of the feedback dragging widget.
-      Widget child = this.widget.needsLongPressDraggable
-          ? LongPressDraggable<int>(
-              maxSimultaneousDrags: 1,
-              data: index, //toWrap.key,
-              ignoringFeedbackSemantics: false,
-              feedback: feedbackBuilder,
-              // Wrap toWrapWithSemantics with a widget that supports HitTestBehavior
-              // to make sure the whole toWrapWithSemantics responds to pointer events, i.e. dragging
-              child: MetaData(
-                  child: toWrapWithSemantics,
-                  behavior: HitTestBehavior
-                      .opaque), //toWrapWithSemantics,//_dragging == toWrap.key ? const SizedBox() : toWrapWithSemantics,
-              childWhenDragging: IgnorePointer(
+      bool isReorderable = true;
+      if (toWrap is ReorderableItem) {
+        isReorderable = toWrap.reorderable;
+      }
+
+      Widget child;
+      if (!isReorderable) {
+        child = toWrapWithSemantics;
+      } else {
+        // We build the draggable inside of a layout builder so that we can
+        // constrain the size of the feedback dragging widget.
+        child = this.widget.needsLongPressDraggable
+            ? LongPressDraggable<int>(
+                maxSimultaneousDrags: 1,
+                data: index, //toWrap.key,
+                ignoringFeedbackSemantics: false,
+                feedback: feedbackBuilder,
+                // Wrap toWrapWithSemantics with a widget that supports HitTestBehavior
+                // to make sure the whole toWrapWithSemantics responds to pointer events, i.e. dragging
+                child: MetaData(
+                    child: toWrapWithSemantics,
+                    behavior: HitTestBehavior.opaque),
+                //toWrapWithSemantics,//_dragging == toWrap.key ? const SizedBox() : toWrapWithSemantics,
+                childWhenDragging: IgnorePointer(
+                    ignoring: true,
+                    child: Opacity(
+                        opacity: 0.2,
+                        //child: toWrap,//Container(width: 0, height: 0, child: toWrap)
+                        child: _makeAppearingWidget(toWrap))),
+                //ConstrainedBox(constraints: contentConstraints),//SizedBox(),
+                dragAnchor: DragAnchor.child,
+                onDragStarted: onDragStarted,
+                // When the drag ends inside a DragTarget widget, the drag
+                // succeeds, and we reorder the widget into position appropriately.
+                onDragCompleted: onDragEnded,
+                // When the drag does not end inside a DragTarget widget, the
+                // drag fails, but we still reorder the widget to the last position it
+                // had been dragged to.
+                onDraggableCanceled: (Velocity velocity, Offset offset) =>
+                    onDragEnded(),
+              )
+            : Draggable<int>(
+                maxSimultaneousDrags: 1,
+                data: index, //toWrap.key,
+                ignoringFeedbackSemantics: false,
+                feedback: feedbackBuilder,
+                child: MetaData(
+                    child: toWrapWithSemantics,
+                    behavior: HitTestBehavior.opaque),
+                childWhenDragging: IgnorePointer(
                   ignoring: true,
                   child: Opacity(
-                      opacity: 0.2,
-                      //child: toWrap,//Container(width: 0, height: 0, child: toWrap)
-                      child: _makeAppearingWidget(
-                          toWrap))), //ConstrainedBox(constraints: contentConstraints),//SizedBox(),
-              dragAnchor: DragAnchor.child,
-              onDragStarted: onDragStarted,
-              // When the drag ends inside a DragTarget widget, the drag
-              // succeeds, and we reorder the widget into position appropriately.
-              onDragCompleted: onDragEnded,
-              // When the drag does not end inside a DragTarget widget, the
-              // drag fails, but we still reorder the widget to the last position it
-              // had been dragged to.
-              onDraggableCanceled: (Velocity velocity, Offset offset) =>
-                  onDragEnded(),
-            )
-          : Draggable<int>(
-              maxSimultaneousDrags: 1,
-              data: index, //toWrap.key,
-              ignoringFeedbackSemantics: false,
-              feedback: feedbackBuilder,
-              child: MetaData(
-                  child: toWrapWithSemantics, behavior: HitTestBehavior.opaque),
-              childWhenDragging: IgnorePointer(
-                ignoring: true,
-                child: Opacity(
-                  opacity: 0.2,
-                  child: _makeAppearingWidget(toWrap),
+                    opacity: 0.2,
+                    child: _makeAppearingWidget(toWrap),
+                  ),
                 ),
-              ),
-              dragAnchor: DragAnchor.child,
-              onDragStarted: onDragStarted,
-              onDragCompleted: onDragEnded,
-              onDraggableCanceled: (Velocity velocity, Offset offset) =>
-                  onDragEnded(),
-            );
+                dragAnchor: DragAnchor.child,
+                onDragStarted: onDragStarted,
+                onDragCompleted: onDragEnded,
+                onDraggableCanceled: (Velocity velocity, Offset offset) =>
+                    onDragEnded(),
+              );
+      }
 
       // The target for dropping at the end of the list doesn't need to be
       // draggable.
