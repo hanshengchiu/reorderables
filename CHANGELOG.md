@@ -1,3 +1,6 @@
+## [0.3.2] - 10 March 2020.
+* Fix health suggestions.
+
 ## [0.3.1] - 10 March 2020.
 * Supports making individual child non-reorderable. See ReorderableColumn example 1.
 

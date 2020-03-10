@@ -376,7 +376,7 @@ class _ReorderableSliverListState extends State<ReorderableSliverList>
     _scrollController =
         PrimaryScrollController.of(context) ?? ScrollController();
 
-    if (_scrollController.positions.isEmpty) {
+    if (!_scrollController.hasClients) {
       ScrollableState scrollableState = Scrollable.of(context);
       _attachedScrollPosition = scrollableState?.position;
     } else {
@@ -508,7 +508,7 @@ class _ReorderableSliverListState extends State<ReorderableSliverList>
     final double margin = _dropAreaSize.height / 2;
 
     assert(
-        _scrollController.positions.isNotEmpty,
+        _scrollController.hasClients,
         'An attached scroll controller is needed. '
         'You probably forgot to attach one to the parent scroll view that contains this reorderable list.');
 

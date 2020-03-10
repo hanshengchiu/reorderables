@@ -291,7 +291,7 @@ class _ReorderableFlexContentState extends State<_ReorderableFlexContent>
         PrimaryScrollController.of(context) ??
         ScrollController();
 
-    if (_scrollController.positions.isEmpty) {
+    if (!_scrollController.hasClients) {
       ScrollableState scrollableState = Scrollable.of(context);
       _attachedScrollPosition = scrollableState?.position;
     } else {
