@@ -7,9 +7,9 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
-import './reorderable_widget.dart';
 import './passthrough_overlay.dart';
 import './reorderable_mixin.dart';
+import './reorderable_widget.dart';
 import './typedefs.dart';
 
 /// Reorderable (drag and drop) version of [Flex], a widget that displays its
@@ -53,6 +53,7 @@ class ReorderableFlex extends StatefulWidget {
     this.scrollController,
     this.needsLongPressDraggable = true,
     this.draggingWidgetOpacity = 0.2,
+    this.isScrollingEnabled = true,
   })  : assert(direction != null),
         assert(onReorder != null),
         assert(children != null),
@@ -98,6 +99,8 @@ class ReorderableFlex extends StatefulWidget {
   final bool needsLongPressDraggable;
   final double draggingWidgetOpacity;
 
+  final bool isScrollingEnabled;
+
   @override
   _ReorderableFlexState createState() => _ReorderableFlexState();
 }
@@ -140,6 +143,7 @@ class _ReorderableFlexState extends State<ReorderableFlex> {
           scrollController: widget.scrollController,
           needsLongPressDraggable: widget.needsLongPressDraggable,
           draggingWidgetOpacity: widget.draggingWidgetOpacity,
+          isScrollingEnabled: widget.isScrollingEnabled,
         );
       },
     );
@@ -173,6 +177,7 @@ class _ReorderableFlexContent extends StatefulWidget {
     @required this.scrollController,
     @required this.needsLongPressDraggable,
     @required this.draggingWidgetOpacity,
+    @required this.isScrollingEnabled,
   });
 
   final Widget header;
@@ -190,6 +195,7 @@ class _ReorderableFlexContent extends StatefulWidget {
   final MainAxisAlignment mainAxisAlignment;
   final bool needsLongPressDraggable;
   final double draggingWidgetOpacity;
+  final bool isScrollingEnabled;
 
   @override
   _ReorderableFlexContentState createState() => _ReorderableFlexContentState();
@@ -530,12 +536,20 @@ class _ReorderableFlexContentState extends State<_ReorderableFlexContent>
 
     Widget _makeAppearingWidget(Widget child) {
       return makeAppearingWidget(
-        child, _entranceController, _draggingFeedbackSize, widget.direction,);
+        child,
+        _entranceController,
+        _draggingFeedbackSize,
+        widget.direction,
+      );
     }
 
     Widget _makeDisappearingWidget(Widget child) {
       return makeDisappearingWidget(
-        child, _ghostController, _draggingFeedbackSize, widget.direction,);
+        child,
+        _ghostController,
+        _draggingFeedbackSize,
+        widget.direction,
+      );
     }
 
     Widget buildDragTarget(BuildContext context, List<Key> acceptedCandidates,
@@ -711,7 +725,9 @@ class _ReorderableFlexContentState extends State<_ReorderableFlexContent>
 
             _requestAnimationToNextIndex(isAcceptingNewTarget: true);
           });
-          _scrollTo(context);
+          if (widget.isScrollingEnabled) {
+            _scrollTo(context);
+          }
           // If the target is not the original starting point, then we will accept the drop.
           return willAccept; //_dragging == toAccept && toAccept != toWrap.key;
         },
@@ -724,7 +740,8 @@ class _ReorderableFlexContentState extends State<_ReorderableFlexContent>
       // Determine the size of the drop area to show under the dragging widget.
       Widget spacing = _draggingWidget == null
           ? SizedBox.fromSize(size: _dropAreaSize)
-          : Opacity(opacity: widget.draggingWidgetOpacity, child: _draggingWidget);
+          : Opacity(
+              opacity: widget.draggingWidgetOpacity, child: _draggingWidget);
 //      Widget spacing = SizedBox.fromSize(
 //        size: _dropAreaSize,
 //        child: _draggingWidget != null ? Opacity(opacity: 0.2, child: _draggingWidget) : null,
@@ -947,8 +964,8 @@ class ReorderableRow extends ReorderableFlex {
     ScrollController scrollController,
     bool needsLongPressDraggable = true,
     double draggingWidgetOpacity = 0.2,
-      })
-      : super(
+    bool isScrollingEnabled = true,
+  }) : super(
           key: key,
           header: header,
           footer: footer,
@@ -975,6 +992,7 @@ class ReorderableRow extends ReorderableFlex {
           scrollController: scrollController,
           needsLongPressDraggable: needsLongPressDraggable,
           draggingWidgetOpacity: draggingWidgetOpacity,
+          isScrollingEnabled: isScrollingEnabled,
         );
 }
 
@@ -1022,8 +1040,8 @@ class ReorderableColumn extends ReorderableFlex {
     ScrollController scrollController,
     bool needsLongPressDraggable = true,
     double draggingWidgetOpacity = 0.2,
-      })
-      : super(
+    bool isScrollingEnabled = true,
+  }) : super(
           key: key,
           header: header,
           footer: footer,
@@ -1049,5 +1067,6 @@ class ReorderableColumn extends ReorderableFlex {
           scrollController: scrollController,
           needsLongPressDraggable: needsLongPressDraggable,
           draggingWidgetOpacity: draggingWidgetOpacity,
+          isScrollingEnabled: isScrollingEnabled,
         );
 }
