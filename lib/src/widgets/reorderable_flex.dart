@@ -530,34 +530,26 @@ class _ReorderableFlexContentState extends State<_ReorderableFlexContent>
 
     Widget _makeAppearingWidget(Widget child) {
       return makeAppearingWidget(
-        child,
-        _entranceController,
-        _draggingFeedbackSize,
-        widget.direction,
-      );
+        child, _entranceController, _draggingFeedbackSize, widget.direction,);
     }
 
     Widget _makeDisappearingWidget(Widget child) {
       return makeDisappearingWidget(
-        child,
-        _ghostController,
-        _draggingFeedbackSize,
-        widget.direction,
-      );
+        child, _ghostController, _draggingFeedbackSize, widget.direction,);
     }
 
     Widget buildDragTarget(BuildContext context, List<Key> acceptedCandidates,
-        List<dynamic> rejectedCandidates, Size draggingSize) {
+        List<dynamic> rejectedCandidates) {
       final Widget toWrapWithSemantics = wrapWithSemantics();
 
       Widget feedbackBuilder = Builder(builder: (BuildContext context) {
 //          RenderRepaintBoundary renderObject = _contentKey.currentContext.findRenderObject();
 //          BoxConstraints contentSizeConstraints = BoxConstraints.loose(renderObject.size);
-        BoxConstraints contentSizeConstraints =
-            BoxConstraints.loose(draggingSize); //renderObject.constraints
+//        BoxConstraints contentSizeConstraints = BoxConstraints.loose(
+//            _draggingFeedbackSize); //renderObject.constraints
 //          debugPrint('${DateTime.now().toString().substring(5, 22)} reorderable_flex.dart(515) $this.buildDragTarget: contentConstraints:$contentSizeConstraints _draggingFeedbackSize:$_draggingFeedbackSize');
         return (widget.buildDraggableFeedback ?? defaultBuildDraggableFeedback)(
-            context, contentSizeConstraints, toWrap);
+            context, toWrap);
       });
 
       // We build the draggable inside of a layout builder so that we can
@@ -695,9 +687,7 @@ class _ReorderableFlexContentState extends State<_ReorderableFlexContent>
     // We wrap the drag target in a Builder so that we can scroll to its specific context.
     return Builder(builder: (BuildContext context) {
       Widget dragTarget = DragTarget<Key>(
-        builder: (context, acceptedCanidates, rejectedCanidates) =>
-            buildDragTarget(
-                context, acceptedCanidates, rejectedCanidates, context.size),
+        builder: buildDragTarget,
         onWillAccept: (Key toAccept) {
           bool willAccept = _dragging == toAccept && toAccept != toWrap.key;
 
@@ -734,8 +724,7 @@ class _ReorderableFlexContentState extends State<_ReorderableFlexContent>
       // Determine the size of the drop area to show under the dragging widget.
       Widget spacing = _draggingWidget == null
           ? SizedBox.fromSize(size: _dropAreaSize)
-          : Opacity(
-              opacity: widget.draggingWidgetOpacity, child: _draggingWidget);
+          : Opacity(opacity: widget.draggingWidgetOpacity, child: _draggingWidget);
 //      Widget spacing = SizedBox.fromSize(
 //        size: _dropAreaSize,
 //        child: _draggingWidget != null ? Opacity(opacity: 0.2, child: _draggingWidget) : null,
@@ -899,13 +888,13 @@ class _ReorderableFlexContentState extends State<_ReorderableFlexContent>
   }
 
   Widget defaultBuildDraggableFeedback(
-      BuildContext context, BoxConstraints constraints, Widget child) {
+      BuildContext context, Widget child) {
     return Transform(
       transform: Matrix4.rotationZ(0),
       alignment: FractionalOffset.topLeft,
       child: Material(
         child:
-            Card(child: ConstrainedBox(constraints: constraints, child: child)),
+            Card(child: child),
         elevation: 6.0,
         color: Colors.transparent,
         borderRadius: BorderRadius.zero,
@@ -958,7 +947,8 @@ class ReorderableRow extends ReorderableFlex {
     ScrollController scrollController,
     bool needsLongPressDraggable = true,
     double draggingWidgetOpacity = 0.2,
-  }) : super(
+      })
+      : super(
           key: key,
           header: header,
           footer: footer,
@@ -1032,7 +1022,8 @@ class ReorderableColumn extends ReorderableFlex {
     ScrollController scrollController,
     bool needsLongPressDraggable = true,
     double draggingWidgetOpacity = 0.2,
-  }) : super(
+      })
+      : super(
           key: key,
           header: header,
           footer: footer,
