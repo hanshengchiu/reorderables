@@ -553,8 +553,7 @@ class _ReorderableFlexContentState extends State<_ReorderableFlexContent>
       Widget feedbackBuilder = Builder(builder: (BuildContext context) {
 //          RenderRepaintBoundary renderObject = _contentKey.currentContext.findRenderObject();
 //          BoxConstraints contentSizeConstraints = BoxConstraints.loose(renderObject.size);
-        BoxConstraints contentSizeConstraints = BoxConstraints.loose(
-            _draggingFeedbackSize); //renderObject.constraints
+        BoxConstraints contentSizeConstraints = BoxConstraints.loose(Size(double.infinity,double.infinity)); //renderObject.constraints
 //          debugPrint('${DateTime.now().toString().substring(5, 22)} reorderable_flex.dart(515) $this.buildDragTarget: contentConstraints:$contentSizeConstraints _draggingFeedbackSize:$_draggingFeedbackSize');
         return (widget.buildDraggableFeedback ?? defaultBuildDraggableFeedback)(
             context, contentSizeConstraints, toWrap);
