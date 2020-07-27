@@ -530,12 +530,20 @@ class _ReorderableFlexContentState extends State<_ReorderableFlexContent>
 
     Widget _makeAppearingWidget(Widget child) {
       return makeAppearingWidget(
-        child, _entranceController, _draggingFeedbackSize, widget.direction,);
+        child,
+        _entranceController,
+        _draggingFeedbackSize,
+        widget.direction,
+      );
     }
 
     Widget _makeDisappearingWidget(Widget child) {
       return makeDisappearingWidget(
-        child, _ghostController, _draggingFeedbackSize, widget.direction,);
+        child,
+        _ghostController,
+        _draggingFeedbackSize,
+        widget.direction,
+      );
     }
 
     Widget buildDragTarget(BuildContext context, List<Key> acceptedCandidates,
@@ -724,7 +732,8 @@ class _ReorderableFlexContentState extends State<_ReorderableFlexContent>
       // Determine the size of the drop area to show under the dragging widget.
       Widget spacing = _draggingWidget == null
           ? SizedBox.fromSize(size: _dropAreaSize)
-          : Opacity(opacity: widget.draggingWidgetOpacity, child: _draggingWidget);
+          : Opacity(
+              opacity: widget.draggingWidgetOpacity, child: _draggingWidget);
 //      Widget spacing = SizedBox.fromSize(
 //        size: _dropAreaSize,
 //        child: _draggingWidget != null ? Opacity(opacity: 0.2, child: _draggingWidget) : null,
@@ -887,14 +896,12 @@ class _ReorderableFlexContentState extends State<_ReorderableFlexContent>
     }
   }
 
-  Widget defaultBuildDraggableFeedback(
-      BuildContext context, Widget child) {
+  Widget defaultBuildDraggableFeedback(BuildContext context, Widget child) {
     return Transform(
       transform: Matrix4.rotationZ(0),
       alignment: FractionalOffset.topLeft,
       child: Material(
-        child:
-            Card(child: child),
+        child: Card(child: child),
         elevation: 6.0,
         color: Colors.transparent,
         borderRadius: BorderRadius.zero,
@@ -947,8 +954,7 @@ class ReorderableRow extends ReorderableFlex {
     ScrollController scrollController,
     bool needsLongPressDraggable = true,
     double draggingWidgetOpacity = 0.2,
-      })
-      : super(
+  }) : super(
           key: key,
           header: header,
           footer: footer,
@@ -1022,8 +1028,7 @@ class ReorderableColumn extends ReorderableFlex {
     ScrollController scrollController,
     bool needsLongPressDraggable = true,
     double draggingWidgetOpacity = 0.2,
-      })
-      : super(
+  }) : super(
           key: key,
           header: header,
           footer: footer,
