@@ -408,6 +408,7 @@ class _ReorderableFlexContentState extends State<_ReorderableFlexContent>
   Widget _wrap(Widget toWrap, int index) {
     assert(toWrap.key != null);
     final GlobalObjectKey keyIndexGlobalKey = GlobalObjectKey(toWrap.key);
+    _draggingFeedbackSize = keyIndexGlobalKey.currentContext.size;
     // We pass the toWrapWithGlobalKey into the Draggable so that when a list
     // item gets dragged, the accessibility framework can preserve the selected
     // state of the dragging item.
