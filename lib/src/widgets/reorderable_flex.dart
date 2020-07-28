@@ -541,7 +541,7 @@ class _ReorderableFlexContentState extends State<_ReorderableFlexContent>
       return makeDisappearingWidget(
         child,
         _ghostController,
-        _draggingFeedbackSize,
+        null,
         widget.direction,
       );
     }
