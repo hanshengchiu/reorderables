@@ -232,7 +232,7 @@ class _ReorderableFlexContentState extends State<_ReorderableFlexContent>
   Widget _draggingWidget;
 
   // The last computed size of the feedback widget being dragged.
-  Size _draggingFeedbackSize = Size(0,0);
+  Size _draggingFeedbackSize = Size(0, 0);
 
   // The location that the dragging widget occupied before it started to drag.
   int _dragStartIndex = -1;
