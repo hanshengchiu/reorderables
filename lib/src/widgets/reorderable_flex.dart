@@ -232,7 +232,7 @@ class _ReorderableFlexContentState extends State<_ReorderableFlexContent>
   Widget _draggingWidget;
 
   // The last computed size of the feedback widget being dragged.
-  Size _draggingFeedbackSize;
+  Size _draggingFeedbackSize = Size(0,0);
 
   // The location that the dragging widget occupied before it started to drag.
   int _dragStartIndex = -1;
@@ -553,7 +553,8 @@ class _ReorderableFlexContentState extends State<_ReorderableFlexContent>
       Widget feedbackBuilder = Builder(builder: (BuildContext context) {
 //          RenderRepaintBoundary renderObject = _contentKey.currentContext.findRenderObject();
 //          BoxConstraints contentSizeConstraints = BoxConstraints.loose(renderObject.size);
-        BoxConstraints contentSizeConstraints = BoxConstraints.loose(Size(double.infinity,double.infinity)); //renderObject.constraints
+        BoxConstraints contentSizeConstraints = BoxConstraints.loose(
+            _draggingFeedbackSize); //renderObject.constraints
 //          debugPrint('${DateTime.now().toString().substring(5, 22)} reorderable_flex.dart(515) $this.buildDragTarget: contentConstraints:$contentSizeConstraints _draggingFeedbackSize:$_draggingFeedbackSize');
         return (widget.buildDraggableFeedback ?? defaultBuildDraggableFeedback)(
             context, contentSizeConstraints, toWrap);
@@ -901,7 +902,8 @@ class _ReorderableFlexContentState extends State<_ReorderableFlexContent>
       transform: Matrix4.rotationZ(0),
       alignment: FractionalOffset.topLeft,
       child: Material(
-        child: Card(child: child),
+        child:
+            Card(child: ConstrainedBox(constraints: constraints, child: child)),
         elevation: 6.0,
         color: Colors.transparent,
         borderRadius: BorderRadius.zero,
