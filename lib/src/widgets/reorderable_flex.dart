@@ -208,11 +208,11 @@ class _ReorderableFlexContentState extends State<_ReorderableFlexContent>
   static const double _dropAreaMargin = 0.0;
 
   // How long an animation to reorder an element in the list takes.
-  static const Duration _reorderAnimationDuration = Duration(milliseconds: 200);
+  static const Duration _reorderAnimationDuration = Duration(milliseconds: 300);
 
   // How long an animation to scroll to an off-screen element in the
   // list takes.
-  static const Duration _scrollAnimationDuration = Duration(milliseconds: 200);
+  static const Duration _scrollAnimationDuration = Duration(milliseconds: 300);
 
   // Controls scrolls and measures scroll progress.
   ScrollController _scrollController;
@@ -291,7 +291,7 @@ class _ReorderableFlexContentState extends State<_ReorderableFlexContent>
         PrimaryScrollController.of(context) ??
         ScrollController();
 
-    if (!_scrollController.hasClients) {
+    if (_scrollController.hasClients) {
       ScrollableState scrollableState = Scrollable.of(context);
       _attachedScrollPosition = scrollableState?.position;
     } else {
@@ -356,32 +356,34 @@ class _ReorderableFlexContentState extends State<_ReorderableFlexContent>
     final double margin = widget.direction == Axis.horizontal
         ? _dropAreaSize.width
         : _dropAreaSize.height;
-    final double scrollOffset = _scrollController.offset;
-    final double topOffset = max(
-      _scrollController.position.minScrollExtent,
-      viewport.getOffsetToReveal(contextObject, 0.0).offset - margin,
-    );
-    final double bottomOffset = min(
-      _scrollController.position.maxScrollExtent,
-      viewport.getOffsetToReveal(contextObject, 1.0).offset + margin,
-    );
-    final bool onScreen =
-        scrollOffset <= topOffset && scrollOffset >= bottomOffset;
+    if (_scrollController.hasClients) {
+      final double scrollOffset = _scrollController.offset;
+      final double topOffset = max(
+        _scrollController.position.minScrollExtent,
+        viewport.getOffsetToReveal(contextObject, 0.0).offset - margin,
+      );
+      final double bottomOffset = min(
+        _scrollController.position.maxScrollExtent,
+        viewport.getOffsetToReveal(contextObject, 1.0).offset + margin,
+      );
+      final bool onScreen =
+          scrollOffset <= topOffset && scrollOffset >= bottomOffset;
 
-    // If the context is off screen, then we request a scroll to make it visible.
-    if (!onScreen) {
-      _scrolling = true;
-      _scrollController.position
-          .animateTo(
-        scrollOffset < bottomOffset ? bottomOffset : topOffset,
-        duration: _scrollAnimationDuration,
-        curve: Curves.easeInOut,
-      )
-          .then((void value) {
-        setState(() {
-          _scrolling = false;
+      // If the context is off screen, then we request a scroll to make it visible.
+      if (!onScreen) {
+        _scrolling = true;
+        _scrollController.position
+            .animateTo(
+          scrollOffset < bottomOffset ? bottomOffset : topOffset,
+          duration: _scrollAnimationDuration,
+          curve: Curves.easeInOut,
+        )
+            .then((void value) {
+          setState(() {
+            _scrolling = false;
+          });
         });
-      });
+      }
     }
   }
 

@@ -9,9 +9,11 @@ import 'package:flutter/rendering.dart';
 import 'package:reorderables/reorderables.dart';
 
 import './passthrough_overlay.dart';
+
 //import './transitions.dart';
 import './typedefs.dart';
 import './wrap.dart';
+
 //import './transitions.dart';
 import '../rendering/wrap.dart';
 import 'reorderable_mixin.dart';
@@ -392,6 +394,7 @@ class _ReorderableWrapContentState extends State<_ReorderableWrapContent>
 
   // The last computed size of the feedback widget being dragged.
   Size _draggingFeedbackSize;
+
 //  List<GlobalObjectKey> _childKeys;
   List<BuildContext> _childContexts;
   List<Size> _childSizes;
@@ -461,8 +464,9 @@ class _ReorderableWrapContentState extends State<_ReorderableWrapContent>
 
   @override
   void didChangeDependencies() {
-    _scrollController = 
-        widget.controller ?? (PrimaryScrollController.of(context) ?? ScrollController());
+    _scrollController = widget.controller ??
+        PrimaryScrollController.of(context) ??
+        ScrollController();
     super.didChangeDependencies();
   }
 
@@ -753,11 +757,21 @@ class _ReorderableWrapContentState extends State<_ReorderableWrapContent>
     }
 
     Widget _makeAppearingWidget(Widget child) {
-      return makeAppearingWidget(child, _entranceController, null, widget.direction,);
+      return makeAppearingWidget(
+        child,
+        _entranceController,
+        null,
+        widget.direction,
+      );
     }
 
     Widget _makeDisappearingWidget(Widget child) {
-      return makeDisappearingWidget(child, _ghostController, null, widget.direction,);
+      return makeDisappearingWidget(
+        child,
+        _ghostController,
+        null,
+        widget.direction,
+      );
     }
 
     //Widget buildDragTarget(BuildContext context, List<Key> acceptedCandidates, List<dynamic> rejectedCandidates) {
@@ -788,7 +802,8 @@ class _ReorderableWrapContentState extends State<_ReorderableWrapContent>
         child = this.widget.needsLongPressDraggable
             ? LongPressDraggable<int>(
                 maxSimultaneousDrags: 1,
-                data: index, //toWrap.key,
+                data: index,
+                //toWrap.key,
                 ignoringFeedbackSemantics: false,
                 feedback: feedbackBuilder,
                 // Wrap toWrapWithSemantics with a widget that supports HitTestBehavior
@@ -817,7 +832,8 @@ class _ReorderableWrapContentState extends State<_ReorderableWrapContent>
               )
             : Draggable<int>(
                 maxSimultaneousDrags: 1,
-                data: index, //toWrap.key,
+                data: index,
+                //toWrap.key,
                 ignoringFeedbackSemantics: false,
                 feedback: feedbackBuilder,
                 child: MetaData(
