@@ -360,11 +360,11 @@ class _ReorderableFlexContentState extends State<_ReorderableFlexContent>
       final double scrollOffset = _scrollController.offset;
       final double topOffset = max(
         _scrollController.position.minScrollExtent,
-        viewport.getOffsetToReveal(contextObject, 0.0).offset - margin,
+        viewport.getOffsetToReveal(contextObject, 0.0).offset,
       );
       final double bottomOffset = min(
         _scrollController.position.maxScrollExtent,
-        viewport.getOffsetToReveal(contextObject, 1.0).offset + margin,
+        viewport.getOffsetToReveal(contextObject, 1.0).offset,
       );
       final bool onScreen =
           scrollOffset <= topOffset && scrollOffset >= bottomOffset;
