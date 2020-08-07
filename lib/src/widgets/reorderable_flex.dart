@@ -208,11 +208,11 @@ class _ReorderableFlexContentState extends State<_ReorderableFlexContent>
   static const double _dropAreaMargin = 0.0;
 
   // How long an animation to reorder an element in the list takes.
-  static const Duration _reorderAnimationDuration = Duration(milliseconds: 300);
+  static const Duration _reorderAnimationDuration = Duration(milliseconds: 500);
 
   // How long an animation to scroll to an off-screen element in the
   // list takes.
-  static const Duration _scrollAnimationDuration = Duration(milliseconds: 300);
+  static const Duration _scrollAnimationDuration = Duration(milliseconds: 500);
 
   // Controls scrolls and measures scroll progress.
   ScrollController _scrollController;
