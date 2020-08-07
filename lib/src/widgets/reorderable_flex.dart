@@ -354,17 +354,17 @@ class _ReorderableFlexContentState extends State<_ReorderableFlexContent>
     // necessary to reveal the selected context at the top or bottom of the
     // screen, then it is already on-screen.
     final double margin = widget.direction == Axis.horizontal
-        ? _dropAreaSize.width
-        : _dropAreaSize.height;
+        ? _dropAreaSize.width / 2
+        : _dropAreaSize.height / 2;
     if (_scrollController.hasClients) {
       final double scrollOffset = _scrollController.offset;
       final double topOffset = max(
         _scrollController.position.minScrollExtent,
-        viewport.getOffsetToReveal(contextObject, 0.0).offset,
+        viewport.getOffsetToReveal(contextObject, 0.0).offset - margin,
       );
       final double bottomOffset = min(
         _scrollController.position.maxScrollExtent,
-        viewport.getOffsetToReveal(contextObject, 1.0).offset,
+        viewport.getOffsetToReveal(contextObject, 1.0).offset + margin,
       );
       final bool onScreen =
           scrollOffset <= topOffset && scrollOffset >= bottomOffset;
