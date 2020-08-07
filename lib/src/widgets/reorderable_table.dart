@@ -55,22 +55,24 @@ class ReorderableTable extends StatelessWidget {
   ///
   /// The [children], [defaultColumnWidth], and [defaultVerticalAlignment]
   /// arguments must not be null.
-  ReorderableTable(
-      {Key key,
-      this.children = const <ReorderableTableRow>[],
-      this.columnWidths,
-      this.defaultColumnWidth = const FlexColumnWidth(1.0),
-      this.textDirection,
-      this.border,
-      this.defaultVerticalAlignment = TableCellVerticalAlignment.top,
-      this.textBaseline,
-      this.header,
-      this.footer,
-      @required this.onReorder,
-      this.decorateDraggableFeedback,
-      this.onNoReorder,
-      thi})
-      : assert(children != null),
+  ReorderableTable({
+    Key key,
+    this.children = const <ReorderableTableRow>[],
+    this.columnWidths,
+    this.defaultColumnWidth = const FlexColumnWidth(1.0),
+    this.textDirection,
+    this.border,
+    this.defaultVerticalAlignment = TableCellVerticalAlignment.top,
+    this.textBaseline,
+    this.header,
+    this.footer,
+    @required this.onReorder,
+    this.decorateDraggableFeedback,
+    this.onNoReorder,
+    thi,
+    this.reorderAnimationDuration,
+    this.scrollAnimationDuration,
+  })  : assert(children != null),
         assert(defaultColumnWidth != null),
         assert(defaultVerticalAlignment != null),
         assert(() {
@@ -177,6 +179,8 @@ class ReorderableTable extends StatelessWidget {
   final ReorderCallback onReorder;
   final NoReorderCallback onNoReorder;
   final DecorateDraggableFeedback decorateDraggableFeedback;
+  final Duration reorderAnimationDuration;
+  final Duration scrollAnimationDuration;
 
   @override
   Widget build(BuildContext context) {
@@ -192,69 +196,70 @@ class ReorderableTable extends StatelessWidget {
         GlobalKey(debugLabel: '$ReorderableTable table key');
 
     return ReorderableFlex(
-        header: header,
-        footer: footer,
-        children: children,
-        onReorder: onReorder,
-        onNoReorder: onNoReorder,
-        direction: Axis.vertical,
-        buildItemsContainer: (BuildContext containerContext, Axis direction,
-            List<Widget> children) {
-          return TabluarFlex(
-              key: tableKey,
-              direction: direction,
+      header: header,
+      footer: footer,
+      children: children,
+      onReorder: onReorder,
+      onNoReorder: onNoReorder,
+      direction: Axis.vertical,
+      buildItemsContainer: (BuildContext containerContext, Axis direction,
+          List<Widget> children) {
+        return TabluarFlex(
+            key: tableKey,
+            direction: direction,
 //          mainAxisAlignment: mainAxisAlignment,
 //          mainAxisSize: MainAxisSize.min,
 //          crossAxisAlignment: crossAxisAlignment,
-              textDirection: textDirection,
+            textDirection: textDirection,
 //          verticalDirection: verticalDirection,
-              textBaseline: textBaseline,
-              children: children);
-        },
-        buildDraggableFeedback: (BuildContext feedbackContext,
-            BoxConstraints constraints, Widget child) {
-          // The child is a ReorderableTableRow because children is a List<ReorderableTableRow>
-          ReorderableTableRow tableRow = child;
-          RenderTabluarFlex renderTabluarFlex =
-              tableKey.currentContext.findRenderObject();
-          int grandChildIndex = 0;
-          for (;
-              grandChildIndex < tableRow.children.length;
-              grandChildIndex++) {
-            tableRow.children[grandChildIndex] = ConstrainedBox(
-                constraints: BoxConstraints(
-                    minWidth: renderTabluarFlex
-                        .maxGrandchildrenCrossSize[grandChildIndex]),
-                child: tableRow.children[grandChildIndex]);
-          }
-          for (;
-              grandChildIndex <
-                  renderTabluarFlex.maxGrandchildrenCrossSize.length;
-              grandChildIndex++) {
-            tableRow.children.add(ConstrainedBox(
+            textBaseline: textBaseline,
+            children: children);
+      },
+      buildDraggableFeedback: (BuildContext feedbackContext,
+          BoxConstraints constraints, Widget child) {
+        // The child is a ReorderableTableRow because children is a List<ReorderableTableRow>
+        ReorderableTableRow tableRow = child;
+        RenderTabluarFlex renderTabluarFlex =
+            tableKey.currentContext.findRenderObject();
+        int grandChildIndex = 0;
+        for (; grandChildIndex < tableRow.children.length; grandChildIndex++) {
+          tableRow.children[grandChildIndex] = ConstrainedBox(
               constraints: BoxConstraints(
                   minWidth: renderTabluarFlex
                       .maxGrandchildrenCrossSize[grandChildIndex]),
-            ));
-          }
+              child: tableRow.children[grandChildIndex]);
+        }
+        for (;
+            grandChildIndex <
+                renderTabluarFlex.maxGrandchildrenCrossSize.length;
+            grandChildIndex++) {
+          tableRow.children.add(ConstrainedBox(
+            constraints: BoxConstraints(
+                minWidth: renderTabluarFlex
+                    .maxGrandchildrenCrossSize[grandChildIndex]),
+          ));
+        }
 
-          ConstrainedBox constrainedTableRow =
-              ConstrainedBox(constraints: constraints, child: tableRow);
+        ConstrainedBox constrainedTableRow =
+            ConstrainedBox(constraints: constraints, child: tableRow);
 
-          return Transform(
-            transform: new Matrix4.rotationZ(0),
-            alignment: FractionalOffset.topLeft,
-            child: Material(
+        return Transform(
+          transform: new Matrix4.rotationZ(0),
+          alignment: FractionalOffset.topLeft,
+          child: Material(
 //            child: Card(child: ConstrainedBox(constraints: constraints, child: tableRow)),
-              child: (decorateDraggableFeedback ??
-                      defaultDecorateDraggableFeedback)(
-                  feedbackContext, constrainedTableRow),
-              elevation: 6.0,
-              color: Colors.transparent,
-              borderRadius: BorderRadius.zero,
-            ),
-          );
-        });
+            child:
+                (decorateDraggableFeedback ?? defaultDecorateDraggableFeedback)(
+                    feedbackContext, constrainedTableRow),
+            elevation: 6.0,
+            color: Colors.transparent,
+            borderRadius: BorderRadius.zero,
+          ),
+        );
+      },
+      reorderAnimationDuration: reorderAnimationDuration,
+      scrollAnimationDuration: scrollAnimationDuration,
+    );
   }
 
   Widget defaultDecorateDraggableFeedback(

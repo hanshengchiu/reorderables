@@ -53,6 +53,8 @@ class ReorderableFlex extends StatefulWidget {
     this.scrollController,
     this.needsLongPressDraggable = true,
     this.draggingWidgetOpacity = 0.2,
+    this.reorderAnimationDuration,
+    this.scrollAnimationDuration,
   })  : assert(direction != null),
         assert(onReorder != null),
         assert(children != null),
@@ -98,6 +100,9 @@ class ReorderableFlex extends StatefulWidget {
   final bool needsLongPressDraggable;
   final double draggingWidgetOpacity;
 
+  final Duration reorderAnimationDuration;
+  final Duration scrollAnimationDuration;
+
   @override
   _ReorderableFlexState createState() => _ReorderableFlexState();
 }
@@ -140,6 +145,8 @@ class _ReorderableFlexState extends State<ReorderableFlex> {
           scrollController: widget.scrollController,
           needsLongPressDraggable: widget.needsLongPressDraggable,
           draggingWidgetOpacity: widget.draggingWidgetOpacity,
+          reorderAnimationDuration: widget.reorderAnimationDuration,
+          scrollAnimationDuration: widget.scrollAnimationDuration,
         );
       },
     );
@@ -173,6 +180,8 @@ class _ReorderableFlexContent extends StatefulWidget {
     @required this.scrollController,
     @required this.needsLongPressDraggable,
     @required this.draggingWidgetOpacity,
+    this.reorderAnimationDuration = const Duration(milliseconds: 200),
+    this.scrollAnimationDuration = const Duration(milliseconds: 200),
   });
 
   final Widget header;
@@ -190,6 +199,8 @@ class _ReorderableFlexContent extends StatefulWidget {
   final MainAxisAlignment mainAxisAlignment;
   final bool needsLongPressDraggable;
   final double draggingWidgetOpacity;
+  final Duration reorderAnimationDuration;
+  final Duration scrollAnimationDuration;
 
   @override
   _ReorderableFlexContentState createState() => _ReorderableFlexContentState();
@@ -208,11 +219,11 @@ class _ReorderableFlexContentState extends State<_ReorderableFlexContent>
   static const double _dropAreaMargin = 0.0;
 
   // How long an animation to reorder an element in the list takes.
-  static const Duration _reorderAnimationDuration = Duration(milliseconds: 500);
+  Duration _reorderAnimationDuration;
 
   // How long an animation to scroll to an off-screen element in the
   // list takes.
-  static const Duration _scrollAnimationDuration = Duration(milliseconds: 500);
+  Duration _scrollAnimationDuration;
 
   // Controls scrolls and measures scroll progress.
   ScrollController _scrollController;
@@ -273,6 +284,8 @@ class _ReorderableFlexContentState extends State<_ReorderableFlexContent>
   @override
   void initState() {
     super.initState();
+    _reorderAnimationDuration = widget.reorderAnimationDuration;
+    _scrollAnimationDuration = widget.scrollAnimationDuration;
     _entranceController = AnimationController(
         value: 1.0, vsync: this, duration: _reorderAnimationDuration);
     _ghostController = AnimationController(
@@ -354,8 +367,8 @@ class _ReorderableFlexContentState extends State<_ReorderableFlexContent>
     // necessary to reveal the selected context at the top or bottom of the
     // screen, then it is already on-screen.
     final double margin = widget.direction == Axis.horizontal
-        ? _dropAreaSize.width / 2
-        : _dropAreaSize.height / 2;
+        ? _dropAreaSize.width
+        : _dropAreaSize.height;
     if (_scrollController.hasClients) {
       final double scrollOffset = _scrollController.offset;
       final double topOffset = max(
@@ -958,6 +971,8 @@ class ReorderableRow extends ReorderableFlex {
     ScrollController scrollController,
     bool needsLongPressDraggable = true,
     double draggingWidgetOpacity = 0.2,
+    Duration reorderAnimationDuration,
+    Duration scrollAnimationDuration,
   }) : super(
           key: key,
           header: header,
@@ -985,6 +1000,8 @@ class ReorderableRow extends ReorderableFlex {
           scrollController: scrollController,
           needsLongPressDraggable: needsLongPressDraggable,
           draggingWidgetOpacity: draggingWidgetOpacity,
+          reorderAnimationDuration: reorderAnimationDuration,
+          scrollAnimationDuration: scrollAnimationDuration,
         );
 }
 
@@ -1032,6 +1049,8 @@ class ReorderableColumn extends ReorderableFlex {
     ScrollController scrollController,
     bool needsLongPressDraggable = true,
     double draggingWidgetOpacity = 0.2,
+    Duration reorderAnimationDuration,
+    Duration scrollAnimationDuration,
   }) : super(
           key: key,
           header: header,
@@ -1058,5 +1077,7 @@ class ReorderableColumn extends ReorderableFlex {
           scrollController: scrollController,
           needsLongPressDraggable: needsLongPressDraggable,
           draggingWidgetOpacity: draggingWidgetOpacity,
+          reorderAnimationDuration: reorderAnimationDuration,
+          scrollAnimationDuration: scrollAnimationDuration,
         );
 }
