@@ -999,7 +999,7 @@ class _ReorderableWrapContentState extends State<_ReorderableWrapContent>
         onAccept: (int accepted) {},
         onLeave: (Object leaving) {},
       );
-      Widget nextDragTarget = DragTarget<int>(
+      Widget dragTarget = DragTarget<int>(
         builder: (BuildContext context, List<int> acceptedCandidates,
                 List<dynamic> rejectedCandidates) =>
             SizedBox(),
@@ -1008,34 +1008,34 @@ class _ReorderableWrapContentState extends State<_ReorderableWrapContent>
         onLeave: (Object leaving) {},
       );
 
-      Widget dragTarget = Stack(
-//        key: keyIndexGlobalKey,
-//        fit: StackFit.passthrough,
-        overflow: Overflow.clip,
-        children: <Widget>[
-          containedDraggable,
-          Positioned(
-              left: 0,
-              top: 0,
-              width: widget.direction == Axis.horizontal
-                  ? _childSizes[index].width / 2
-                  : _childSizes[index].width,
-              height: widget.direction == Axis.vertical
-                  ? _childSizes[index].height / 2
-                  : _childSizes[index].height,
-              child: preDragTarget),
-          Positioned(
-              right: 0,
-              bottom: 0,
-              width: widget.direction == Axis.horizontal
-                  ? _childSizes[index].width / 2
-                  : _childSizes[index].width,
-              height: widget.direction == Axis.vertical
-                  ? _childSizes[index].height / 2
-                  : _childSizes[index].height,
-              child: nextDragTarget),
-        ],
-      );
+//      Widget dragTarget = Stack(
+////        key: keyIndexGlobalKey,
+////        fit: StackFit.passthrough,
+//        overflow: Overflow.clip,
+//        children: <Widget>[
+//          containedDraggable,
+//          Positioned(
+//              left: 0,
+//              top: 0,
+//              width: widget.direction == Axis.horizontal
+//                  ? _childSizes[index].width / 2
+//                  : _childSizes[index].width,
+//              height: widget.direction == Axis.vertical
+//                  ? _childSizes[index].height / 2
+//                  : _childSizes[index].height,
+//              child: preDragTarget),
+//          Positioned(
+//              right: 0,
+//              bottom: 0,
+//              width: widget.direction == Axis.horizontal
+//                  ? _childSizes[index].width / 2
+//                  : _childSizes[index].width,
+//              height: widget.direction == Axis.vertical
+//                  ? _childSizes[index].height / 2
+//                  : _childSizes[index].height,
+//              child: nextDragTarget),
+//        ],
+//      );
 //      return dragTarget;
 //      Widget dragTarget = DragTarget<Key>(
 //        builder: buildDragTarget,
