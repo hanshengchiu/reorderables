@@ -1208,6 +1208,7 @@ class _ReorderableWrapContentState extends State<_ReorderableWrapContent>
 
     return SingleChildScrollView(
 //      key: _contentKey,
+    physics: NeverScrollableScrollPhysics(),
       scrollDirection: widget.scrollDirection,
       child: (widget.buildItemsContainer ?? defaultBuildItemsContainer)(
           context, widget.direction, wrappedChildren),
