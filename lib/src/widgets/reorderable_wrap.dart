@@ -1207,13 +1207,19 @@ class _ReorderableWrapContentState extends State<_ReorderableWrapContent>
       wrappedChildren.add(widget.footer);
     }
 
-    return SingleChildScrollView(
+    return NotificationListener<ScrollNotification>(
+      onNotification: (info){
+        print("NOTIFY => $info");
+        return false;
+      },
+      child: SingleChildScrollView(
 //      key: _contentKey,
-      scrollDirection: widget.scrollDirection,
-      child: (widget.buildItemsContainer ?? defaultBuildItemsContainer)(
-          context, widget.direction, wrappedChildren),
-      padding: widget.padding,
-      controller: _scrollController,
+        scrollDirection: widget.scrollDirection,
+        child: (widget.buildItemsContainer ?? defaultBuildItemsContainer)(
+            context, widget.direction, wrappedChildren),
+        padding: widget.padding,
+        controller: _scrollController,
+      ),
     );
 //    });
   }
