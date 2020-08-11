@@ -539,6 +539,7 @@ class _ReorderableWrapContentState extends State<_ReorderableWrapContent>
     final bool onScreen =
         scrollOffset <= topOffset && scrollOffset >= bottomOffset;
 
+    print("SCROLL - IS ON SCREEN = $onScreen");
     // If the context is off screen, then we request a scroll to make it visible.
     if (!onScreen) {
       _scrolling = true;
