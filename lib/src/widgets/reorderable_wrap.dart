@@ -527,7 +527,7 @@ class _ReorderableWrapContentState extends State<_ReorderableWrapContent>
     final double margin = widget.direction == Axis.horizontal
         ? _dropAreaSize.width
         : _dropAreaSize.height;
-    final double scrollOffset = _scrollController.offset;
+    final double scrollOffset = _scrollController.offset + 500;
     final double topOffset = max(
       _scrollController.position.minScrollExtent,
       viewport.getOffsetToReveal(contextObject, 0.0).offset - margin,
