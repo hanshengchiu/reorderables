@@ -871,6 +871,7 @@ class _ReorderableFlexContentState extends State<_ReorderableFlexContent>
 //    if (widget.scrollController == null) {
     return SingleChildScrollView(
 //      key: _contentKey,
+      physics: NeverScrollableScrollPhysics(),
       scrollDirection: widget.scrollDirection,
       child: (widget.buildItemsContainer ?? defaultBuildItemsContainer)(
           context, widget.direction, wrappedChildren),
