@@ -61,6 +61,7 @@ class ReorderableWrap extends StatefulWidget {
     this.onReorderStarted,
     this.reorderAnimationDuration,
     this.scrollAnimationDuration,
+    this.ignorePrimaryScrollController = false,
   })  : assert(direction != null),
         assert(onReorder != null),
         assert(children != null),
@@ -239,6 +240,7 @@ class ReorderableWrap extends StatefulWidget {
   final int maxMainAxisCount;
   final Duration reorderAnimationDuration;
   final Duration scrollAnimationDuration;
+  final bool ignorePrimaryScrollController;
 
   @override
   _ReorderableWrapState createState() => _ReorderableWrapState();
@@ -299,11 +301,14 @@ class _ReorderableWrapState extends State<ReorderableWrap> {
 
   @override
   Widget build(BuildContext context) {
-    return PassthroughOverlay(
+    final PassthroughOverlay passthroughOverlay = PassthroughOverlay(
         key: _overlayKey,
         initialEntries: <PassthroughOverlayEntry>[
           _listOverlayEntry,
         ]);
+    return widget.ignorePrimaryScrollController
+        ? PrimaryScrollController.none(child: passthroughOverlay)
+        : passthroughOverlay;
   }
 }
 
