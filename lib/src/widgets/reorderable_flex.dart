@@ -55,6 +55,7 @@ class ReorderableFlex extends StatefulWidget {
     this.draggingWidgetOpacity = 0.2,
     this.reorderAnimationDuration,
     this.scrollAnimationDuration,
+    this.ignorePrimaryScrollController = false,
   })  : assert(direction != null),
         assert(onReorder != null),
         assert(children != null),
@@ -102,6 +103,7 @@ class ReorderableFlex extends StatefulWidget {
 
   final Duration reorderAnimationDuration;
   final Duration scrollAnimationDuration;
+  final bool ignorePrimaryScrollController;
 
   @override
   _ReorderableFlexState createState() => _ReorderableFlexState();
@@ -154,11 +156,14 @@ class _ReorderableFlexState extends State<ReorderableFlex> {
 
   @override
   Widget build(BuildContext context) {
-    return PassthroughOverlay(
+    final PassthroughOverlay passthroughOverlay = PassthroughOverlay(
         key: _overlayKey,
         initialEntries: <PassthroughOverlayEntry>[
           _listOverlayEntry,
         ]);
+    return widget.ignorePrimaryScrollController
+        ? PrimaryScrollController.none(child: passthroughOverlay)
+        : passthroughOverlay;
   }
 }
 
@@ -974,36 +979,37 @@ class ReorderableRow extends ReorderableFlex {
     double draggingWidgetOpacity = 0.2,
     Duration reorderAnimationDuration,
     Duration scrollAnimationDuration,
+    bool ignorePrimaryScrollController = false,
   }) : super(
-          key: key,
-          header: header,
-          footer: footer,
-          children: children,
-          onReorder: onReorder,
-          onNoReorder: onNoReorder,
-          direction: Axis.horizontal,
-          scrollDirection: Axis.horizontal,
-          padding: padding,
-          buildItemsContainer:
-              (BuildContext context, Axis direction, List<Widget> children) {
-            return Flex(
-                direction: direction,
-                mainAxisAlignment: mainAxisAlignment,
-                mainAxisSize: mainAxisSize,
-                crossAxisAlignment: crossAxisAlignment,
-                textDirection: textDirection,
-                verticalDirection: verticalDirection,
-                textBaseline: textBaseline,
-                children: children);
-          },
-          buildDraggableFeedback: buildDraggableFeedback,
-          mainAxisAlignment: mainAxisAlignment,
-          scrollController: scrollController,
-          needsLongPressDraggable: needsLongPressDraggable,
-          draggingWidgetOpacity: draggingWidgetOpacity,
-          reorderAnimationDuration: reorderAnimationDuration,
-          scrollAnimationDuration: scrollAnimationDuration,
-        );
+            key: key,
+            header: header,
+            footer: footer,
+            children: children,
+            onReorder: onReorder,
+            onNoReorder: onNoReorder,
+            direction: Axis.horizontal,
+            scrollDirection: Axis.horizontal,
+            padding: padding,
+            buildItemsContainer:
+                (BuildContext context, Axis direction, List<Widget> children) {
+              return Flex(
+                  direction: direction,
+                  mainAxisAlignment: mainAxisAlignment,
+                  mainAxisSize: mainAxisSize,
+                  crossAxisAlignment: crossAxisAlignment,
+                  textDirection: textDirection,
+                  verticalDirection: verticalDirection,
+                  textBaseline: textBaseline,
+                  children: children);
+            },
+            buildDraggableFeedback: buildDraggableFeedback,
+            mainAxisAlignment: mainAxisAlignment,
+            scrollController: scrollController,
+            needsLongPressDraggable: needsLongPressDraggable,
+            draggingWidgetOpacity: draggingWidgetOpacity,
+            reorderAnimationDuration: reorderAnimationDuration,
+            scrollAnimationDuration: scrollAnimationDuration,
+            ignorePrimaryScrollController: ignorePrimaryScrollController);
 }
 
 /// Reorderable (drag and drop) version of [Column], a widget that displays its
@@ -1052,33 +1058,34 @@ class ReorderableColumn extends ReorderableFlex {
     double draggingWidgetOpacity = 0.2,
     Duration reorderAnimationDuration,
     Duration scrollAnimationDuration,
+    bool ignorePrimaryScrollController = false,
   }) : super(
-          key: key,
-          header: header,
-          footer: footer,
-          children: children,
-          onReorder: onReorder,
-          onNoReorder: onNoReorder,
-          direction: Axis.vertical,
-          padding: padding,
-          buildItemsContainer:
-              (BuildContext context, Axis direction, List<Widget> children) {
-            return Flex(
-                direction: direction,
-                mainAxisAlignment: mainAxisAlignment,
-                mainAxisSize: mainAxisSize,
-                crossAxisAlignment: crossAxisAlignment,
-                textDirection: textDirection,
-                verticalDirection: verticalDirection,
-                textBaseline: textBaseline,
-                children: children);
-          },
-          buildDraggableFeedback: buildDraggableFeedback,
-          mainAxisAlignment: mainAxisAlignment,
-          scrollController: scrollController,
-          needsLongPressDraggable: needsLongPressDraggable,
-          draggingWidgetOpacity: draggingWidgetOpacity,
-          reorderAnimationDuration: reorderAnimationDuration,
-          scrollAnimationDuration: scrollAnimationDuration,
-        );
+            key: key,
+            header: header,
+            footer: footer,
+            children: children,
+            onReorder: onReorder,
+            onNoReorder: onNoReorder,
+            direction: Axis.vertical,
+            padding: padding,
+            buildItemsContainer:
+                (BuildContext context, Axis direction, List<Widget> children) {
+              return Flex(
+                  direction: direction,
+                  mainAxisAlignment: mainAxisAlignment,
+                  mainAxisSize: mainAxisSize,
+                  crossAxisAlignment: crossAxisAlignment,
+                  textDirection: textDirection,
+                  verticalDirection: verticalDirection,
+                  textBaseline: textBaseline,
+                  children: children);
+            },
+            buildDraggableFeedback: buildDraggableFeedback,
+            mainAxisAlignment: mainAxisAlignment,
+            scrollController: scrollController,
+            needsLongPressDraggable: needsLongPressDraggable,
+            draggingWidgetOpacity: draggingWidgetOpacity,
+            reorderAnimationDuration: reorderAnimationDuration,
+            scrollAnimationDuration: scrollAnimationDuration,
+            ignorePrimaryScrollController: ignorePrimaryScrollController);
 }
