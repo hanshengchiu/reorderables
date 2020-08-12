@@ -1219,6 +1219,9 @@ class _ReorderableWrapContentState extends State<_ReorderableWrapContent>
       wrappedChildren.add(widget.footer);
     }
 
+    return (widget.buildItemsContainer ?? defaultBuildItemsContainer)(
+        context, widget.direction, wrappedChildren);
+//          context, widget.direction, wrappedChildren);
     return SingleChildScrollView(
 //      key: _contentKey,
       scrollDirection: widget.scrollDirection,
