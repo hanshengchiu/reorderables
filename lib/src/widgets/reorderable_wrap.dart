@@ -476,8 +476,10 @@ class _ReorderableWrapContentState extends State<_ReorderableWrapContent>
 
   @override
   void didChangeDependencies() {
-    _scrollController = widget.controller ??
-        PrimaryScrollController.of(context) ??
+    final widgetController = widget.controller;
+    final primaryController = PrimaryScrollController.of(context);
+    _scrollController = widgetController ??
+        primaryController ??
         ScrollController();
     super.didChangeDependencies();
   }
