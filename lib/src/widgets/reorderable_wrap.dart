@@ -528,14 +528,21 @@ class _ReorderableWrapContentState extends State<_ReorderableWrapContent>
         ? _dropAreaSize.width
         : _dropAreaSize.height;
     final double scrollOffset = _scrollController.offset;
+
     final double topOffset = max(
       _scrollController.position.minScrollExtent,
       viewport.getOffsetToReveal(contextObject, 0.0).offset - margin,
     );
+    print("SCROLL - minScrollExtent = ${_scrollController.position.minScrollExtent}");
+    print("SCROLL - topRevealOffset = ${viewport.getOffsetToReveal(contextObject, 0.0).offset}");
+    print("SCROLL - topOffset = $topOffset");
     final double bottomOffset = min(
       _scrollController.position.maxScrollExtent,
       viewport.getOffsetToReveal(contextObject, 1.0).offset + margin,
     );
+    print("SCROLL - maxScrollExtent = ${_scrollController.position.maxScrollExtent}");
+    print("SCROLL - bottomRevealOffset = ${viewport.getOffsetToReveal(contextObject, 1.0).offset}");
+    print("SCROLL - bottomOffset = $bottomOffset");
     final bool onScreen =
         scrollOffset <= topOffset && scrollOffset >= bottomOffset;
 
