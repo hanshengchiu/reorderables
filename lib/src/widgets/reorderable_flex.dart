@@ -868,7 +868,7 @@ class _ReorderableFlexContentState extends State<_ReorderableFlexContent>
 //        controller: _scrollController,
 //      );
 
-    if (_scrollController.hasClients) {
+    if (widget.scrollController != null && _scrollController.hasClients) {
       return (widget.buildItemsContainer ?? defaultBuildItemsContainer)(
           context, widget.direction, wrappedChildren);
     } else {

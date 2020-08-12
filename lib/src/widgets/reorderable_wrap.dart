@@ -1205,7 +1205,7 @@ class _ReorderableWrapContentState extends State<_ReorderableWrapContent>
       wrappedChildren.add(widget.footer);
     }
 
-    if (_scrollController.hasClients) {
+    if (widget.controller != null && _scrollController.hasClients) {
       return (widget.buildItemsContainer ?? defaultBuildItemsContainer)(
           context, widget.direction, wrappedChildren);
     } else {
