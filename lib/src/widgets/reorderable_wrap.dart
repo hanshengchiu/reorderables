@@ -528,30 +528,16 @@ class _ReorderableWrapContentState extends State<_ReorderableWrapContent>
         ? _dropAreaSize.width
         : _dropAreaSize.height;
     final double scrollOffset = _scrollController.offset;
-    print("SCROLL - margin = $margin");
-    print("SCROLL - scrollOffset = $scrollOffset");
     final double topOffset = max(
       _scrollController.position.minScrollExtent,
       viewport.getOffsetToReveal(contextObject, 0.0).offset - margin,
     );
-    print(
-        "SCROLL - minScrollExtent = ${_scrollController.position.minScrollExtent}");
-    print(
-        "SCROLL - topRevealOffset = ${viewport.getOffsetToReveal(contextObject, 0.0).offset}");
-    print("SCROLL - topOffset = $topOffset");
     final double bottomOffset = min(
       _scrollController.position.maxScrollExtent,
       viewport.getOffsetToReveal(contextObject, 1.0).offset + margin,
     );
-    print(
-        "SCROLL - maxScrollExtent = ${_scrollController.position.maxScrollExtent}");
-    print(
-        "SCROLL - bottomRevealOffset = ${viewport.getOffsetToReveal(contextObject, 1.0).offset}");
-    print("SCROLL - bottomOffset = $bottomOffset");
     final bool onScreen =
         scrollOffset <= topOffset && scrollOffset >= bottomOffset;
-
-    print("SCROLL - IS ON SCREEN = $onScreen");
     // If the context is off screen, then we request a scroll to make it visible.
     if (!onScreen) {
       _scrolling = true;
@@ -1219,17 +1205,19 @@ class _ReorderableWrapContentState extends State<_ReorderableWrapContent>
       wrappedChildren.add(widget.footer);
     }
 
-    return (widget.buildItemsContainer ?? defaultBuildItemsContainer)(
-        context, widget.direction, wrappedChildren);
-//          context, widget.direction, wrappedChildren);
-    return SingleChildScrollView(
+    if (_scrollController.hasClients) {
+      return (widget.buildItemsContainer ?? defaultBuildItemsContainer)(
+          context, widget.direction, wrappedChildren);
+    } else {
+      return SingleChildScrollView(
 //      key: _contentKey,
-      scrollDirection: widget.scrollDirection,
-      child: (widget.buildItemsContainer ?? defaultBuildItemsContainer)(
-          context, widget.direction, wrappedChildren),
-      padding: widget.padding,
-      controller: _scrollController,
-    );
+        scrollDirection: widget.scrollDirection,
+        child: (widget.buildItemsContainer ?? defaultBuildItemsContainer)(
+            context, widget.direction, wrappedChildren),
+        padding: widget.padding,
+        controller: _scrollController,
+      );
+    }
 //    });
   }
 
