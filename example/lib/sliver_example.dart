@@ -58,6 +58,9 @@ class _SliverExampleState extends State<SliverExample> {
             //this callback is optional
             debugPrint('${DateTime.now().toString().substring(5, 22)} reorder cancelled. index:$index');
           },
+          onReorderStarted: (int index) {
+            debugPrint('${DateTime.now().toString().substring(5, 22)} reorder started. index:$index');
+          },
         )
       ],
     );
