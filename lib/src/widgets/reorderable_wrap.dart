@@ -69,7 +69,7 @@ class ReorderableWrap extends StatefulWidget {
   /// A non-reorderable header widget to show before the list.
   ///
   /// If null, no header will appear before the list.
-  final Widget header;
+  final List<Widget> header;
   final Widget footer;
 
   /// A custom scroll [controller].
@@ -327,7 +327,7 @@ class _ReorderableWrapContent extends StatefulWidget {
     @required this.maxMainAxisCount,
   });
 
-  final Widget header;
+  final List<Widget> header;
   final Widget footer;
   final ScrollController controller;
   final List<Widget> children;
@@ -1172,7 +1172,7 @@ class _ReorderableWrapContentState extends State<_ReorderableWrapContent>
           _currentDisplayIndex, wrappedChildren.removeAt(_dragStartIndex));
     }
     if (widget.header != null) {
-      wrappedChildren.insert(0, widget.header);
+      wrappedChildren.insertAll(0, widget.header);
     }
     if (widget.footer != null) {
       wrappedChildren.add(widget.footer);

@@ -247,6 +247,7 @@ class ReorderableSliverList extends StatefulWidget {
     this.buildItemsContainer,
     this.buildDraggableFeedback,
     this.onNoReorder,
+    this.onReorderStarted,
     this.enabled = true,
   }): assert(onReorder != null && delegate != null),
       super(key: key);
@@ -266,6 +267,9 @@ class ReorderableSliverList extends StatefulWidget {
   /// children.
   final ReorderCallback onReorder;
   final NoReorderCallback onNoReorder;
+
+  /// Called when the draggable starts being dragged.
+  final ReorderStartedCallback onReorderStarted;
 
   final BuildItemsContainer buildItemsContainer;
   final BuildDraggableFeedback buildDraggableFeedback;
@@ -590,6 +594,9 @@ class _ReorderableSliverListState extends State<ReorderableSliverList>
             draggableContext.size; //keyIndexGlobalKey.currentContext.size;
 //        _draggingContext = draggableContext;
       });
+      if (widget.onReorderStarted != null) {
+        widget.onReorderStarted(index);
+      }
     }
 
     // Places the value from startIndex one space before the element at endIndex.
