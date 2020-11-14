@@ -248,6 +248,8 @@ class ReorderableSliverList extends StatefulWidget {
     this.buildDraggableFeedback,
     this.onNoReorder,
     this.onReorderStarted,
+    this.onDragStart,
+    this.onDragEnd,
     this.enabled = true,
   }): assert(onReorder != null && delegate != null),
       super(key: key);
@@ -267,6 +269,11 @@ class ReorderableSliverList extends StatefulWidget {
   /// children.
   final ReorderCallback onReorder;
   final NoReorderCallback onNoReorder;
+
+  /// Called when a drag process is started
+  final VoidCallback onDragStart;
+  /// Called when the drag process has ended, either via [Draggable.onDraggableCanceled] or [Draggable.onDragCompleted]
+  final VoidCallback onDragEnd;
 
   /// Called when the draggable starts being dragged.
   final ReorderStartedCallback onReorderStarted;
@@ -582,6 +589,7 @@ class _ReorderableSliverListState extends State<ReorderableSliverList>
 
     // Starts dragging toWrap.
     void onDragStarted() {
+      if (widget.onDragStart != null) widget.onDragStart();
 //      debugPrint('${DateTime.now().toString().substring(5, 22)} reorderable_sliver.dart(419) $this.onDragStarted: index:$index');
       setState(() {
         _draggingWidget = toWrap;
@@ -626,6 +634,7 @@ class _ReorderableSliverListState extends State<ReorderableSliverList>
     // Drops toWrap into the last position it was hovering over.
     void onDragEnded() {
 //      reorder(_dragStartIndex, _currentIndex);
+      if (widget.onDragEnd != null) widget.onDragEnd();
       this.setState(() {
         void _update() {
           _reorder(_dragStartIndex, _currentIndex);
