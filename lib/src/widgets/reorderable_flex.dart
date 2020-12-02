@@ -53,6 +53,7 @@ class ReorderableFlex extends StatefulWidget {
     this.scrollController,
     this.needsLongPressDraggable = true,
     this.draggingWidgetOpacity = 0.2,
+    this.enabled = true,
   })  : assert(direction != null),
         assert(onReorder != null),
         assert(children != null),
@@ -98,6 +99,9 @@ class ReorderableFlex extends StatefulWidget {
   final bool needsLongPressDraggable;
   final double draggingWidgetOpacity;
 
+  /// Sets whether the children are reorderable or not
+  final bool enabled;
+
   @override
   _ReorderableFlexState createState() => _ReorderableFlexState();
 }
@@ -140,6 +144,7 @@ class _ReorderableFlexState extends State<ReorderableFlex> {
           scrollController: widget.scrollController,
           needsLongPressDraggable: widget.needsLongPressDraggable,
           draggingWidgetOpacity: widget.draggingWidgetOpacity,
+          enabled: widget.enabled,
         );
       },
     );
@@ -173,6 +178,7 @@ class _ReorderableFlexContent extends StatefulWidget {
     @required this.scrollController,
     @required this.needsLongPressDraggable,
     @required this.draggingWidgetOpacity,
+    @required this.enabled,
   });
 
   final Widget header;
@@ -190,6 +196,9 @@ class _ReorderableFlexContent extends StatefulWidget {
   final MainAxisAlignment mainAxisAlignment;
   final bool needsLongPressDraggable;
   final double draggingWidgetOpacity;
+
+  /// Sets whether the children are reorderable or not
+  final bool enabled;
 
   @override
   _ReorderableFlexContentState createState() => _ReorderableFlexContentState();
@@ -574,7 +583,7 @@ class _ReorderableFlexContentState extends State<_ReorderableFlexContent>
       } else {
         child = widget.needsLongPressDraggable
             ? LongPressDraggable<Key>(
-                maxSimultaneousDrags: 1,
+                maxSimultaneousDrags: widget.enabled? 1 : 0,
                 axis: widget.direction,
                 data: toWrap.key,
                 ignoringFeedbackSemantics: false,
@@ -622,7 +631,7 @@ class _ReorderableFlexContentState extends State<_ReorderableFlexContent>
                     onDragEnded(),
               )
             : Draggable<Key>(
-                maxSimultaneousDrags: 1,
+                maxSimultaneousDrags: widget.enabled? 1 : 0,
                 axis: widget.direction,
                 data: toWrap.key,
                 ignoringFeedbackSemantics: false,
@@ -956,6 +965,7 @@ class ReorderableRow extends ReorderableFlex {
     ScrollController scrollController,
     bool needsLongPressDraggable = true,
     double draggingWidgetOpacity = 0.2,
+    bool enabled = true,
   }) : super(
           key: key,
           header: header,
@@ -983,6 +993,7 @@ class ReorderableRow extends ReorderableFlex {
           scrollController: scrollController,
           needsLongPressDraggable: needsLongPressDraggable,
           draggingWidgetOpacity: draggingWidgetOpacity,
+          enabled: enabled,
         );
 }
 
@@ -1030,6 +1041,7 @@ class ReorderableColumn extends ReorderableFlex {
     ScrollController scrollController,
     bool needsLongPressDraggable = true,
     double draggingWidgetOpacity = 0.2,
+    bool enabled = true,
   }) : super(
           key: key,
           header: header,
@@ -1056,5 +1068,6 @@ class ReorderableColumn extends ReorderableFlex {
           scrollController: scrollController,
           needsLongPressDraggable: needsLongPressDraggable,
           draggingWidgetOpacity: draggingWidgetOpacity,
+          enabled: enabled,
         );
 }

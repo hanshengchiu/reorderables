@@ -66,6 +66,7 @@ class ReorderableTable extends StatelessWidget {
       this.textBaseline,
       this.header,
       this.footer,
+      this.enabled = true,
       @required this.onReorder,
       this.decorateDraggableFeedback,
       this.onNoReorder,
@@ -172,6 +173,9 @@ class ReorderableTable extends StatelessWidget {
   /// alignment of columns.
   final Widget footer;
 
+  /// Sets whether the children are reorderable or not
+  final bool enabled;
+
   /// Called when a child is dropped into a new position to shuffle the
   /// children.
   final ReorderCallback onReorder;
@@ -198,6 +202,7 @@ class ReorderableTable extends StatelessWidget {
         onReorder: onReorder,
         onNoReorder: onNoReorder,
         direction: Axis.vertical,
+        enabled: enabled,
         buildItemsContainer: (BuildContext containerContext, Axis direction,
             List<Widget> children) {
           return TabluarFlex(
