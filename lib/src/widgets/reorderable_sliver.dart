@@ -757,7 +757,7 @@ class _ReorderableSliverListState extends State<ReorderableSliverList>
         // We build the draggable inside of a layout builder so that we can
         // constrain the size of the feedback dragging widget.
         child = LongPressDraggable<int>(
-          maxSimultaneousDrags: widget.enabled?1:0,
+          maxSimultaneousDrags: widget.enabled? 1 : 0,
           axis: Axis.vertical,
           //widget.direction,
           data: index,
