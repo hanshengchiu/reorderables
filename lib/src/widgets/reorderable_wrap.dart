@@ -9,9 +9,11 @@ import 'package:flutter/rendering.dart';
 import 'package:reorderables/reorderables.dart';
 
 import './passthrough_overlay.dart';
+
 //import './transitions.dart';
 import './typedefs.dart';
 import './wrap.dart';
+
 //import './transitions.dart';
 import '../rendering/wrap.dart';
 import 'reorderable_mixin.dart';
@@ -57,6 +59,9 @@ class ReorderableWrap extends StatefulWidget {
     this.maxMainAxisCount,
     this.onNoReorder,
     this.onReorderStarted,
+    this.reorderAnimationDuration,
+    this.scrollAnimationDuration,
+    this.ignorePrimaryScrollController = false,
   })  : assert(direction != null),
         assert(onReorder != null),
         assert(children != null),
@@ -233,6 +238,9 @@ class ReorderableWrap extends StatefulWidget {
 
   final int minMainAxisCount;
   final int maxMainAxisCount;
+  final Duration reorderAnimationDuration;
+  final Duration scrollAnimationDuration;
+  final bool ignorePrimaryScrollController;
 
   @override
   _ReorderableWrapState createState() => _ReorderableWrapState();
@@ -284,6 +292,8 @@ class _ReorderableWrapState extends State<ReorderableWrap> {
           minMainAxisCount: widget.minMainAxisCount,
           maxMainAxisCount: widget.maxMainAxisCount,
           controller: widget.controller,
+          reorderAnimationDuration: widget.reorderAnimationDuration,
+          scrollAnimationDuration: widget.scrollAnimationDuration,
         );
       },
     );
@@ -291,11 +301,14 @@ class _ReorderableWrapState extends State<ReorderableWrap> {
 
   @override
   Widget build(BuildContext context) {
-    return PassthroughOverlay(
+    final PassthroughOverlay passthroughOverlay = PassthroughOverlay(
         key: _overlayKey,
         initialEntries: <PassthroughOverlayEntry>[
           _listOverlayEntry,
         ]);
+    return widget.ignorePrimaryScrollController
+        ? PrimaryScrollController.none(child: passthroughOverlay)
+        : passthroughOverlay;
   }
 }
 
@@ -325,6 +338,8 @@ class _ReorderableWrapContent extends StatefulWidget {
     @required this.verticalDirection,
     @required this.minMainAxisCount,
     @required this.maxMainAxisCount,
+    this.reorderAnimationDuration = const Duration(milliseconds: 200),
+    this.scrollAnimationDuration = const Duration(milliseconds: 200),
   });
 
   final List<Widget> header;
@@ -350,6 +365,8 @@ class _ReorderableWrapContent extends StatefulWidget {
   final VerticalDirection verticalDirection;
   final int minMainAxisCount;
   final int maxMainAxisCount;
+  final Duration reorderAnimationDuration;
+  final Duration scrollAnimationDuration;
 
   @override
   _ReorderableWrapContentState createState() => _ReorderableWrapContentState();
@@ -368,11 +385,11 @@ class _ReorderableWrapContentState extends State<_ReorderableWrapContent>
   static const double _dropAreaMargin = 0.0;
 
   // How long an animation to reorder an element in the list takes.
-  static const Duration _reorderAnimationDuration = Duration(milliseconds: 200);
+  Duration _reorderAnimationDuration;
 
   // How long an animation to scroll to an off-screen element in the
   // list takes.
-  static const Duration _scrollAnimationDuration = Duration(milliseconds: 200);
+  Duration _scrollAnimationDuration;
 
   // Controls scrolls and measures scroll progress.
   ScrollController _scrollController;
@@ -392,6 +409,7 @@ class _ReorderableWrapContentState extends State<_ReorderableWrapContent>
 
   // The last computed size of the feedback widget being dragged.
   Size _draggingFeedbackSize;
+
 //  List<GlobalObjectKey> _childKeys;
   List<BuildContext> _childContexts;
   List<Size> _childSizes;
@@ -441,6 +459,8 @@ class _ReorderableWrapContentState extends State<_ReorderableWrapContent>
   @override
   void initState() {
     super.initState();
+    _reorderAnimationDuration = widget.reorderAnimationDuration;
+    _scrollAnimationDuration = widget.scrollAnimationDuration;
     _entranceController = AnimationController(
         value: 1.0, vsync: this, duration: _reorderAnimationDuration);
     _ghostController = AnimationController(
@@ -461,8 +481,9 @@ class _ReorderableWrapContentState extends State<_ReorderableWrapContent>
 
   @override
   void didChangeDependencies() {
-    _scrollController = 
-        widget.controller ?? (PrimaryScrollController.of(context) ?? ScrollController());
+    _scrollController = widget.controller ??
+        PrimaryScrollController.of(context) ??
+        ScrollController();
     super.didChangeDependencies();
   }
 
@@ -522,7 +543,6 @@ class _ReorderableWrapContentState extends State<_ReorderableWrapContent>
     );
     final bool onScreen =
         scrollOffset <= topOffset && scrollOffset >= bottomOffset;
-
     // If the context is off screen, then we request a scroll to make it visible.
     if (!onScreen) {
       _scrolling = true;
@@ -753,11 +773,21 @@ class _ReorderableWrapContentState extends State<_ReorderableWrapContent>
     }
 
     Widget _makeAppearingWidget(Widget child) {
-      return makeAppearingWidget(child, _entranceController, null, widget.direction,);
+      return makeAppearingWidget(
+        child,
+        _entranceController,
+        null,
+        widget.direction,
+      );
     }
 
     Widget _makeDisappearingWidget(Widget child) {
-      return makeDisappearingWidget(child, _ghostController, null, widget.direction,);
+      return makeDisappearingWidget(
+        child,
+        _ghostController,
+        null,
+        widget.direction,
+      );
     }
 
     //Widget buildDragTarget(BuildContext context, List<Key> acceptedCandidates, List<dynamic> rejectedCandidates) {
@@ -788,7 +818,8 @@ class _ReorderableWrapContentState extends State<_ReorderableWrapContent>
         child = this.widget.needsLongPressDraggable
             ? LongPressDraggable<int>(
                 maxSimultaneousDrags: 1,
-                data: index, //toWrap.key,
+                data: index,
+                //toWrap.key,
                 ignoringFeedbackSemantics: false,
                 feedback: feedbackBuilder,
                 // Wrap toWrapWithSemantics with a widget that supports HitTestBehavior
@@ -817,7 +848,8 @@ class _ReorderableWrapContentState extends State<_ReorderableWrapContent>
               )
             : Draggable<int>(
                 maxSimultaneousDrags: 1,
-                data: index, //toWrap.key,
+                data: index,
+                //toWrap.key,
                 ignoringFeedbackSemantics: false,
                 feedback: feedbackBuilder,
                 child: MetaData(
@@ -1178,14 +1210,20 @@ class _ReorderableWrapContentState extends State<_ReorderableWrapContent>
       wrappedChildren.add(widget.footer);
     }
 
-    return SingleChildScrollView(
+    if (widget.controller != null &&
+        PrimaryScrollController.of(context) == null) {
+      return (widget.buildItemsContainer ?? defaultBuildItemsContainer)(
+          context, widget.direction, wrappedChildren);
+    } else {
+      return SingleChildScrollView(
 //      key: _contentKey,
-      scrollDirection: widget.scrollDirection,
-      child: (widget.buildItemsContainer ?? defaultBuildItemsContainer)(
-          context, widget.direction, wrappedChildren),
-      padding: widget.padding,
-      controller: _scrollController,
-    );
+        scrollDirection: widget.scrollDirection,
+        child: (widget.buildItemsContainer ?? defaultBuildItemsContainer)(
+            context, widget.direction, wrappedChildren),
+        padding: widget.padding,
+        controller: _scrollController,
+      );
+    }
 //    });
   }
 

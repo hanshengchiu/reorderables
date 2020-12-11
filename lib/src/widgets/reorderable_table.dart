@@ -55,22 +55,25 @@ class ReorderableTable extends StatelessWidget {
   ///
   /// The [children], [defaultColumnWidth], and [defaultVerticalAlignment]
   /// arguments must not be null.
-  ReorderableTable(
-      {Key key,
-      this.children = const <ReorderableTableRow>[],
-      this.columnWidths,
-      this.defaultColumnWidth = const FlexColumnWidth(1.0),
-      this.textDirection,
-      this.border,
-      this.defaultVerticalAlignment = TableCellVerticalAlignment.top,
-      this.textBaseline,
-      this.header,
-      this.footer,
-      @required this.onReorder,
-      this.decorateDraggableFeedback,
-      this.onNoReorder,
-      thi})
-      : assert(children != null),
+  ReorderableTable({
+    Key key,
+    this.children = const <ReorderableTableRow>[],
+    this.columnWidths,
+    this.defaultColumnWidth = const FlexColumnWidth(1.0),
+    this.textDirection,
+    this.border,
+    this.defaultVerticalAlignment = TableCellVerticalAlignment.top,
+    this.textBaseline,
+    this.header,
+    this.footer,
+    @required this.onReorder,
+    this.decorateDraggableFeedback,
+    this.onNoReorder,
+    thi,
+    this.reorderAnimationDuration,
+    this.scrollAnimationDuration,
+    this.ignorePrimaryScrollController = false,
+  })  : assert(children != null),
         assert(defaultColumnWidth != null),
         assert(defaultVerticalAlignment != null),
         assert(() {
@@ -177,6 +180,9 @@ class ReorderableTable extends StatelessWidget {
   final ReorderCallback onReorder;
   final NoReorderCallback onNoReorder;
   final DecorateDraggableFeedback decorateDraggableFeedback;
+  final Duration reorderAnimationDuration;
+  final Duration scrollAnimationDuration;
+  final bool ignorePrimaryScrollController;
 
   @override
   Widget build(BuildContext context) {
@@ -254,7 +260,10 @@ class ReorderableTable extends StatelessWidget {
               borderRadius: BorderRadius.zero,
             ),
           );
-        });
+        },
+        reorderAnimationDuration: reorderAnimationDuration,
+        scrollAnimationDuration: scrollAnimationDuration,
+        ignorePrimaryScrollController: ignorePrimaryScrollController);
   }
 
   Widget defaultDecorateDraggableFeedback(
