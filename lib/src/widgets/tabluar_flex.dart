@@ -5,16 +5,16 @@ import '../rendering/tabluar_flex.dart';
 
 class TabluarFlex extends Flex {
   TabluarFlex({
-    Key key,
-    @required Axis direction,
+    required Axis direction,
     MainAxisAlignment mainAxisAlignment = MainAxisAlignment.start,
     MainAxisSize mainAxisSize = MainAxisSize.max,
     CrossAxisAlignment crossAxisAlignment = CrossAxisAlignment.center,
-    TextDirection textDirection,
+    TextDirection? textDirection,
     VerticalDirection verticalDirection = VerticalDirection.down,
-    TextBaseline textBaseline,
+    TextBaseline? textBaseline,
     List<Widget> children = const <Widget>[],
     this.decoration,
+    Key? key,
   }) : super(
           key: key,
           children: children,
@@ -30,7 +30,7 @@ class TabluarFlex extends Flex {
   /// What decoration to paint.
   ///
   /// Commonly a [BoxDecoration].
-  final Decoration decoration;
+  final Decoration? decoration;
 
   @override
   RenderTabluarFlex createRenderObject(BuildContext context) {
@@ -231,15 +231,15 @@ class TabluarRow extends TabluarFlex {
   /// `start` or `end` values for the [mainAxisAlignment], the [textDirection]
   /// must not be null.
   TabluarRow({
-    Key key,
     MainAxisAlignment mainAxisAlignment = MainAxisAlignment.start,
     MainAxisSize mainAxisSize = MainAxisSize.max,
     CrossAxisAlignment crossAxisAlignment = CrossAxisAlignment.center,
-    TextDirection textDirection,
+    TextDirection? textDirection,
     VerticalDirection verticalDirection = VerticalDirection.down,
-    TextBaseline textBaseline,
+    TextBaseline? textBaseline,
     List<Widget> children = const <Widget>[],
-    Decoration decoration,
+    Decoration? decoration,
+    Key? key,
   }) : super(
           children: children,
           key: key,
@@ -429,15 +429,15 @@ class TabluarColumn extends TabluarFlex {
   /// to be necessary to disambiguate `start` or `end` values for the
   /// [crossAxisAlignment], the [textDirection] must not be null.
   TabluarColumn({
-    Key key,
     MainAxisAlignment mainAxisAlignment = MainAxisAlignment.start,
     MainAxisSize mainAxisSize = MainAxisSize.max,
     CrossAxisAlignment crossAxisAlignment = CrossAxisAlignment.center,
-    TextDirection textDirection,
     VerticalDirection verticalDirection = VerticalDirection.down,
-    TextBaseline textBaseline,
     List<Widget> children = const <Widget>[],
-    Decoration decoration,
+    TextDirection? textDirection,
+    TextBaseline? textBaseline,
+    Decoration? decoration,
+    Key? key,
   }) : super(
           children: children,
           key: key,

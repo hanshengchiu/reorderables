@@ -4,11 +4,11 @@ class ReorderableWidget extends StatelessWidget implements ReorderableItem {
   final Widget child;
   final bool reorderable;
 
-  ReorderableWidget(
-      {@required this.child, @required this.reorderable, @required Key key})
-      : assert(reorderable != null && reorderable is bool),
-        assert(key != null, 'A key is mandatory for each Widget'),
-        super(key: key);
+  ReorderableWidget({
+    required this.child,
+    required this.reorderable,
+    required Key key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -19,5 +19,5 @@ class ReorderableWidget extends StatelessWidget implements ReorderableItem {
 abstract class ReorderableItem extends Widget {
   final bool reorderable;
 
-  ReorderableItem({@required this.reorderable});
+  ReorderableItem({required this.reorderable});
 }

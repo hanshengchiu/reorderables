@@ -7,7 +7,7 @@ mixin ReorderableMixin {
   Widget makeAppearingWidget(
     Widget child,
     AnimationController entranceController,
-    Size draggingFeedbackSize,
+    Size? draggingFeedbackSize,
     Axis direction,
   ) {
     if (null == draggingFeedbackSize) {
@@ -35,7 +35,7 @@ mixin ReorderableMixin {
   Widget makeDisappearingWidget(
       Widget child,
       AnimationController ghostController,
-      Size draggingFeedbackSize,
+      Size? draggingFeedbackSize,
       Axis direction,
       ) {
     if (null == draggingFeedbackSize) {
