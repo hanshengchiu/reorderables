@@ -251,6 +251,7 @@ class ReorderableSliverList extends StatefulWidget {
     this.onDragStart,
     this.onDragEnd,
     this.enabled = true,
+    this.controller,
   }): assert(onReorder != null && delegate != null),
       super(key: key);
   /// The delegate that provides the children for this widget.
@@ -283,6 +284,8 @@ class ReorderableSliverList extends StatefulWidget {
 
   /// Sets whether the children are reorderable or not
   final bool enabled;
+
+  final ScrollController controller;
 
   @override
   _ReorderableSliverListState createState() => _ReorderableSliverListState();
@@ -370,6 +373,8 @@ class _ReorderableSliverListState extends State<ReorderableSliverList>
         value: 0, vsync: this, duration: _reorderAnimationDuration);
     _entranceController.addStatusListener(_onEntranceStatusChanged);
 
+    _scrollController = widget.controller;
+
 //    if (widget.delegate is ReorderableSliverChildBuilderDelegate) {
 //      _childCount = (widget.delegate as ReorderableSliverChildBuilderDelegate).childCount;
 //    } else if (widget.delegate is ReorderableSliverChildListDelegate) {
@@ -384,7 +389,7 @@ class _ReorderableSliverListState extends State<ReorderableSliverList>
       _attachedScrollPosition = null;
     }
 
-    _scrollController =
+    _scrollController ??=
         PrimaryScrollController.of(context) ?? ScrollController();
 
     if (!_scrollController.hasClients) {
