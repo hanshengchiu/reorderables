@@ -289,8 +289,8 @@ class _ReorderableFlexContentState extends State<_ReorderableFlexContent>
   @override
   void initState() {
     super.initState();
-    _reorderAnimationDuration = widget.reorderAnimationDuration;
-    _scrollAnimationDuration = widget.scrollAnimationDuration;
+    _reorderAnimationDuration = widget.reorderAnimationDuration ?? Duration(milliseconds: 200);
+    _scrollAnimationDuration = widget.scrollAnimationDuration ?? Duration(milliseconds: 200);
     _entranceController = AnimationController(
         value: 1.0, vsync: this, duration: _reorderAnimationDuration);
     _ghostController = AnimationController(
