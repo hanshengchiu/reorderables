@@ -9,11 +9,9 @@ import 'package:flutter/rendering.dart';
 import 'package:reorderables/reorderables.dart';
 
 import './passthrough_overlay.dart';
-
 //import './transitions.dart';
 import './typedefs.dart';
 import './wrap.dart';
-
 //import './transitions.dart';
 import '../rendering/wrap.dart';
 import 'reorderable_mixin.dart';
@@ -963,8 +961,10 @@ class _ReorderableWrapContentState extends State<_ReorderableWrapContent>
         if (!willAccept) {
           return false;
         }
-        assert(_childDisplayIndexToIndex[_currentDisplayIndex] != index &&
-            _currentDisplayIndex != displayIndex);
+        if(!(_childDisplayIndexToIndex[_currentDisplayIndex] != index &&
+            _currentDisplayIndex != displayIndex)){
+          return false;
+        }
 
         if (_wrapKey.currentContext != null) {
           RenderWrapWithMainAxisCount wrapRenderObject =
