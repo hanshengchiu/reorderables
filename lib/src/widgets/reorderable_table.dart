@@ -8,18 +8,17 @@ import '../rendering/tabluar_flex.dart';
 
 class ReorderableTableRow extends TabluarRow {
   ReorderableTableRow({
-    Key key,
     MainAxisAlignment mainAxisAlignment = MainAxisAlignment.start,
     MainAxisSize mainAxisSize = MainAxisSize.max,
     CrossAxisAlignment crossAxisAlignment = CrossAxisAlignment.center,
-    TextDirection textDirection,
+    TextDirection? textDirection,
     VerticalDirection verticalDirection = VerticalDirection.down,
-    TextBaseline textBaseline,
+    TextBaseline? textBaseline,
     List<Widget> children = const <Widget>[],
-    Decoration decoration,
+    Decoration? decoration,
+    Key? key,
   }) : super(
           children: children,
-          key: key,
           mainAxisAlignment: mainAxisAlignment,
           mainAxisSize: mainAxisSize,
           crossAxisAlignment: crossAxisAlignment,
@@ -27,6 +26,7 @@ class ReorderableTableRow extends TabluarRow {
           verticalDirection: verticalDirection,
           textBaseline: textBaseline,
           decoration: decoration,
+          key: key,
         );
 }
 
@@ -56,7 +56,7 @@ class ReorderableTable extends StatelessWidget {
   /// The [children], [defaultColumnWidth], and [defaultVerticalAlignment]
   /// arguments must not be null.
   ReorderableTable({
-    Key key,
+    required this.onReorder,
     this.children = const <ReorderableTableRow>[],
     this.columnWidths,
     this.defaultColumnWidth = const FlexColumnWidth(1.0),
@@ -66,26 +66,13 @@ class ReorderableTable extends StatelessWidget {
     this.textBaseline,
     this.header,
     this.footer,
-    @required this.onReorder,
     this.decorateDraggableFeedback,
     this.onNoReorder,
-    thi,
     this.reorderAnimationDuration,
     this.scrollAnimationDuration,
     this.ignorePrimaryScrollController = false,
-  })  : assert(children != null),
-        assert(defaultColumnWidth != null),
-        assert(defaultVerticalAlignment != null),
-        assert(() {
-          if (children.any((ReorderableTableRow row) =>
-              row.children.any((Widget cell) => cell == null))) {
-            throw FlutterError(
-                'One of the children of one of the rows of the table was null.\n'
-                'The children of a ReorderableTableRow must not be null.');
-          }
-          return true;
-        }()),
-        assert(() {
+    Key? key,
+  })  : assert(() {
           if (children.any((ReorderableTableRow row1) =>
               row1.key != null &&
               children.any((ReorderableTableRow row2) =>
@@ -145,7 +132,7 @@ class ReorderableTable extends StatelessWidget {
   /// sizing algorithms are used here. In particular, [IntrinsicColumnWidth] is
   /// quite expensive because it needs to measure each cell in the column to
   /// determine the intrinsic size of the column.
-  final Map<int, TableColumnWidth> columnWidths;
+  final Map<int, TableColumnWidth>? columnWidths;
 
   /// How to determine with widths of columns that don't have an explicit sizing algorithm.
   ///
@@ -156,32 +143,32 @@ class ReorderableTable extends StatelessWidget {
   /// The direction in which the columns are ordered.
   ///
   /// Defaults to the ambient [Directionality].
-  final TextDirection textDirection;
+  final TextDirection? textDirection;
 
   /// The style to use when painting the boundary and interior divisions of the table.
-  final TableBorder border;
+  final TableBorder? border;
 
   /// How cells that do not explicitly specify a vertical alignment are aligned vertically.
   final TableCellVerticalAlignment defaultVerticalAlignment;
 
   /// The text baseline to use when aligning rows using [TableCellVerticalAlignment.baseline].
-  final TextBaseline textBaseline;
+  final TextBaseline? textBaseline;
 
   /// Non-reorderable widget at top of the table. Cells in [header] also affects
   /// alignment of columns.
-  final Widget header;
+  final Widget? header;
 
   /// Non-reorderable widget at top of the table. Cells in [footer] also affects
   /// alignment of columns.
-  final Widget footer;
+  final Widget? footer;
 
   /// Called when a child is dropped into a new position to shuffle the
   /// children.
   final ReorderCallback onReorder;
-  final NoReorderCallback onNoReorder;
-  final DecorateDraggableFeedback decorateDraggableFeedback;
-  final Duration reorderAnimationDuration;
-  final Duration scrollAnimationDuration;
+  final NoReorderCallback? onNoReorder;
+  final DecorateDraggableFeedback? decorateDraggableFeedback;
+  final Duration? reorderAnimationDuration;
+  final Duration? scrollAnimationDuration;
   final bool ignorePrimaryScrollController;
 
   @override
@@ -220,9 +207,9 @@ class ReorderableTable extends StatelessWidget {
         buildDraggableFeedback: (BuildContext feedbackContext,
             BoxConstraints constraints, Widget child) {
           // The child is a ReorderableTableRow because children is a List<ReorderableTableRow>
-          ReorderableTableRow tableRow = child;
+          ReorderableTableRow tableRow = child as ReorderableTableRow;
           RenderTabluarFlex renderTabluarFlex =
-              tableKey.currentContext.findRenderObject();
+              tableKey.currentContext!.findRenderObject() as RenderTabluarFlex;
           int grandChildIndex = 0;
           for (;
               grandChildIndex < tableRow.children.length;
@@ -230,7 +217,7 @@ class ReorderableTable extends StatelessWidget {
             tableRow.children[grandChildIndex] = ConstrainedBox(
                 constraints: BoxConstraints(
                     minWidth: renderTabluarFlex
-                        .maxGrandchildrenCrossSize[grandChildIndex]),
+                        .maxGrandchildrenCrossSize[grandChildIndex]!),
                 child: tableRow.children[grandChildIndex]);
           }
           for (;
@@ -240,7 +227,7 @@ class ReorderableTable extends StatelessWidget {
             tableRow.children.add(ConstrainedBox(
               constraints: BoxConstraints(
                   minWidth: renderTabluarFlex
-                      .maxGrandchildrenCrossSize[grandChildIndex]),
+                      .maxGrandchildrenCrossSize[grandChildIndex]!),
             ));
           }
 

@@ -12,8 +12,8 @@ class SafeStatefulBuilder extends StatefulWidget {
   ///
   /// The [builder] argument must not be null.
   const SafeStatefulBuilder({
-    Key key,
-    @required this.builder,
+    required this.builder,
+    Key? key,
   })  : assert(builder != null),
         super(key: key);
 

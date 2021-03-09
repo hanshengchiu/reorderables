@@ -5,14 +5,14 @@ import '../rendering/wrap.dart';
 
 class WrapWithMainAxisCount extends Wrap {
   WrapWithMainAxisCount({
-    Key key,
+    Key? key,
     Axis direction = Axis.horizontal,
     WrapAlignment alignment = WrapAlignment.start,
     double spacing = 0.0,
     WrapAlignment runAlignment = WrapAlignment.start,
     double runSpacing = 0.0,
     WrapCrossAlignment crossAxisAlignment = WrapCrossAlignment.start,
-    TextDirection textDirection,
+    TextDirection? textDirection,
     VerticalDirection verticalDirection = VerticalDirection.down,
     List<Widget> children = const <Widget>[],
     this.minMainAxisCount,
@@ -29,8 +29,8 @@ class WrapWithMainAxisCount extends Wrap {
             verticalDirection: verticalDirection,
             children: children);
 
-  final int minMainAxisCount;
-  final int maxMainAxisCount;
+  final int? minMainAxisCount;
+  final int? maxMainAxisCount;
 
   @override
   RenderWrapWithMainAxisCount createRenderObject(BuildContext context) {
