@@ -4,14 +4,14 @@ import 'package:reorderables/reorderables.dart';
 
 class NestedWrapExample extends StatefulWidget {
   NestedWrapExample({
-    Key key,
+    Key? key,
     this.depth = 0,
     this.valuePrefix = '',
     this.color,
   }) : super(key: key);
   final int depth;
   final String valuePrefix;
-  final Color color;
+  final Color? color;
   final List<Widget> _tiles = [];
 
   @override
@@ -20,8 +20,8 @@ class NestedWrapExample extends StatefulWidget {
 
 class _NestedWrapExampleState extends State<NestedWrapExample> {
 //  List<Widget> _tiles;
-  Color _color;
-  Color _colorBrighter;
+  Color? _color;
+  Color? _colorBrighter;
 
   @override
   void initState() {

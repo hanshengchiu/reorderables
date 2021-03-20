@@ -8,7 +8,7 @@ class RowExample extends StatefulWidget {
 }
 
 class _RowExampleState extends State<RowExample> {
-  List<Widget> _columns;
+  late List<Widget> _columns;
 
   @override
   void initState() {

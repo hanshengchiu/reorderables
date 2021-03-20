@@ -9,7 +9,7 @@ class WrapExample extends StatefulWidget {
 
 class _WrapExampleState extends State<WrapExample> {
   final double _iconSize = 90;
-  List<Widget> _tiles;
+  late List<Widget> _tiles;
 
   @override
   void initState() {
