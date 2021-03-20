@@ -5,9 +5,8 @@
 import 'dart:async';
 import 'dart:collection';
 
-import 'package:flutter/material.dart';
-
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/scheduler.dart';
 
@@ -107,7 +106,6 @@ class PassthroughOverlayEntry {
   bool _maintainState;
 
   set maintainState(bool value) {
-    assert(_maintainState != null);
     if (_maintainState == value) return;
     _maintainState = value;
     assert(_overlay != null);
@@ -155,9 +153,7 @@ class PassthroughOverlayEntry {
 }
 
 class _OverlayEntry extends StatefulWidget {
-  _OverlayEntry(this.entry)
-      : assert(entry != null),
-        super(key: entry._key);
+  _OverlayEntry(this.entry) : super(key: entry._key);
 
   final PassthroughOverlayEntry entry;
 
