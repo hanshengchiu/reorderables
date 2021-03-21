@@ -427,7 +427,7 @@ class _TheatreElement extends RenderObjectElement {
   final Set<Element> _forgottenOffstageChildren = HashSet<Element>();
 
   @override
-  void insertChildRenderObject(RenderBox child, dynamic slot) {
+  void insertRenderObjectChild(RenderBox child, dynamic slot) {
     assert(renderObject.debugValidateChild(child));
     if (slot == _onstageSlot) {
       assert(child is RenderStack);
@@ -439,7 +439,7 @@ class _TheatreElement extends RenderObjectElement {
   }
 
   @override
-  void moveChildRenderObject(RenderBox child, dynamic slot) {
+  void moveRenderObjectChild(RenderBox child, dynamic oldSlot, dynamic slot) {
     if (slot == _onstageSlot) {
       renderObject.remove(child);
       assert(child is RenderStack);
@@ -456,7 +456,7 @@ class _TheatreElement extends RenderObjectElement {
   }
 
   @override
-  void removeChildRenderObject(RenderBox child) {
+  void removeRenderObjectChild(RenderBox child, dynamic slot) {
     if (renderObject.child == child) {
       renderObject.child = null;
     } else {
@@ -478,7 +478,7 @@ class _TheatreElement extends RenderObjectElement {
   }
 
   @override
-  bool forgetChild(Element child) {
+  void forgetChild(Element child) {
     if (child == _onstage) {
       _onstage = null;
     } else {
@@ -486,7 +486,7 @@ class _TheatreElement extends RenderObjectElement {
       assert(!_forgottenOffstageChildren.contains(child));
       _forgottenOffstageChildren.add(child);
     }
-    return true;
+    super.forgetChild(child);
   }
 
   @override
