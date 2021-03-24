@@ -1,3 +1,7 @@
+## [0.4.0] - 24 March 2021.
+
+* Initial Null-Safety release.
+
 ## [0.3.2] - 10 March 2020.
 * Fix health suggestions.
 
@@ -5,7 +9,7 @@
 * Supports making individual child non-reorderable. See ReorderableColumn example 1.
 
 ## [0.3.0] - 10 Jan 2020.
-* Fix: Bad type in onLeave 
+* Fix: Bad type in onLeave
 
 ## [0.2.12] - 22 June 2019.
 * Removed dependency of FlutterErrorDetails and other ErrorXXX classes.
