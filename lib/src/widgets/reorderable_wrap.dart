@@ -715,34 +715,32 @@ class _ReorderableWrapContentState extends State<_ReorderableWrapContent>
       final MaterialLocalizations localizations =
           MaterialLocalizations.of(context);
 
-      if (localizations != null) {
-        // If the item can move to before its current position in the list.
-        if (index > 0) {
-          semanticsActions[CustomSemanticsAction(
-              label: localizations.reorderItemToStart)] = moveToStart;
-          String reorderItemBefore = localizations.reorderItemUp;
-          if (widget.direction == Axis.horizontal) {
-            reorderItemBefore = Directionality.of(context) == TextDirection.ltr
-                ? localizations.reorderItemLeft
-                : localizations.reorderItemRight;
-          }
-          semanticsActions[CustomSemanticsAction(label: reorderItemBefore)] =
-              moveBefore;
+      if (index > 0) {
+        semanticsActions[CustomSemanticsAction(
+            label: localizations.reorderItemToStart)] = moveToStart;
+        String reorderItemBefore = localizations.reorderItemUp;
+        if (widget.direction == Axis.horizontal) {
+          reorderItemBefore = Directionality.of(context) == TextDirection.ltr
+              ? localizations.reorderItemLeft
+              : localizations.reorderItemRight;
         }
+        semanticsActions[CustomSemanticsAction(label: reorderItemBefore)] =
+            moveBefore;
+      }
 
-        // If the item can move to after its current position in the list.
-        if (index < widget.children.length - 1) {
-          String reorderItemAfter = localizations.reorderItemDown;
-          if (widget.direction == Axis.horizontal) {
-            reorderItemAfter = Directionality.of(context) == TextDirection.ltr
-                ? localizations.reorderItemRight
-                : localizations.reorderItemLeft;
-          }
-          semanticsActions[CustomSemanticsAction(label: reorderItemAfter)] =
-              moveAfter;
-          semanticsActions[CustomSemanticsAction(
-              label: localizations.reorderItemToEnd)] = moveToEnd;
+      // If the item can move to after its current position in the list.
+      if (index < widget.children.length - 1) {
+        String reorderItemAfter = localizations.reorderItemDown;
+        if (widget.direction == Axis.horizontal) {
+          reorderItemAfter = Directionality.of(context) == TextDirection.ltr
+              ? localizations.reorderItemRight
+              : localizations.reorderItemLeft;
         }
+        semanticsActions[CustomSemanticsAction(label: reorderItemAfter)] =
+            moveAfter;
+        semanticsActions[
+                CustomSemanticsAction(label: localizations.reorderItemToEnd)] =
+            moveToEnd;
       }
 
       // We pass toWrap with a GlobalKey into the Draggable so that when a list
@@ -959,8 +957,8 @@ class _ReorderableWrapContentState extends State<_ReorderableWrapContent>
         if (!willAccept) {
           return false;
         }
-        if(!(_childDisplayIndexToIndex[_currentDisplayIndex] != index &&
-            _currentDisplayIndex != displayIndex)){
+        if (!(_childDisplayIndexToIndex[_currentDisplayIndex] != index &&
+            _currentDisplayIndex != displayIndex)) {
           return false;
         }
 
@@ -1014,7 +1012,7 @@ class _ReorderableWrapContentState extends State<_ReorderableWrapContent>
       Widget dragTarget = Stack(
 //        key: keyIndexGlobalKey,
 //        fit: StackFit.passthrough,
-        overflow: Overflow.clip,
+        clipBehavior: Clip.hardEdge,
         children: <Widget>[
           containedDraggable,
           Positioned(

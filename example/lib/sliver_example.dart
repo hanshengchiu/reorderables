@@ -8,7 +8,7 @@ class SliverExample extends StatefulWidget {
 }
 
 class _SliverExampleState extends State<SliverExample> {
-  List<Widget> _rows;
+  late List<Widget> _rows;
 
   @override
   void initState() {

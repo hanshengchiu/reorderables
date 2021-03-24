@@ -14,8 +14,7 @@ class SafeStatefulBuilder extends StatefulWidget {
   const SafeStatefulBuilder({
     required this.builder,
     Key? key,
-  })  : assert(builder != null),
-        super(key: key);
+  }) : super(key: key);
 
   /// Called to obtain the child widget.
   ///
