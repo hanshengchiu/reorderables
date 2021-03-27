@@ -657,9 +657,7 @@ class _ReorderableWrapContentState extends State<_ReorderableWrapContent>
         }
 
 //        debugPrint('onDragStarted: index:$index _ghostDisplayIndex:$_ghostDisplayIndex _currentDisplayIndex:$_currentDisplayIndex _dragStartIndex:$_dragStartIndex');
-        if (widget.onReorderStarted != null) {
-          widget.onReorderStarted!(index);
-        }
+        widget.onReorderStarted?.call(index);
       });
     }
 
