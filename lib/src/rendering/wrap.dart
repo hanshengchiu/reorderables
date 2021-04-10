@@ -19,14 +19,14 @@ class WrapWithMainAxisCountParentData extends WrapParentData {
 
 class RenderWrapWithMainAxisCount extends RenderWrap {
   RenderWrapWithMainAxisCount({
-    List<RenderBox> children,
+    List<RenderBox>? children,
     Axis direction = Axis.horizontal,
     WrapAlignment alignment = WrapAlignment.start,
     double spacing = 0.0,
     WrapAlignment runAlignment = WrapAlignment.start,
     double runSpacing = 0.0,
     WrapCrossAlignment crossAxisAlignment = WrapCrossAlignment.start,
-    TextDirection textDirection,
+    TextDirection? textDirection,
     VerticalDirection verticalDirection = VerticalDirection.down,
     this.minMainAxisCount,
     this.maxMainAxisCount,
@@ -36,24 +36,25 @@ class RenderWrapWithMainAxisCount extends RenderWrap {
 //       _minMainAxisCount = minMainAxisCount,
 //       _maxMainAxisCount = maxMainAxisCount,
         super(
-            children: children,
-            direction: direction,
-            alignment: alignment,
-            spacing: spacing,
-            runAlignment: runAlignment,
-            runSpacing: runSpacing,
-            crossAxisAlignment: crossAxisAlignment,
-            textDirection: textDirection,
-            verticalDirection: verticalDirection);
+          children: children,
+          direction: direction,
+          alignment: alignment,
+          spacing: spacing,
+          runAlignment: runAlignment,
+          runSpacing: runSpacing,
+          crossAxisAlignment: crossAxisAlignment,
+          textDirection: textDirection,
+          verticalDirection: verticalDirection,
+        );
 
-  int minMainAxisCount;
+  int? minMainAxisCount;
 
 //  int get minMainAxisCount => _minMainAxisCount;
 //  set minMainAxisCount(int value) {
 //    _minMainAxisCount = value;
 //  }
 
-  int maxMainAxisCount;
+  int? maxMainAxisCount;
 
 //  int get maxMainAxisCount => _maxMainAxisCount;
 //  set maxMainAxisCount(int value) {
@@ -61,60 +62,32 @@ class RenderWrapWithMainAxisCount extends RenderWrap {
 //  }
 
   bool get _debugHasNecessaryDirections {
-    assert(direction != null);
-    assert(alignment != null);
-    assert(runAlignment != null);
-    assert(crossAxisAlignment != null);
     if (firstChild != null && lastChild != firstChild) {
       // i.e. there's more than one child
-      switch (direction) {
-        case Axis.horizontal:
-          assert(textDirection != null,
-              'Horizontal $runtimeType with multiple children has a null textDirection, so the layout order is undefined.');
-          break;
-        case Axis.vertical:
-          assert(verticalDirection != null,
-              'Vertical $runtimeType with multiple children has a null verticalDirection, so the layout order is undefined.');
-          break;
-      }
+      assert(
+          direction == Axis.vertical || textDirection != null,
+          'Horizontal $runtimeType with multiple children has a null '
+          'textDirection, so the layout order is undefined.');
     }
     if (alignment == WrapAlignment.start || alignment == WrapAlignment.end) {
-      switch (direction) {
-        case Axis.horizontal:
-          assert(textDirection != null,
-              'Horizontal $runtimeType with alignment $alignment has a null textDirection, so the alignment cannot be resolved.');
-          break;
-        case Axis.vertical:
-          assert(verticalDirection != null,
-              'Vertical $runtimeType with alignment $alignment has a null verticalDirection, so the alignment cannot be resolved.');
-          break;
-      }
+      assert(
+          direction == Axis.vertical || textDirection != null,
+          'Horizontal $runtimeType with alignment $alignment has a null '
+          'textDirection, so the alignment cannot be resolved.');
     }
     if (runAlignment == WrapAlignment.start ||
         runAlignment == WrapAlignment.end) {
-      switch (direction) {
-        case Axis.horizontal:
-          assert(verticalDirection != null,
-              'Horizontal $runtimeType with runAlignment $runAlignment has a null verticalDirection, so the alignment cannot be resolved.');
-          break;
-        case Axis.vertical:
-          assert(textDirection != null,
-              'Vertical $runtimeType with runAlignment $runAlignment has a null textDirection, so the alignment cannot be resolved.');
-          break;
-      }
+      assert(
+          direction == Axis.horizontal || textDirection != null,
+          'Horizontal $runtimeType with runAlignment $runAlignment has a null '
+          'verticalDirection, so the alignment cannot be resolved.');
     }
     if (crossAxisAlignment == WrapCrossAlignment.start ||
         crossAxisAlignment == WrapCrossAlignment.end) {
-      switch (direction) {
-        case Axis.horizontal:
-          assert(verticalDirection != null,
-              'Horizontal $runtimeType with crossAxisAlignment $crossAxisAlignment has a null verticalDirection, so the alignment cannot be resolved.');
-          break;
-        case Axis.vertical:
-          assert(textDirection != null,
-              'Vertical $runtimeType with crossAxisAlignment $crossAxisAlignment has a null textDirection, so the alignment cannot be resolved.');
-          break;
-      }
+      assert(
+          direction == Axis.horizontal || textDirection != null,
+          'Vertical $runtimeType with crossAxisAlignment $crossAxisAlignment '
+          'has a null textDirection, so the alignment cannot be resolved.');
     }
     return true;
   }
@@ -132,7 +105,7 @@ class RenderWrapWithMainAxisCount extends RenderWrap {
     double runWidth = 0.0;
     double runHeight = 0.0;
     int childCount = 0;
-    RenderBox child = firstChild;
+    RenderBox? child = firstChild;
     int minChildCount = minMainAxisCount ?? 1;
     int maxChildCount = maxMainAxisCount ?? -1;
     while (child != null) {
@@ -167,7 +140,7 @@ class RenderWrapWithMainAxisCount extends RenderWrap {
     double runHeight = 0.0;
     double runWidth = 0.0;
     int childCount = 0;
-    RenderBox child = firstChild;
+    RenderBox? child = firstChild;
     int minChildCount = minMainAxisCount ?? 1;
     int maxChildCount = maxMainAxisCount ?? -1;
     while (child != null) {
@@ -199,14 +172,14 @@ class RenderWrapWithMainAxisCount extends RenderWrap {
       {
 //    Axis sizingDirection,
 //    double extent, // the extent in the direction that isn't the sizing direction
-      int childCountAlongMainAxis,
-      _ChildSizingFunction
+      required int childCountAlongMainAxis,
+      required _ChildSizingFunction
           childSize // a method to find the size in the sizing direction
       }) {
     double runMainAxisExtent = 0.0;
     double maxRunMainAxisExtent = 0.0;
     int childCount = 0;
-    RenderBox child = firstChild;
+    RenderBox? child = firstChild;
 //    final List<double> runMainAxisExtents = [];
     while (child != null) {
       final double childMainAxisExtent = childSize(child, double.infinity);
@@ -238,7 +211,6 @@ class RenderWrapWithMainAxisCount extends RenderWrap {
       case Axis.vertical:
         return _computeIntrinsicWidthForHeight(height);
     }
-    return null;
   }
 
   @override
@@ -252,7 +224,6 @@ class RenderWrapWithMainAxisCount extends RenderWrap {
       case Axis.vertical:
         return _computeIntrinsicWidthForHeight(height);
     }
-    return null;
   }
 
   @override
@@ -266,7 +237,6 @@ class RenderWrapWithMainAxisCount extends RenderWrap {
             childSize: (RenderBox child, double extent) =>
                 child.getMinIntrinsicHeight(extent));
     }
-    return null;
   }
 
   @override
@@ -280,7 +250,6 @@ class RenderWrapWithMainAxisCount extends RenderWrap {
             childSize: (RenderBox child, double extent) =>
                 child.getMaxIntrinsicHeight(extent));
     }
-    return null;
   }
 
   double _getMainAxisExtent(RenderBox child) {
@@ -290,7 +259,6 @@ class RenderWrapWithMainAxisCount extends RenderWrap {
       case Axis.vertical:
         return child.size.height;
     }
-    return 0.0;
   }
 
   double _getCrossAxisExtent(RenderBox child) {
@@ -300,7 +268,6 @@ class RenderWrapWithMainAxisCount extends RenderWrap {
       case Axis.vertical:
         return child.size.width;
     }
-    return 0.0;
   }
 
   Offset _getOffset(double mainAxisOffset, double crossAxisOffset) {
@@ -310,7 +277,6 @@ class RenderWrapWithMainAxisCount extends RenderWrap {
       case Axis.vertical:
         return Offset(crossAxisOffset, mainAxisOffset);
     }
-    return Offset.zero;
   }
 
   double _getChildCrossAxisOffset(bool flipCrossAxis, double runCrossAxisExtent,
@@ -324,17 +290,16 @@ class RenderWrapWithMainAxisCount extends RenderWrap {
       case WrapCrossAlignment.center:
         return freeSpace / 2.0;
     }
-    return 0.0;
   }
 
   bool _hasVisualOverflow = false;
-  List<int> childRunIndexes;
+  late List<int> childRunIndexes;
 
   @override
   void performLayout() {
     assert(_debugHasNecessaryDirections);
     _hasVisualOverflow = false;
-    RenderBox child = firstChild;
+    RenderBox? child = firstChild;
     if (child == null) {
       size = constraints.smallest;
       return;
@@ -357,8 +322,6 @@ class RenderWrapWithMainAxisCount extends RenderWrap {
         if (textDirection == TextDirection.rtl) flipCrossAxis = true;
         break;
     }
-    assert(childConstraints != null);
-    assert(mainAxisLimit != null);
     final double spacing = this.spacing;
     final double runSpacing = this.runSpacing;
     final List<_RunMetrics> runMetrics = <_RunMetrics>[];
@@ -394,7 +357,8 @@ class RenderWrapWithMainAxisCount extends RenderWrap {
       if (childCount > 0) runMainAxisExtent += spacing;
       runCrossAxisExtent = math.max(runCrossAxisExtent, childCrossAxisExtent);
       childCount += 1;
-      final WrapWithMainAxisCountParentData childParentData = child.parentData;
+      final WrapWithMainAxisCountParentData childParentData =
+          child.parentData! as WrapWithMainAxisCountParentData;
       childParentData._runIndex = runMetrics.length;
       child = childParentData.nextSibling;
       childRunIndexes.add(runIndex);
@@ -505,7 +469,7 @@ class RenderWrapWithMainAxisCount extends RenderWrap {
 
       while (child != null) {
         final WrapWithMainAxisCountParentData childParentData =
-            child.parentData;
+            child.parentData! as WrapWithMainAxisCountParentData;
         if (childParentData._runIndex != i) break;
         final double childMainAxisExtent = _getMainAxisExtent(child);
         final double childCrossAxisExtent = _getCrossAxisExtent(child);

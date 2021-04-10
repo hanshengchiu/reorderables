@@ -1,11 +1,11 @@
-** Kindly submit PR if you encounter issues and please make sure you're using stable channel releases. Updates might be slow...
+** Kindly submit PR if you encounter issues and please make sure you're using stable channel releases. <br>
+** Maintaining open source software ain't easy. If you've commercially used this software, please consider [support](https://www.buymeacoffee.com/q5gkeA4t2).
 
 # reorderables
 
 [![pub package](https://img.shields.io/pub/v/reorderables.svg)](https://pub.dartlang.org/packages/reorderables)
 [![Awesome Flutter](https://img.shields.io/badge/Awesome-Flutter-blue.svg?longCache=true&style=flat-square)](https://github.com/Solido/awesome-flutter)
 [![Buy Me A Coffee](https://img.shields.io/badge/Donate-Buy%20Me%20A%20Coffee-yellow.svg)](https://www.buymeacoffee.com/q5gkeA4t2)
-[![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=2L56VGH228QJE)
 
 
 Various reorderable, a.k.a. drag and drop, Flutter widgets, including reorderable table, row, column, wrap, and sliver list, that make their children draggable and 
