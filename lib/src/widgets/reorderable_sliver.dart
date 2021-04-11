@@ -247,6 +247,7 @@ class ReorderableSliverList extends StatefulWidget {
     this.onDragStart,
     this.onDragEnd,
     this.enabled = true,
+    this.controller,
     Key? key,
   })  : super(key: key);
 
@@ -281,6 +282,8 @@ class ReorderableSliverList extends StatefulWidget {
 
   /// Sets whether the children are reorderable or not
   final bool enabled;
+
+  final ScrollController? controller;
 
   @override
   _ReorderableSliverListState createState() => _ReorderableSliverListState();
@@ -381,7 +384,7 @@ class _ReorderableSliverListState extends State<ReorderableSliverList>
     }
 
     _scrollController =
-        PrimaryScrollController.of(context) ?? ScrollController();
+        widget.controller ?? PrimaryScrollController.of(context) ?? ScrollController();
 
     _attachedScrollPosition =
         _scrollController.hasClients ? null : Scrollable.of(context)?.position;
