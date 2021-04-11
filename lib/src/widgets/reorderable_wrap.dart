@@ -253,7 +253,8 @@ class ReorderableWrap extends StatefulWidget {
 // insert Draggables into the Overlay above itself.
 class _ReorderableWrapState extends State<ReorderableWrap> {
   // We use an inner overlay so that the dragging list item doesn't draw outside of the list itself.
-  final GlobalKey _overlayKey = GlobalKey(debugLabel: '$ReorderableWrap overlay key');
+  final GlobalKey _overlayKey =
+      GlobalKey(debugLabel: '$ReorderableWrap overlay key');
 
   // This entry contains the scrolling list itself.
   late PassthroughOverlayEntry _listOverlayEntry;
@@ -296,10 +297,14 @@ class _ReorderableWrapState extends State<ReorderableWrap> {
 
   @override
   Widget build(BuildContext context) {
-    final PassthroughOverlay passthroughOverlay = PassthroughOverlay(key: _overlayKey, initialEntries: <PassthroughOverlayEntry>[
-      _listOverlayEntry,
-    ]);
-    return widget.ignorePrimaryScrollController ? PrimaryScrollController.none(child: passthroughOverlay) : passthroughOverlay;
+    final PassthroughOverlay passthroughOverlay = PassthroughOverlay(
+        key: _overlayKey,
+        initialEntries: <PassthroughOverlayEntry>[
+          _listOverlayEntry,
+        ]);
+    return widget.ignorePrimaryScrollController
+        ? PrimaryScrollController.none(child: passthroughOverlay)
+        : passthroughOverlay;
   }
 }
 
@@ -452,8 +457,10 @@ class _ReorderableWrapContentState extends State<_ReorderableWrapContent>
     super.initState();
     _reorderAnimationDuration = widget.reorderAnimationDuration;
     _scrollAnimationDuration = widget.scrollAnimationDuration;
-    _entranceController = AnimationController(value: 1.0, vsync: this, duration: _reorderAnimationDuration);
-    _ghostController = AnimationController(value: 0, vsync: this, duration: _reorderAnimationDuration);
+    _entranceController = AnimationController(
+        value: 1.0, vsync: this, duration: _reorderAnimationDuration);
+    _ghostController = AnimationController(
+        value: 0, vsync: this, duration: _reorderAnimationDuration);
     _entranceController.addStatusListener(_onEntranceStatusChanged);
 //    _childKeys = List.filled(widget.children.length, null);
     _childContexts = List.filled(widget.children.length, null);
@@ -470,7 +477,9 @@ class _ReorderableWrapContentState extends State<_ReorderableWrapContent>
 
   @override
   void didChangeDependencies() {
-    _scrollController = widget.controller ?? PrimaryScrollController.of(context) ?? ScrollController();
+    _scrollController = widget.controller ??
+        PrimaryScrollController.of(context) ??
+        ScrollController();
     super.didChangeDependencies();
   }
 
@@ -510,11 +519,14 @@ class _ReorderableWrapContentState extends State<_ReorderableWrapContent>
   void _scrollTo(BuildContext context) {
     if (_scrolling) return;
     final RenderObject contextObject = context.findRenderObject()!;
-    final RenderAbstractViewport viewport = RenderAbstractViewport.of(contextObject)!;
+    final RenderAbstractViewport viewport =
+        RenderAbstractViewport.of(contextObject)!;
     // If and only if the current scroll offset falls in-between the offsets
     // necessary to reveal the selected context at the top or bottom of the
     // screen, then it is already on-screen.
-    final double margin = widget.direction == Axis.horizontal ? _dropAreaSize.width : _dropAreaSize.height;
+    final double margin = widget.direction == Axis.horizontal
+        ? _dropAreaSize.width
+        : _dropAreaSize.height;
     final double scrollOffset = _scrollController.offset;
     final double topOffset = max(
       _scrollController.position.minScrollExtent,
@@ -524,7 +536,8 @@ class _ReorderableWrapContentState extends State<_ReorderableWrapContent>
       _scrollController.position.maxScrollExtent,
       viewport.getOffsetToReveal(contextObject, 1.0).offset + margin,
     );
-    final bool onScreen = scrollOffset <= topOffset && scrollOffset >= bottomOffset;
+    final bool onScreen =
+        scrollOffset <= topOffset && scrollOffset >= bottomOffset;
     // If the context is off screen, then we request a scroll to make it visible.
     if (!onScreen) {
       _scrolling = true;
@@ -622,16 +635,23 @@ class _ReorderableWrapContentState extends State<_ReorderableWrapContent>
         }
 
         if (_wrapKey.currentContext != null) {
-          RenderWrapWithMainAxisCount wrapRenderObject = _wrapKey.currentContext!.findRenderObject() as RenderWrapWithMainAxisCount;
+          RenderWrapWithMainAxisCount wrapRenderObject =
+              _wrapKey.currentContext!.findRenderObject()
+                  as RenderWrapWithMainAxisCount;
           _wrapChildRunIndexes = wrapRenderObject.childRunIndexes;
           for (int i = 0; i < _childRunIndexes.length; i++) {
-            _nextChildRunIndexes[i] = _wrapChildRunIndexes[_childIndexToDisplayIndex[i]];
+            _nextChildRunIndexes[i] =
+                _wrapChildRunIndexes[_childIndexToDisplayIndex[i]];
           }
         } else {
-          if (widget.minMainAxisCount != null && widget.maxMainAxisCount != null && widget.minMainAxisCount == widget.maxMainAxisCount) {
-            _wrapChildRunIndexes = List.generate(widget.children.length, (int index) => index ~/ widget.minMainAxisCount!);
+          if (widget.minMainAxisCount != null &&
+              widget.maxMainAxisCount != null &&
+              widget.minMainAxisCount == widget.maxMainAxisCount) {
+            _wrapChildRunIndexes = List.generate(widget.children.length,
+                (int index) => index ~/ widget.minMainAxisCount!);
             for (int i = 0; i < _childRunIndexes.length; i++) {
-              _nextChildRunIndexes[i] = _wrapChildRunIndexes[_childIndexToDisplayIndex[i]];
+              _nextChildRunIndexes[i] =
+                  _wrapChildRunIndexes[_childIndexToDisplayIndex[i]];
             }
           }
         }
@@ -681,7 +701,8 @@ class _ReorderableWrapContentState extends State<_ReorderableWrapContent>
 
     Widget wrapWithSemantics() {
       // First, determine which semantics actions apply.
-      final Map<CustomSemanticsAction, VoidCallback> semanticsActions = <CustomSemanticsAction, VoidCallback>{};
+      final Map<CustomSemanticsAction, VoidCallback> semanticsActions =
+          <CustomSemanticsAction, VoidCallback>{};
 
       // Create the appropriate semantics actions.
       void moveToStart() => reorder(index, 0);
@@ -691,27 +712,35 @@ class _ReorderableWrapContentState extends State<_ReorderableWrapContent>
       // before index+2, which is after the space at index+1.
       void moveAfter() => reorder(index, index + 2);
 
-      final MaterialLocalizations localizations = MaterialLocalizations.of(context);
+      final MaterialLocalizations localizations =
+          MaterialLocalizations.of(context);
 
       if (index > 0) {
-        semanticsActions[CustomSemanticsAction(label: localizations.reorderItemToStart)] = moveToStart;
+        semanticsActions[CustomSemanticsAction(
+            label: localizations.reorderItemToStart)] = moveToStart;
         String reorderItemBefore = localizations.reorderItemUp;
         if (widget.direction == Axis.horizontal) {
-          reorderItemBefore =
-              Directionality.of(context) == TextDirection.ltr ? localizations.reorderItemLeft : localizations.reorderItemRight;
+          reorderItemBefore = Directionality.of(context) == TextDirection.ltr
+              ? localizations.reorderItemLeft
+              : localizations.reorderItemRight;
         }
-        semanticsActions[CustomSemanticsAction(label: reorderItemBefore)] = moveBefore;
+        semanticsActions[CustomSemanticsAction(label: reorderItemBefore)] =
+            moveBefore;
       }
 
       // If the item can move to after its current position in the list.
       if (index < widget.children.length - 1) {
         String reorderItemAfter = localizations.reorderItemDown;
         if (widget.direction == Axis.horizontal) {
-          reorderItemAfter =
-              Directionality.of(context) == TextDirection.ltr ? localizations.reorderItemRight : localizations.reorderItemLeft;
+          reorderItemAfter = Directionality.of(context) == TextDirection.ltr
+              ? localizations.reorderItemRight
+              : localizations.reorderItemLeft;
         }
-        semanticsActions[CustomSemanticsAction(label: reorderItemAfter)] = moveAfter;
-        semanticsActions[CustomSemanticsAction(label: localizations.reorderItemToEnd)] = moveToEnd;
+        semanticsActions[CustomSemanticsAction(label: reorderItemAfter)] =
+            moveAfter;
+        semanticsActions[
+                CustomSemanticsAction(label: localizations.reorderItemToEnd)] =
+            moveToEnd;
       }
 
       // We pass toWrap with a GlobalKey into the Draggable so that when a list
@@ -762,9 +791,11 @@ class _ReorderableWrapContentState extends State<_ReorderableWrapContent>
       Widget feedbackBuilder = Builder(builder: (BuildContext context) {
 //          RenderRepaintBoundary renderObject = _contentKey.currentContext.findRenderObject();
 //          BoxConstraints contentSizeConstraints = BoxConstraints.loose(renderObject.size);
-        BoxConstraints contentSizeConstraints = BoxConstraints.loose(_draggingFeedbackSize!); //renderObject.constraints
+        BoxConstraints contentSizeConstraints = BoxConstraints.loose(
+            _draggingFeedbackSize!); //renderObject.constraints
 //          debugPrint('feedbackBuilder: contentConstraints:$contentSizeConstraints');
-        return (widget.buildDraggableFeedback ?? defaultBuildDraggableFeedback)(context, contentSizeConstraints, toWrap);
+        return (widget.buildDraggableFeedback ?? defaultBuildDraggableFeedback)(
+            context, contentSizeConstraints, toWrap);
       });
 
       bool isReorderable = true;
@@ -787,7 +818,9 @@ class _ReorderableWrapContentState extends State<_ReorderableWrapContent>
                 feedback: feedbackBuilder,
                 // Wrap toWrapWithSemantics with a widget that supports HitTestBehavior
                 // to make sure the whole toWrapWithSemantics responds to pointer events, i.e. dragging
-                child: MetaData(child: toWrapWithSemantics, behavior: HitTestBehavior.opaque),
+                child: MetaData(
+                    child: toWrapWithSemantics,
+                    behavior: HitTestBehavior.opaque),
                 //toWrapWithSemantics,//_dragging == toWrap.key ? const SizedBox() : toWrapWithSemantics,
                 childWhenDragging: IgnorePointer(
                     ignoring: true,
@@ -804,7 +837,8 @@ class _ReorderableWrapContentState extends State<_ReorderableWrapContent>
                 // When the drag does not end inside a DragTarget widget, the
                 // drag fails, but we still reorder the widget to the last position it
                 // had been dragged to.
-                onDraggableCanceled: (Velocity velocity, Offset offset) => onDragEnded(),
+                onDraggableCanceled: (Velocity velocity, Offset offset) =>
+                    onDragEnded(),
               )
             : Draggable<int>(
                 maxSimultaneousDrags: 1,
@@ -812,7 +846,9 @@ class _ReorderableWrapContentState extends State<_ReorderableWrapContent>
                 //toWrap.key,
                 ignoringFeedbackSemantics: false,
                 feedback: feedbackBuilder,
-                child: MetaData(child: toWrapWithSemantics, behavior: HitTestBehavior.opaque),
+                child: MetaData(
+                    child: toWrapWithSemantics,
+                    behavior: HitTestBehavior.opaque),
                 childWhenDragging: IgnorePointer(
                   ignoring: true,
                   child: Opacity(
@@ -823,7 +859,8 @@ class _ReorderableWrapContentState extends State<_ReorderableWrapContent>
                 dragAnchor: DragAnchor.child,
                 onDragStarted: onDragStarted,
                 onDragCompleted: onDragEnded,
-                onDraggableCanceled: (Velocity velocity, Offset offset) => onDragEnded(),
+                onDraggableCanceled: (Velocity velocity, Offset offset) =>
+                    onDragEnded(),
               );
       }
 
@@ -851,41 +888,51 @@ class _ReorderableWrapContentState extends State<_ReorderableWrapContent>
 //      debugPrint('index:$index displayIndex:$displayIndex _nextDisplayIndex:$_nextDisplayIndex _currentDisplayIndex:$_currentDisplayIndex _ghostDisplayIndex:$_ghostDisplayIndex _dragStartIndex:$_dragStartIndex');
 //      debugPrint(' _childRunIndexes:$_childRunIndexes _nextChildRunIndexes:$_nextChildRunIndexes _wrapChildRunIndexes:$_wrapChildRunIndexes');
 
-      List<Widget> _includeMovedAdjacentChildIfNeeded(Widget child, int childDisplayIndex) {
+      List<Widget> _includeMovedAdjacentChildIfNeeded(
+          Widget child, int childDisplayIndex) {
 //        debugPrint(' checking ${_childDisplayIndexToIndex[childDisplayIndex]}($childDisplayIndex)');
         int checkingTargetDisplayIndex = -1;
-        if (_ghostDisplayIndex < _currentDisplayIndex && childDisplayIndex > _ghostDisplayIndex) {
+        if (_ghostDisplayIndex < _currentDisplayIndex &&
+            childDisplayIndex > _ghostDisplayIndex) {
           checkingTargetDisplayIndex = childDisplayIndex - 1;
-        } else if (_ghostDisplayIndex > _currentDisplayIndex && childDisplayIndex < _ghostDisplayIndex) {
+        } else if (_ghostDisplayIndex > _currentDisplayIndex &&
+            childDisplayIndex < _ghostDisplayIndex) {
           checkingTargetDisplayIndex = childDisplayIndex + 1;
         }
         if (checkingTargetDisplayIndex == -1) {
           return [child];
         }
-        int checkingTargetIndex = _childDisplayIndexToIndex[checkingTargetDisplayIndex];
+        int checkingTargetIndex =
+            _childDisplayIndexToIndex[checkingTargetDisplayIndex];
         if (checkingTargetIndex == _dragStartIndex) {
           return [child];
         }
         if (_childRunIndexes[checkingTargetIndex] == -1 ||
-            _childRunIndexes[checkingTargetIndex] == _wrapChildRunIndexes[checkingTargetDisplayIndex]) {
+            _childRunIndexes[checkingTargetIndex] ==
+                _wrapChildRunIndexes[checkingTargetDisplayIndex]) {
           return [child];
         }
 //        debugPrint(' make $checkingTargetIndex($checkingTargetDisplayIndex) disappearing around $index');
-        Widget disappearingPreChild = _makeDisappearingWidget(_wrapChildren[checkingTargetIndex]!);
+        Widget disappearingPreChild =
+            _makeDisappearingWidget(_wrapChildren[checkingTargetIndex]!);
 //        return _buildContainerForMainAxis(
 //          children: _ghostDisplayIndex < _currentDisplayIndex
 //            ? [disappearingPreChild, child]
 //            : [child, disappearingPreChild]
 //        );
 //        debugPrint('${DateTime.now().toString().substring(5, 22)} reorderable_wrap.dart(874) $this._includeMovedAdjacentChildIfNeeded: ${_ghostDisplayIndex < _currentDisplayIndex}');
-        return _ghostDisplayIndex < _currentDisplayIndex ? [disappearingPreChild, child] : [child, disappearingPreChild];
+        return _ghostDisplayIndex < _currentDisplayIndex
+            ? [disappearingPreChild, child]
+            : [child, disappearingPreChild];
       }
 
       _nextChildRunIndexes[index] = _wrapChildRunIndexes[displayIndex];
 
       if (_currentDisplayIndex == -1 || displayIndex == _currentDisplayIndex) {
         //we still wrap dragTarget with a container so that widget's depths are the same and it prevents layout alignment issue
-        return _buildContainerForMainAxis(children: _includeMovedAdjacentChildIfNeeded(containedDraggable, displayIndex));
+        return _buildContainerForMainAxis(
+            children: _includeMovedAdjacentChildIfNeeded(
+                containedDraggable, displayIndex));
       }
 
       bool _onWillAccept(int? toAccept, bool isPre) {
@@ -896,7 +943,9 @@ class _ReorderableWrapContentState extends State<_ReorderableWrapContent>
           nextDisplayIndex = !isPre ? displayIndex + 1 : displayIndex;
         }
 
-        bool movingToAdjacentChild = nextDisplayIndex <= _currentDisplayIndex + 1 && nextDisplayIndex >= _currentDisplayIndex - 1;
+        bool movingToAdjacentChild =
+            nextDisplayIndex <= _currentDisplayIndex + 1 &&
+                nextDisplayIndex >= _currentDisplayIndex - 1;
         bool willAccept = _dragStartIndex == toAccept &&
 //          toAccept != toWrap.key &&
             toAccept != index &&
@@ -908,19 +957,25 @@ class _ReorderableWrapContentState extends State<_ReorderableWrapContent>
         if (!willAccept) {
           return false;
         }
-        if (!(_childDisplayIndexToIndex[_currentDisplayIndex] != index && _currentDisplayIndex != displayIndex)) {
+        if (!(_childDisplayIndexToIndex[_currentDisplayIndex] != index &&
+            _currentDisplayIndex != displayIndex)) {
           return false;
         }
 
         if (_wrapKey.currentContext != null) {
-          RenderWrapWithMainAxisCount wrapRenderObject = _wrapKey.currentContext!.findRenderObject() as RenderWrapWithMainAxisCount;
+          RenderWrapWithMainAxisCount wrapRenderObject =
+              _wrapKey.currentContext!.findRenderObject()
+                  as RenderWrapWithMainAxisCount;
           _wrapChildRunIndexes = wrapRenderObject.childRunIndexes;
 //          for (int i=0; i<_childRunIndexes.length; i++) {
 //            _childRunIndexes[i] = _wrapChildRunIndexes[_childIndexToDisplayIndex[i]];
 //          }
         } else {
-          if (widget.minMainAxisCount != null && widget.maxMainAxisCount != null && widget.minMainAxisCount == widget.maxMainAxisCount) {
-            _wrapChildRunIndexes = List.generate(widget.children.length, (int index) => index ~/ widget.minMainAxisCount!);
+          if (widget.minMainAxisCount != null &&
+              widget.maxMainAxisCount != null &&
+              widget.minMainAxisCount == widget.maxMainAxisCount) {
+            _wrapChildRunIndexes = List.generate(widget.children.length,
+                (int index) => index ~/ widget.minMainAxisCount!);
 //            for (int i=0; i<_childRunIndexes.length; i++) {
 //              _childRunIndexes[i] = _wrapChildRunIndexes[_childIndexToDisplayIndex[i]];
 //            }
@@ -938,13 +993,17 @@ class _ReorderableWrapContentState extends State<_ReorderableWrapContent>
       }
 
       Widget preDragTarget = DragTarget<int>(
-        builder: (BuildContext context, List<int?> acceptedCandidates, List<dynamic> rejectedCandidates) => SizedBox(),
+        builder: (BuildContext context, List<int?> acceptedCandidates,
+                List<dynamic> rejectedCandidates) =>
+            SizedBox(),
         onWillAccept: (int? toAccept) => _onWillAccept(toAccept, true),
         onAccept: (int accepted) {},
         onLeave: (Object? leaving) {},
       );
       Widget nextDragTarget = DragTarget<int>(
-        builder: (BuildContext context, List<int?> acceptedCandidates, List<dynamic> rejectedCandidates) => SizedBox(),
+        builder: (BuildContext context, List<int?> acceptedCandidates,
+                List<dynamic> rejectedCandidates) =>
+            SizedBox(),
         onWillAccept: (int? toAccept) => _onWillAccept(toAccept, false),
         onAccept: (int accepted) {},
         onLeave: (Object? leaving) {},
@@ -959,14 +1018,22 @@ class _ReorderableWrapContentState extends State<_ReorderableWrapContent>
           Positioned(
               left: 0,
               top: 0,
-              width: widget.direction == Axis.horizontal ? _childSizes[index].width / 2 : _childSizes[index].width,
-              height: widget.direction == Axis.vertical ? _childSizes[index].height / 2 : _childSizes[index].height,
+              width: widget.direction == Axis.horizontal
+                  ? _childSizes[index].width / 2
+                  : _childSizes[index].width,
+              height: widget.direction == Axis.vertical
+                  ? _childSizes[index].height / 2
+                  : _childSizes[index].height,
               child: preDragTarget),
           Positioned(
               right: 0,
               bottom: 0,
-              width: widget.direction == Axis.horizontal ? _childSizes[index].width / 2 : _childSizes[index].width,
-              height: widget.direction == Axis.vertical ? _childSizes[index].height / 2 : _childSizes[index].height,
+              width: widget.direction == Axis.horizontal
+                  ? _childSizes[index].width / 2
+                  : _childSizes[index].width,
+              height: widget.direction == Axis.vertical
+                  ? _childSizes[index].height / 2
+                  : _childSizes[index].height,
               child: nextDragTarget),
         ],
       );
@@ -1012,10 +1079,13 @@ class _ReorderableWrapContentState extends State<_ReorderableWrapContent>
 //      );
 
       // Determine the size of the drop area to show under the dragging widget.
-      Widget spacing = _draggingWidget == null ? SizedBox.fromSize(size: _dropAreaSize) : Opacity(opacity: 0.2, child: _draggingWidget);
+      Widget spacing = _draggingWidget == null
+          ? SizedBox.fromSize(size: _dropAreaSize)
+          : Opacity(opacity: 0.2, child: _draggingWidget);
 //      Widget spacing = SizedBox.fromSize(size: _dropAreaSize, child: Container(color: Colors.red));
 
-      if (_childRunIndexes[index] != -1 && _childRunIndexes[index] != _wrapChildRunIndexes[displayIndex]) {
+      if (_childRunIndexes[index] != -1 &&
+          _childRunIndexes[index] != _wrapChildRunIndexes[displayIndex]) {
         dragTarget = _makeAppearingWidget(dragTarget);
       }
 
@@ -1023,14 +1093,21 @@ class _ReorderableWrapContentState extends State<_ReorderableWrapContent>
         Widget ghostSpacing = _makeDisappearingWidget(spacing);
         if (_ghostDisplayIndex < _currentDisplayIndex) {
           //ghost is on the left of current, so shift it to the right
-          return _buildContainerForMainAxis(children: [ghostSpacing] + _includeMovedAdjacentChildIfNeeded(dragTarget, displayIndex));
+          return _buildContainerForMainAxis(
+              children: [ghostSpacing] +
+                  _includeMovedAdjacentChildIfNeeded(dragTarget, displayIndex));
         } else if (_ghostDisplayIndex > _currentDisplayIndex) {
-          return _buildContainerForMainAxis(children: _includeMovedAdjacentChildIfNeeded(dragTarget, displayIndex) + [ghostSpacing]);
+          return _buildContainerForMainAxis(
+              children:
+                  _includeMovedAdjacentChildIfNeeded(dragTarget, displayIndex) +
+                      [ghostSpacing]);
         }
       }
 
       //we still wrap dragTarget with a container so that widget's depths are the same and it prevent's layout alignment issue
-      return _buildContainerForMainAxis(children: _includeMovedAdjacentChildIfNeeded(dragTarget, displayIndex));
+      return _buildContainerForMainAxis(
+          children:
+              _includeMovedAdjacentChildIfNeeded(dragTarget, displayIndex));
 
 //      if (shiftedIndex == _currentDisplayIndex) {
 //        Widget entranceSpacing = SizeTransitionWithIntrinsicSize(
@@ -1076,7 +1153,8 @@ class _ReorderableWrapContentState extends State<_ReorderableWrapContent>
 //    _childSizes = List.filled(widget.children.length, Size(0, 0));
     List<E> _resizeListMember<E>(List<E> listVar, E initValue) {
       if (listVar.length < widget.children.length) {
-        return listVar + List.filled(widget.children.length - listVar.length, initValue);
+        return listVar +
+            List.filled(widget.children.length - listVar.length, initValue);
       } else if (listVar.length > widget.children.length) {
         return listVar.sublist(0, widget.children.length);
       }
@@ -1087,10 +1165,15 @@ class _ReorderableWrapContentState extends State<_ReorderableWrapContent>
     _childContexts = _resizeListMember(_childContexts, null);
     _childSizes = _resizeListMember(_childSizes, Size(0, 0));
 
-    _childDisplayIndexToIndex = List.generate(widget.children.length, (int index) => index);
-    _childIndexToDisplayIndex = List.generate(widget.children.length, (int index) => index);
-    if (_dragStartIndex >= 0 && _currentDisplayIndex >= 0 && _dragStartIndex != _currentDisplayIndex) {
-      _childDisplayIndexToIndex.insert(_currentDisplayIndex, _childDisplayIndexToIndex.removeAt(_dragStartIndex));
+    _childDisplayIndexToIndex =
+        List.generate(widget.children.length, (int index) => index);
+    _childIndexToDisplayIndex =
+        List.generate(widget.children.length, (int index) => index);
+    if (_dragStartIndex >= 0 &&
+        _currentDisplayIndex >= 0 &&
+        _dragStartIndex != _currentDisplayIndex) {
+      _childDisplayIndexToIndex.insert(_currentDisplayIndex,
+          _childDisplayIndexToIndex.removeAt(_dragStartIndex));
     }
     int index = 0;
     _childDisplayIndexToIndex.forEach((int element) {
@@ -1110,9 +1193,12 @@ class _ReorderableWrapContentState extends State<_ReorderableWrapContent>
     for (int i = 0; i < widget.children.length; i++) {
       wrappedChildren.add(_wrap(widget.children[i], i));
     }
-    if (_dragStartIndex >= 0 && _currentDisplayIndex >= 0 && _dragStartIndex != _currentDisplayIndex) {
+    if (_dragStartIndex >= 0 &&
+        _currentDisplayIndex >= 0 &&
+        _dragStartIndex != _currentDisplayIndex) {
       //we are dragging an widget
-      wrappedChildren.insert(_currentDisplayIndex, wrappedChildren.removeAt(_dragStartIndex));
+      wrappedChildren.insert(
+          _currentDisplayIndex, wrappedChildren.removeAt(_dragStartIndex));
     }
     if (widget.header != null) {
       wrappedChildren.insertAll(0, widget.header!);
@@ -1121,13 +1207,16 @@ class _ReorderableWrapContentState extends State<_ReorderableWrapContent>
       wrappedChildren.add(widget.footer!);
     }
 
-    if (widget.controller != null && PrimaryScrollController.of(context) == null) {
-      return (widget.buildItemsContainer ?? defaultBuildItemsContainer)(context, widget.direction, wrappedChildren);
+    if (widget.controller != null &&
+        PrimaryScrollController.of(context) == null) {
+      return (widget.buildItemsContainer ?? defaultBuildItemsContainer)(
+          context, widget.direction, wrappedChildren);
     } else {
       return SingleChildScrollView(
 //      key: _contentKey,
         scrollDirection: widget.scrollDirection,
-        child: (widget.buildItemsContainer ?? defaultBuildItemsContainer)(context, widget.direction, wrappedChildren),
+        child: (widget.buildItemsContainer ?? defaultBuildItemsContainer)(
+            context, widget.direction, wrappedChildren),
         padding: widget.padding,
         controller: _scrollController,
       );
@@ -1135,7 +1224,8 @@ class _ReorderableWrapContentState extends State<_ReorderableWrapContent>
 //    });
   }
 
-  Widget defaultBuildItemsContainer(BuildContext context, Axis direction, List<Widget> children) {
+  Widget defaultBuildItemsContainer(
+      BuildContext context, Axis direction, List<Widget> children) {
     return WrapWithMainAxisCount(
       key: _wrapKey,
       direction: direction,
@@ -1152,12 +1242,14 @@ class _ReorderableWrapContentState extends State<_ReorderableWrapContent>
     );
   }
 
-  Widget defaultBuildDraggableFeedback(BuildContext context, BoxConstraints constraints, Widget child) {
+  Widget defaultBuildDraggableFeedback(
+      BuildContext context, BoxConstraints constraints, Widget child) {
     return Transform(
       transform: new Matrix4.rotationZ(0),
       alignment: FractionalOffset.topLeft,
       child: Material(
-        child: Card(child: ConstrainedBox(constraints: constraints, child: child)),
+        child:
+            Card(child: ConstrainedBox(constraints: constraints, child: child)),
         elevation: 6.0,
         color: Colors.transparent,
         borderRadius: BorderRadius.zero,
