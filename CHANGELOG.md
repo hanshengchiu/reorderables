@@ -1,3 +1,6 @@
+## [0.4.1] - 11 April 2021.
+* Addresses Issue [#111](https://github.com/hanshengchiu/reorderables/issues/111). Resolves ReorderableSliverList ScrollController conflict (thanks [qAison](https://github.com/qAison)).
+
 ## [0.4.0] - 24 March 2021.
 
 * Initial Null-Safety release.
