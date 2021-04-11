@@ -18,7 +18,11 @@ class _ColumnExample1State extends State<ColumnExample1> {
         (int index) => ReorderableWidget(
               reorderable: true,
               key: ValueKey(index),
-              child: Text('This is row $index', textScaleFactor: 1.5),
+              child: Container(
+                  width: double.infinity,
+                  child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text('This is row $index', textScaleFactor: 1.5))),
             ));
 
     _rows += <ReorderableWidget>[
@@ -34,7 +38,12 @@ class _ColumnExample1State extends State<ColumnExample1> {
         (int index) => ReorderableWidget(
               reorderable: true,
               key: ValueKey(11 + index),
-              child: Text('This is row $index', textScaleFactor: 1.5),
+              child: Container(
+                width: double.infinity,
+                child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text('This is row $index', textScaleFactor: 1.5)),
+              ),
             ));
   }
 
@@ -55,7 +64,8 @@ class _ColumnExample1State extends State<ColumnExample1> {
       onReorder: _onReorder,
       onNoReorder: (int index) {
         //this callback is optional
-        debugPrint('${DateTime.now().toString().substring(5, 22)} reorder cancelled. index:$index');
+        debugPrint(
+            '${DateTime.now().toString().substring(5, 22)} reorder cancelled. index:$index');
       },
     );
   }

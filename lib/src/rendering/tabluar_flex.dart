@@ -1,8 +1,8 @@
-import 'dart:math' as math;
 import 'dart:collection';
+import 'dart:math' as math;
 
-import 'package:flutter/rendering.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/rendering.dart';
 
 bool? _startIsTopLeft(Axis direction, TextDirection? textDirection,
     VerticalDirection verticalDirection) {
@@ -114,7 +114,12 @@ class RenderTabluarFlex extends RenderFlex {
   }
 
   // Set during layout if overflow occurred on the main axis.
-  late double _overflow;
+  double _overflow = 0;
+
+  ///
+  /// Determines whether the current overflow value is greater than zero.
+  ///
+  bool get _hasOverflow => _overflow > 0.0;
 
   final ListQueue<LayoutCallback<BoxConstraints>> layoutCallbackQueue =
       ListQueue<LayoutCallback<BoxConstraints>>();
@@ -824,7 +829,7 @@ class RenderTabluarFlex extends RenderFlex {
 
   @override
   void paint(PaintingContext context, Offset offset) {
-    if (_overflow <= 0.0) {
+    if (!_hasOverflow) {
       defaultPaint(context, offset);
       return;
     }
@@ -887,12 +892,12 @@ class RenderTabluarFlex extends RenderFlex {
 
   @override
   Rect? describeApproximatePaintClip(RenderObject child) =>
-      _overflow > 0.0 ? Offset.zero & size : null;
+      _hasOverflow ? Offset.zero & size : null;
 
   @override
   String toStringShort() {
     String header = super.toStringShort();
-    if (_overflow is double && _overflow > 0.0) header += ' OVERFLOWING';
+    if (_hasOverflow) header += ' OVERFLOWING';
     return header;
   }
 }
