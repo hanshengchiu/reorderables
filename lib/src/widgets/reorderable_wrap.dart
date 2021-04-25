@@ -994,14 +994,14 @@ class _ReorderableWrapContentState extends State<_ReorderableWrapContent>
         return willAccept; //_dragging == toAccept && toAccept != toWrap.key;
       }
 
-      // Widget preDragTarget = DragTarget<int>(
-      //   builder: (BuildContext context, List<int?> acceptedCandidates,
-      //           List<dynamic> rejectedCandidates) =>
-      //       SizedBox(),
-      //   onWillAccept: (int? toAccept) => _onWillAccept(toAccept, true),
-      //   onAccept: (int accepted) {},
-      //   onLeave: (Object? leaving) {},
-      // );
+      Widget preDragTarget = DragTarget<int>(
+        builder: (BuildContext context, List<int?> acceptedCandidates,
+                List<dynamic> rejectedCandidates) =>
+            SizedBox(),
+        onWillAccept: (int? toAccept) => _onWillAccept(toAccept, true),
+        onAccept: (int accepted) {},
+        onLeave: (Object? leaving) {},
+      );
       Widget nextDragTarget = DragTarget<int>(
         builder: (BuildContext context, List<int?> acceptedCandidates,
                 List<dynamic> rejectedCandidates) =>
@@ -1017,22 +1017,27 @@ class _ReorderableWrapContentState extends State<_ReorderableWrapContent>
         clipBehavior: Clip.hardEdge,
         children: <Widget>[
           containedDraggable.builder,
-          // Positioned(
-          //     left: 0,
-          //     top: 0,
-          //     width: widget.direction == Axis.horizontal
-          //         ? _childSizes[index].width / 2
-          //         : _childSizes[index].width,
-          //     height: widget.direction == Axis.vertical
-          //         ? _childSizes[index].height / 2
-          //         : _childSizes[index].height,
-          //     child: preDragTarget),
           if (containedDraggable.isReorderable)
             Positioned(
                 left: 0,
                 top: 0,
-                width: _childSizes[index].width,
-                height: _childSizes[index].height,
+                width: widget.direction == Axis.horizontal
+                    ? _childSizes[index].width / 2
+                    : _childSizes[index].width,
+                height: widget.direction == Axis.vertical
+                    ? _childSizes[index].height / 2
+                    : _childSizes[index].height,
+                child: preDragTarget),
+          if (containedDraggable.isReorderable)
+            Positioned(
+                right: 0,
+                bottom: 0,
+                width: widget.direction == Axis.horizontal
+                    ? _childSizes[index].width / 2
+                    : _childSizes[index].width,
+                height: widget.direction == Axis.vertical
+                    ? _childSizes[index].height / 2
+                    : _childSizes[index].height,
                 child: nextDragTarget),
         ],
       );
