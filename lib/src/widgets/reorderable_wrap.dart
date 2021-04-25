@@ -1029,8 +1029,8 @@ class _ReorderableWrapContentState extends State<_ReorderableWrapContent>
           //     child: preDragTarget),
           if (containedDraggable.isReorderable)
             Positioned(
-                right: 0,
-                bottom: 0,
+                left: 0,
+                top: 0,
                 width: _childSizes[index].width,
                 height: _childSizes[index].height,
                 child: nextDragTarget),
