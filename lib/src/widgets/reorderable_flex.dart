@@ -569,7 +569,7 @@ class _ReorderableFlexContentState extends State<_ReorderableFlexContent>
       );
     }
 
-    Widget buildDragTarget(BuildContext context, List<Key?> acceptedCandidates,
+    Widget buildDragTarget(BuildContext context, List<int?> acceptedCandidates,
         List<dynamic> rejectedCandidates) {
       final Widget toWrapWithSemantics = wrapWithSemantics();
 
@@ -596,10 +596,10 @@ class _ReorderableFlexContentState extends State<_ReorderableFlexContent>
         child = toWrap;
       } else {
         child = widget.needsLongPressDraggable
-            ? LongPressDraggable<Key>(
+            ? LongPressDraggable<int>(
                 maxSimultaneousDrags: 1,
                 axis: widget.direction,
-                data: toWrap.key,
+                data: index,
                 ignoringFeedbackSemantics: false,
                 //        feedback: Container(
                 //          alignment: Alignment.topLeft,
@@ -644,10 +644,10 @@ class _ReorderableFlexContentState extends State<_ReorderableFlexContent>
                 onDraggableCanceled: (Velocity velocity, Offset offset) =>
                     onDragEnded(),
               )
-            : Draggable<Key>(
+            : Draggable<int>(
                 maxSimultaneousDrags: 1,
                 axis: widget.direction,
-                data: toWrap.key,
+                data: index,
                 ignoringFeedbackSemantics: false,
                 feedback: feedbackBuilder,
                 // Wrap toWrapWithSemantics with a widget that supports HitTestBehavior
@@ -717,10 +717,10 @@ class _ReorderableFlexContentState extends State<_ReorderableFlexContent>
 
     // We wrap the drag target in a Builder so that we can scroll to its specific context.
     return Builder(builder: (BuildContext context) {
-      Widget dragTarget = DragTarget<Key>(
+      Widget dragTarget = DragTarget<int>(
         builder: buildDragTarget,
-        onWillAccept: (Key? toAccept) {
-          bool willAccept = _dragging == toAccept && toAccept != toWrap.key;
+        onWillAccept: (int? toAccept) {
+          bool willAccept = _dragStartIndex == toAccept && toAccept != index;
 
 //          debugPrint('${DateTime.now().toString().substring(5, 22)} reorderable_flex.dart(609) $this._wrap: '
 //            'onWillAccept: toAccept:$toAccept return:$willAccept _nextIndex:$_nextIndex index:$index _currentIndex:$_currentIndex _dragStartIndex:$_dragStartIndex');
@@ -746,7 +746,7 @@ class _ReorderableFlexContentState extends State<_ReorderableFlexContent>
           // If the target is not the original starting point, then we will accept the drop.
           return willAccept; //_dragging == toAccept && toAccept != toWrap.key;
         },
-        onAccept: (Key accepted) {},
+        onAccept: (int accepted) {},
         onLeave: (Object? leaving) {},
       );
 
