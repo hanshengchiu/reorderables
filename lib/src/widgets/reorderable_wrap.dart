@@ -9,9 +9,11 @@ import 'package:flutter/rendering.dart';
 import 'package:reorderables/reorderables.dart';
 
 import './passthrough_overlay.dart';
+
 //import './transitions.dart';
 import './typedefs.dart';
 import './wrap.dart';
+
 //import './transitions.dart';
 import '../rendering/wrap.dart';
 import 'reorderable_mixin.dart';
@@ -877,12 +879,14 @@ class _ReorderableWrapContentState extends State<_ReorderableWrapContent>
 //      _childContexts[index] = context;
 //      var containedDraggable = draggable;
 //      draggable = KeyedSubtree(key: keyIndexGlobalKey, child: draggable);
-      var containedDraggable = Builder(builder: (BuildContext context) {
+      var containedDraggable =
+          ContainedDraggable(Builder(builder: (BuildContext context) {
         _childContexts[index] = context;
 //        return KeyedSubtree(key: keyIndexGlobalKey, child: draggable);
 //        return KeyedSubtree(key: ValueKey(index), child: draggable);
         return draggable;
-      });
+      }), draggable is LongPressDraggable || draggable is Draggable);
+
 //      debugPrint('index:$index displayIndex:$displayIndex _nextDisplayIndex:$_nextDisplayIndex _currentDisplayIndex:$_currentDisplayIndex _ghostDisplayIndex:$_ghostDisplayIndex _dragStartIndex:$_dragStartIndex');
 //      debugPrint(' _childRunIndexes:$_childRunIndexes _nextChildRunIndexes:$_nextChildRunIndexes _wrapChildRunIndexes:$_wrapChildRunIndexes');
 
@@ -930,7 +934,7 @@ class _ReorderableWrapContentState extends State<_ReorderableWrapContent>
         //we still wrap dragTarget with a container so that widget's depths are the same and it prevents layout alignment issue
         return _buildContainerForMainAxis(
             children: _includeMovedAdjacentChildIfNeeded(
-                containedDraggable, displayIndex));
+                containedDraggable.builder, displayIndex));
       }
 
       bool _onWillAccept(int? toAccept, bool isPre) {
@@ -1012,27 +1016,29 @@ class _ReorderableWrapContentState extends State<_ReorderableWrapContent>
 //        fit: StackFit.passthrough,
         clipBehavior: Clip.hardEdge,
         children: <Widget>[
-          containedDraggable,
-          Positioned(
-              left: 0,
-              top: 0,
-              width: widget.direction == Axis.horizontal
-                  ? _childSizes[index].width / 2
-                  : _childSizes[index].width,
-              height: widget.direction == Axis.vertical
-                  ? _childSizes[index].height / 2
-                  : _childSizes[index].height,
-              child: preDragTarget),
-          Positioned(
-              right: 0,
-              bottom: 0,
-              width: widget.direction == Axis.horizontal
-                  ? _childSizes[index].width / 2
-                  : _childSizes[index].width,
-              height: widget.direction == Axis.vertical
-                  ? _childSizes[index].height / 2
-                  : _childSizes[index].height,
-              child: nextDragTarget),
+          containedDraggable.builder,
+          if (containedDraggable.isReorderable)
+            Positioned(
+                left: 0,
+                top: 0,
+                width: widget.direction == Axis.horizontal
+                    ? _childSizes[index].width / 2
+                    : _childSizes[index].width,
+                height: widget.direction == Axis.vertical
+                    ? _childSizes[index].height / 2
+                    : _childSizes[index].height,
+                child: preDragTarget),
+          if (containedDraggable.isReorderable)
+            Positioned(
+                right: 0,
+                bottom: 0,
+                width: widget.direction == Axis.horizontal
+                    ? _childSizes[index].width / 2
+                    : _childSizes[index].width,
+                height: widget.direction == Axis.vertical
+                    ? _childSizes[index].height / 2
+                    : _childSizes[index].height,
+                child: nextDragTarget),
         ],
       );
 //      return dragTarget;
@@ -1254,4 +1260,11 @@ class _ReorderableWrapContentState extends State<_ReorderableWrapContent>
       ),
     );
   }
+}
+
+class ContainedDraggable {
+  Builder builder;
+  bool isReorderable;
+
+  ContainedDraggable(this.builder, this.isReorderable);
 }
