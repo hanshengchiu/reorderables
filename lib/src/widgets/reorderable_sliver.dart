@@ -248,8 +248,9 @@ class ReorderableSliverList extends StatefulWidget {
     this.buildDraggableFeedback,
     this.onNoReorder,
     this.enabled = true,
-  }): assert(onReorder != null && delegate != null),
-      super(key: key);
+  })  : assert(onReorder != null && delegate != null),
+        super(key: key);
+
   /// The delegate that provides the children for this widget.
   ///
   /// The children are constructed lazily using this widget to avoid creating
@@ -278,9 +279,7 @@ class ReorderableSliverList extends StatefulWidget {
 }
 
 class _ReorderableSliverListState extends State<ReorderableSliverList>
-  with TickerProviderStateMixin<ReorderableSliverList>, ReorderableMixin
-{
-
+    with TickerProviderStateMixin<ReorderableSliverList>, ReorderableMixin {
   // The extent along the [widget.scrollDirection] axis to allow a child to
   // drop into when the user reorders list children.
   //
@@ -717,11 +716,21 @@ class _ReorderableSliverListState extends State<ReorderableSliverList>
     }
 
     Widget _makeAppearingWidget(Widget child) {
-      return makeAppearingWidget(child, _entranceController, _draggingFeedbackSize, Axis.vertical,);
+      return makeAppearingWidget(
+        child,
+        _entranceController,
+        _draggingFeedbackSize,
+        Axis.vertical,
+      );
     }
 
     Widget _makeDisappearingWidget(Widget child) {
-      return makeDisappearingWidget(child, _ghostController, _draggingFeedbackSize, Axis.vertical,);
+      return makeDisappearingWidget(
+        child,
+        _ghostController,
+        _draggingFeedbackSize,
+        Axis.vertical,
+      );
     }
 
     Widget buildDragTarget(BuildContext context, List<int> acceptedCandidates,
@@ -750,7 +759,7 @@ class _ReorderableSliverListState extends State<ReorderableSliverList>
         // We build the draggable inside of a layout builder so that we can
         // constrain the size of the feedback dragging widget.
         child = LongPressDraggable<int>(
-          maxSimultaneousDrags: widget.enabled?1:0,
+          maxSimultaneousDrags: widget.enabled ? 1 : 0,
           axis: Axis.vertical,
           //widget.direction,
           data: index,
@@ -783,17 +792,14 @@ class _ReorderableSliverListState extends State<ReorderableSliverList>
               child: toWrapWithSemantics, behavior: HitTestBehavior.opaque),
           //toWrapWithSemantics,//_dragging == toWrap.key ? const SizedBox() : toWrapWithSemantics,
           childWhenDragging: IgnorePointer(
-            ignoring: true,
-            child: SizedBox(
-              // Small values (<50) cause an error when used with ListTile.
-              width: double.infinity,
-              child: Opacity(
-                  opacity: 0,
+              ignoring: true,
+              child: SizedBox(
+                  // Small values (<50) cause an error when used with ListTile.
+                  width: double.infinity,
+                  child: Opacity(
+                      opacity: 0,
 //              child: _makeAppearingWidget(toWrap)
-                  child: Container(width: 0, height: 0, child: toWrap)
-              )
-            )
-          ),
+                      child: Container(width: 0, height: 0, child: toWrap)))),
           //ConstrainedBox(constraints: contentConstraints),//SizedBox(),
           dragAnchor: DragAnchor.child,
           onDragStarted: onDragStarted,
@@ -988,8 +994,10 @@ class _ReorderableSliverListState extends State<ReorderableSliverList>
       transform: Matrix4.rotationZ(0),
       alignment: FractionalOffset.topLeft,
       child: Material(
-        child:
-            Card(child: ConstrainedBox(constraints: constraints, child: child)),
+        child: Card(
+          child: ConstrainedBox(constraints: constraints, child: child),
+          color: Colors.transparent,
+        ),
         elevation: 6.0,
         color: Colors.transparent,
         borderRadius: BorderRadius.zero,
