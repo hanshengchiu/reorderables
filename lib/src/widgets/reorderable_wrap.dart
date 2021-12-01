@@ -43,6 +43,7 @@ class ReorderableWrap extends StatefulWidget {
     this.controller,
     this.direction = Axis.horizontal,
     this.scrollDirection = Axis.vertical,
+    this.scrollPhysics,
     this.padding,
     this.buildItemsContainer,
     this.buildDraggableFeedback,
@@ -91,6 +92,14 @@ class ReorderableWrap extends StatefulWidget {
   /// children are placed in a new run vertically adjacent to the previous run.
   final Axis direction;
   final Axis scrollDirection;
+
+  /// How the scroll view should respond to user input.
+  ///
+  /// For example, determines how the scroll view continues to animate after the
+  /// user stops dragging the scroll view.
+  ///
+  /// Defaults to matching platform conventions.
+  final ScrollPhysics? scrollPhysics;
 
   /// The amount of space by which to inset the [children].
   final EdgeInsets? padding;
@@ -273,6 +282,7 @@ class _ReorderableWrapState extends State<ReorderableWrap> {
           children: widget.children,
           direction: widget.direction,
           scrollDirection: widget.scrollDirection,
+          scrollPhysics: widget.scrollPhysics,
           onReorder: widget.onReorder,
           onNoReorder: widget.onNoReorder,
           onReorderStarted: widget.onReorderStarted,
@@ -317,6 +327,7 @@ class _ReorderableWrapContent extends StatefulWidget {
     required this.children,
     required this.direction,
     required this.scrollDirection,
+    required this.scrollPhysics,
     required this.padding,
     required this.onReorder,
     required this.onNoReorder,
@@ -346,6 +357,7 @@ class _ReorderableWrapContent extends StatefulWidget {
   final List<Widget> children;
   final Axis direction;
   final Axis scrollDirection;
+  final ScrollPhysics? scrollPhysics;
   final EdgeInsets? padding;
   final ReorderCallback onReorder;
   final NoReorderCallback? onNoReorder;
@@ -1219,6 +1231,7 @@ class _ReorderableWrapContentState extends State<_ReorderableWrapContent>
       return SingleChildScrollView(
 //      key: _contentKey,
         scrollDirection: widget.scrollDirection,
+        physics: widget.scrollPhysics,
         child: (widget.buildItemsContainer ?? defaultBuildItemsContainer)(
             context, widget.direction, wrappedChildren),
         padding: widget.padding,
