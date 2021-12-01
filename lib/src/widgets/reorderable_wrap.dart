@@ -9,11 +9,9 @@ import 'package:flutter/rendering.dart';
 import 'package:reorderables/reorderables.dart';
 
 import './passthrough_overlay.dart';
-
 //import './transitions.dart';
 import './typedefs.dart';
 import './wrap.dart';
-
 //import './transitions.dart';
 import '../rendering/wrap.dart';
 import 'reorderable_mixin.dart';
@@ -840,12 +838,11 @@ class _ReorderableWrapContentState extends State<_ReorderableWrapContent>
                         opacity: 0.2,
                         //child: toWrap,//Container(width: 0, height: 0, child: toWrap)
                         child: _makeAppearingWidget(toWrap))),
-                //ConstrainedBox(constraints: contentConstraints),//SizedBox(),
-                dragAnchor: DragAnchor.child,
                 onDragStarted: onDragStarted,
                 // When the drag ends inside a DragTarget widget, the drag
                 // succeeds, and we reorder the widget into position appropriately.
                 onDragCompleted: onDragEnded,
+                dragAnchorStrategy: childDragAnchorStrategy,
                 // When the drag does not end inside a DragTarget widget, the
                 // drag fails, but we still reorder the widget to the last position it
                 // had been dragged to.
@@ -868,9 +865,9 @@ class _ReorderableWrapContentState extends State<_ReorderableWrapContent>
                     child: _makeAppearingWidget(toWrap),
                   ),
                 ),
-                dragAnchor: DragAnchor.child,
                 onDragStarted: onDragStarted,
                 onDragCompleted: onDragEnded,
+                dragAnchorStrategy: childDragAnchorStrategy,
                 onDraggableCanceled: (Velocity velocity, Offset offset) =>
                     onDragEnded(),
               );

@@ -7,9 +7,9 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
-import './reorderable_widget.dart';
 import './passthrough_overlay.dart';
 import './reorderable_mixin.dart';
+import './reorderable_widget.dart';
 import './typedefs.dart';
 
 /// Reorderable (drag and drop) version of [Flex], a widget that displays its
@@ -250,7 +250,6 @@ class _ReorderableFlexContentState extends State<_ReorderableFlexContent>
   // The member of widget.children currently being dragged.
   //
   // Null if no drag is underway.
-  Key? _dragging;
   Widget? _draggingWidget;
 
   // The last computed size of the feedback widget being dragged.
@@ -440,7 +439,6 @@ class _ReorderableFlexContentState extends State<_ReorderableFlexContent>
     void onDragStarted() {
       setState(() {
         _draggingWidget = toWrap;
-        _dragging = toWrap.key;
         _dragStartIndex = index;
         _ghostIndex = index;
         _currentIndex = index;
@@ -462,8 +460,6 @@ class _ReorderableFlexContentState extends State<_ReorderableFlexContent>
       // specifications.
       _ghostController.reverse(from: 0.1);
       _entranceController.reverse(from: 0);
-
-      _dragging = null;
     }
 
     void reorder(int startIndex, int endIndex) {
@@ -524,8 +520,9 @@ class _ReorderableFlexContentState extends State<_ReorderableFlexContent>
         }
         semanticsActions[CustomSemanticsAction(label: reorderItemAfter)] =
             moveAfter;
-        semanticsActions[CustomSemanticsAction(
-            label: localizations.reorderItemToEnd)] = moveToEnd;
+        semanticsActions[
+                CustomSemanticsAction(label: localizations.reorderItemToEnd)] =
+            moveToEnd;
       }
 
       // We pass toWrap with a GlobalKey into the Draggable so that when a list
@@ -632,9 +629,8 @@ class _ReorderableFlexContentState extends State<_ReorderableFlexContent>
                     child: Opacity(
                         opacity: 0,
                         child: Container(width: 0, height: 0, child: toWrap))),
-                //ConstrainedBox(constraints: contentConstraints),//SizedBox(),
-                dragAnchor: DragAnchor.child,
                 onDragStarted: onDragStarted,
+                dragAnchorStrategy: childDragAnchorStrategy,
                 // When the drag ends inside a DragTarget widget, the drag
                 // succeeds, and we reorder the widget into position appropriately.
                 onDragCompleted: onDragEnded,
@@ -660,8 +656,8 @@ class _ReorderableFlexContentState extends State<_ReorderableFlexContent>
                     child: Opacity(
                         opacity: 0,
                         child: Container(width: 0, height: 0, child: toWrap))),
-                dragAnchor: DragAnchor.child,
                 onDragStarted: onDragStarted,
+                dragAnchorStrategy: childDragAnchorStrategy,
                 // When the drag ends inside a DragTarget widget, the drag
                 // succeeds, and we reorder the widget into position appropriately.
                 onDragCompleted: onDragEnded,
