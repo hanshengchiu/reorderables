@@ -13,8 +13,8 @@ import 'package:flutter/rendering.dart';
 import 'package:reorderables/reorderables.dart';
 
 import './basic.dart';
-import './typedefs.dart';
 import './reorderable_mixin.dart';
+import './typedefs.dart';
 
 int _kDefaultSemanticIndexCallback(Widget _, int localIndex) => localIndex;
 
@@ -249,7 +249,7 @@ class ReorderableSliverList extends StatefulWidget {
     this.enabled = true,
     this.controller,
     Key? key,
-  })  : super(key: key);
+  }) : super(key: key);
 
   /// The delegate that provides the children for this widget.
   ///
@@ -383,8 +383,9 @@ class _ReorderableSliverListState extends State<ReorderableSliverList>
       _attachedScrollPosition = null;
     }
 
-    _scrollController =
-        widget.controller ?? PrimaryScrollController.of(context) ?? ScrollController();
+    _scrollController = widget.controller ??
+        PrimaryScrollController.of(context) ??
+        ScrollController();
 
     _attachedScrollPosition =
         _scrollController.hasClients ? null : Scrollable.of(context)?.position;
@@ -696,8 +697,9 @@ class _ReorderableSliverListState extends State<ReorderableSliverList>
 //        }
         semanticsActions[CustomSemanticsAction(label: reorderItemAfter)] =
             moveAfter;
-        semanticsActions[CustomSemanticsAction(
-            label: localizations.reorderItemToEnd)] = moveToEnd;
+        semanticsActions[
+                CustomSemanticsAction(label: localizations.reorderItemToEnd)] =
+            moveToEnd;
       }
 
       // We pass toWrap with a GlobalKey into the Draggable so that when a list
@@ -808,9 +810,8 @@ class _ReorderableSliverListState extends State<ReorderableSliverList>
                       opacity: 0,
 //              child: _makeAppearingWidget(toWrap)
                       child: Container(width: 0, height: 0, child: toWrap)))),
-          //ConstrainedBox(constraints: contentConstraints),//SizedBox(),
-          dragAnchor: DragAnchor.child,
           onDragStarted: onDragStarted,
+          dragAnchorStrategy: childDragAnchorStrategy,
           // When the drag ends inside a DragTarget widget, the drag
           // succeeds, and we reorder the widget into position appropriately.
           onDragCompleted: onDragEnded,
