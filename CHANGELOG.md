@@ -1,3 +1,12 @@
+## [0.4.2] - 01 December 2021.
+* Bugfix: [#75](https://github.com/hanshengchiu/reorderables/issues/75). Add ReorderStartedCallback to ReorderableFlex, Change ReorderableFlex Draggable data to index
+  (thanks [pxsanghyo](https://github.com/pxsanghyo)).
+* New Feature: [#111](https://github.com/hanshengchiu/reorderables/pull/121). Fix: Made Non-ReorderableWrap item non-droppable and non-draggable
+  (thanks [avi-yadav](https://github.com/avi-yadav)).
+* New Feature: [#136](https://github.com/hanshengchiu/reorderables/pull/136). Ft: add scroll phyiscs to SingleChildScrollView in ReorderableWrap
+  (thanks [pcvdheuvel](https://github.com/pcvdheuvel)).
+* New Feature: [#138](https://github.com/hanshengchiu/reorderables/pull/138). Flutter 2.5 deprecation fixes
+  (thanks [diegotori](https://github.com/diegotori)).
 ## [0.4.1] - 11 April 2021.
 * Addresses Issue [#111](https://github.com/hanshengchiu/reorderables/issues/111). Resolves ReorderableSliverList ScrollController conflict (thanks [qAison](https://github.com/qAison)).
 
