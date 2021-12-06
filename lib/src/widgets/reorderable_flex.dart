@@ -630,7 +630,7 @@ class _ReorderableFlexContentState extends State<_ReorderableFlexContent>
                         opacity: 0,
                         child: Container(width: 0, height: 0, child: toWrap))),
                 onDragStarted: onDragStarted,
-                dragAnchorStrategy: childDragAnchorStrategy,
+                dragAnchor: DragAnchor.child,
                 // When the drag ends inside a DragTarget widget, the drag
                 // succeeds, and we reorder the widget into position appropriately.
                 onDragCompleted: onDragEnded,
@@ -657,7 +657,7 @@ class _ReorderableFlexContentState extends State<_ReorderableFlexContent>
                         opacity: 0,
                         child: Container(width: 0, height: 0, child: toWrap))),
                 onDragStarted: onDragStarted,
-                dragAnchorStrategy: childDragAnchorStrategy,
+                dragAnchor: DragAnchor.child,
                 // When the drag ends inside a DragTarget widget, the drag
                 // succeeds, and we reorder the widget into position appropriately.
                 onDragCompleted: onDragEnded,

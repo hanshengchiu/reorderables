@@ -842,7 +842,7 @@ class _ReorderableWrapContentState extends State<_ReorderableWrapContent>
                 // When the drag ends inside a DragTarget widget, the drag
                 // succeeds, and we reorder the widget into position appropriately.
                 onDragCompleted: onDragEnded,
-                dragAnchorStrategy: childDragAnchorStrategy,
+                dragAnchor: DragAnchor.child,
                 // When the drag does not end inside a DragTarget widget, the
                 // drag fails, but we still reorder the widget to the last position it
                 // had been dragged to.
@@ -867,7 +867,7 @@ class _ReorderableWrapContentState extends State<_ReorderableWrapContent>
                 ),
                 onDragStarted: onDragStarted,
                 onDragCompleted: onDragEnded,
-                dragAnchorStrategy: childDragAnchorStrategy,
+                dragAnchor: DragAnchor.child,
                 onDraggableCanceled: (Velocity velocity, Offset offset) =>
                     onDragEnded(),
               );
