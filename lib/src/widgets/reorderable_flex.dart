@@ -51,6 +51,7 @@ class ReorderableFlex extends StatefulWidget {
     this.mainAxisAlignment = MainAxisAlignment.start,
     this.onNoReorder,
     this.onReorderStarted,
+    this.onReordering,
     this.scrollController,
     this.needsLongPressDraggable = true,
     this.draggingWidgetOpacity = 0.2,
@@ -93,6 +94,9 @@ class ReorderableFlex extends StatefulWidget {
 
   /// Called when the draggable starts being dragged.
   final ReorderStartedCallback? onReorderStarted;
+
+  /// Called while the draggable is being dragged.
+  final ReorderingCallback? onReordering;
 
   final BuildItemsContainer? buildItemsContainer;
   final BuildDraggableFeedback? buildDraggableFeedback;
@@ -142,6 +146,7 @@ class _ReorderableFlexState extends State<ReorderableFlex> {
           onReorder: widget.onReorder,
           onNoReorder: widget.onNoReorder,
           onReorderStarted: widget.onReorderStarted,
+          onReordering: widget.onReordering,
           padding: widget.padding,
           buildItemsContainer: widget.buildItemsContainer,
           buildDraggableFeedback: widget.buildDraggableFeedback,
@@ -183,6 +188,7 @@ class _ReorderableFlexContent extends StatefulWidget {
     required this.onReorder,
     required this.onNoReorder,
     required this.onReorderStarted,
+    required this.onReordering,
     required this.mainAxisAlignment,
     required this.scrollController,
     required this.needsLongPressDraggable,
@@ -202,6 +208,7 @@ class _ReorderableFlexContent extends StatefulWidget {
   final ReorderCallback onReorder;
   final NoReorderCallback? onNoReorder;
   final ReorderStartedCallback? onReorderStarted;
+  final ReorderingCallback? onReordering;
   final BuildItemsContainer? buildItemsContainer;
   final BuildDraggableFeedback? buildDraggableFeedback;
   final ScrollController? scrollController;
@@ -630,6 +637,7 @@ class _ReorderableFlexContentState extends State<_ReorderableFlexContent>
                         opacity: 0,
                         child: Container(width: 0, height: 0, child: toWrap))),
                 onDragStarted: onDragStarted,
+                onDragUpdate: widget.onReordering,
                 dragAnchorStrategy: childDragAnchorStrategy,
                 // When the drag ends inside a DragTarget widget, the drag
                 // succeeds, and we reorder the widget into position appropriately.
@@ -657,6 +665,7 @@ class _ReorderableFlexContentState extends State<_ReorderableFlexContent>
                         opacity: 0,
                         child: Container(width: 0, height: 0, child: toWrap))),
                 onDragStarted: onDragStarted,
+                onDragUpdate: widget.onReordering,
                 dragAnchorStrategy: childDragAnchorStrategy,
                 // When the drag ends inside a DragTarget widget, the drag
                 // succeeds, and we reorder the widget into position appropriately.
@@ -974,6 +983,7 @@ class ReorderableRow extends ReorderableFlex {
     BuildDraggableFeedback? buildDraggableFeedback,
     NoReorderCallback? onNoReorder,
     ReorderStartedCallback? onReorderStarted,
+    ReorderingCallback? onReordering,
     ScrollController? scrollController,
     bool needsLongPressDraggable = true,
     double draggingWidgetOpacity = 0.2,
@@ -988,6 +998,7 @@ class ReorderableRow extends ReorderableFlex {
             onReorder: onReorder,
             onNoReorder: onNoReorder,
             onReorderStarted: onReorderStarted,
+            onReordering: onReordering,
             direction: Axis.horizontal,
             scrollDirection: Axis.horizontal,
             padding: padding,
@@ -1055,6 +1066,7 @@ class ReorderableColumn extends ReorderableFlex {
     BuildDraggableFeedback? buildDraggableFeedback,
     NoReorderCallback? onNoReorder,
     ReorderStartedCallback? onReorderStarted,
+    ReorderingCallback? onReordering,
     ScrollController? scrollController,
     bool needsLongPressDraggable = true,
     double draggingWidgetOpacity = 0.2,
@@ -1069,6 +1081,7 @@ class ReorderableColumn extends ReorderableFlex {
             onReorder: onReorder,
             onNoReorder: onNoReorder,
             onReorderStarted: onReorderStarted,
+            onReordering: onReordering,
             direction: Axis.vertical,
             padding: padding,
             buildItemsContainer:
