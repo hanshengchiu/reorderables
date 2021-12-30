@@ -244,6 +244,7 @@ class ReorderableSliverList extends StatefulWidget {
     this.buildDraggableFeedback,
     this.onNoReorder,
     this.onReorderStarted,
+    this.onReordering,
     this.onDragStart,
     this.onDragEnd,
     this.enabled = true,
@@ -267,6 +268,9 @@ class ReorderableSliverList extends StatefulWidget {
   /// children.
   final ReorderCallback onReorder;
   final NoReorderCallback? onNoReorder;
+
+  /// Called while the draggable is being dragged.
+  final ReorderingCallback? onReordering;
 
   /// Called when a drag process is started
   final VoidCallback? onDragStart;
@@ -811,6 +815,7 @@ class _ReorderableSliverListState extends State<ReorderableSliverList>
 //              child: _makeAppearingWidget(toWrap)
                       child: Container(width: 0, height: 0, child: toWrap)))),
           onDragStarted: onDragStarted,
+          onDragUpdate: widget.onReordering,
           dragAnchorStrategy: childDragAnchorStrategy,
           // When the drag ends inside a DragTarget widget, the drag
           // succeeds, and we reorder the widget into position appropriately.
