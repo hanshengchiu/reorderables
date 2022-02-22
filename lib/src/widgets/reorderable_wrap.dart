@@ -60,6 +60,7 @@ class ReorderableWrap extends StatefulWidget {
     this.reorderAnimationDuration = const Duration(milliseconds: 200),
     this.scrollAnimationDuration = const Duration(milliseconds: 200),
     this.ignorePrimaryScrollController = false,
+    this.enableReorder = true,
     Key? key,
   }) :
 //        assert(
@@ -246,6 +247,7 @@ class ReorderableWrap extends StatefulWidget {
   final Duration reorderAnimationDuration;
   final Duration scrollAnimationDuration;
   final bool ignorePrimaryScrollController;
+  final bool enableReorder;
 
   @override
   _ReorderableWrapState createState() => _ReorderableWrapState();
@@ -300,6 +302,7 @@ class _ReorderableWrapState extends State<ReorderableWrap> {
           controller: widget.controller,
           reorderAnimationDuration: widget.reorderAnimationDuration,
           scrollAnimationDuration: widget.scrollAnimationDuration,
+          enableReorder: widget.enableReorder,
         );
       },
     );
@@ -347,6 +350,7 @@ class _ReorderableWrapContent extends StatefulWidget {
     this.controller,
     this.reorderAnimationDuration = const Duration(milliseconds: 200),
     this.scrollAnimationDuration = const Duration(milliseconds: 200),
+    required this.enableReorder
   });
 
   final List<Widget>? header;
@@ -375,6 +379,7 @@ class _ReorderableWrapContent extends StatefulWidget {
   final int? maxMainAxisCount;
   final Duration reorderAnimationDuration;
   final Duration scrollAnimationDuration;
+  final bool enableReorder;
 
   @override
   _ReorderableWrapContentState createState() => _ReorderableWrapContentState();
@@ -445,6 +450,7 @@ class _ReorderableWrapContentState extends State<_ReorderableWrapContent>
   late List<int> _childRunIndexes;
   late List<int> _nextChildRunIndexes;
   late List<Widget?> _wrapChildren;
+  late bool enableReorder;
 
   Size get _dropAreaSize {
     if (_draggingFeedbackSize == null) {
@@ -467,6 +473,7 @@ class _ReorderableWrapContentState extends State<_ReorderableWrapContent>
   @override
   void initState() {
     super.initState();
+    enableReorder = widget.enableReorder;
     _reorderAnimationDuration = widget.reorderAnimationDuration;
     _scrollAnimationDuration = widget.scrollAnimationDuration;
     _entranceController = AnimationController(
@@ -808,7 +815,7 @@ class _ReorderableWrapContentState extends State<_ReorderableWrapContent>
             context, contentSizeConstraints, toWrap);
       });
 
-      bool isReorderable = true;
+      bool isReorderable = widget.enableReorder;
       if (toWrap is ReorderableItem) {
         isReorderable = toWrap.reorderable;
       }
