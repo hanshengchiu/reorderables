@@ -1,3 +1,8 @@
+## [0.4.3] - 22 February 2022.
+* New Feature: [#143](https://github.com/hanshengchiu/reorderables/pull/143). Allow enableReorder on DraggableWrap
+  (thanks [89jd](https://github.com/89jd)).
+* Removed redundant import statements due to latest Dart analysis rules.  
+
 ## [0.4.2] - 01 December 2021.
 * Bugfix: [#75](https://github.com/hanshengchiu/reorderables/issues/75). Add ReorderStartedCallback to ReorderableFlex, Change ReorderableFlex Draggable data to index
   (thanks [pxsanghyo](https://github.com/pxsanghyo)).
@@ -7,6 +12,7 @@
   (thanks [pcvdheuvel](https://github.com/pcvdheuvel)).
 * New Feature: [#138](https://github.com/hanshengchiu/reorderables/pull/138). Flutter 2.5 deprecation fixes
   (thanks [diegotori](https://github.com/diegotori)).
+  
 ## [0.4.1] - 11 April 2021.
 * Addresses Issue [#111](https://github.com/hanshengchiu/reorderables/issues/111). Resolves ReorderableSliverList ScrollController conflict (thanks [qAison](https://github.com/qAison)).
 
