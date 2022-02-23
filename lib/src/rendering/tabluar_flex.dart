@@ -1,7 +1,6 @@
 import 'dart:collection';
 import 'dart:math' as math;
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/rendering.dart';
 
 bool? _startIsTopLeft(Axis direction, TextDirection? textDirection,
