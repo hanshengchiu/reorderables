@@ -30,8 +30,7 @@ class ReorderableTableRow extends TabluarRow {
         );
 }
 
-typedef DecorateDraggableFeedback = Widget Function(
-    BuildContext feedbackContext, Widget draggableFeedback);
+typedef DecorateDraggableFeedback = Widget Function(BuildContext feedbackContext, Widget draggableFeedback);
 
 /// Reorderable (drag and drop) version of [Table], a widget that displays its
 /// children in a two-dimensional grid.
@@ -71,14 +70,12 @@ class ReorderableTable extends StatelessWidget {
     this.reorderAnimationDuration,
     this.scrollAnimationDuration,
     this.ignorePrimaryScrollController = false,
+    this.needsLongPressDraggable = true,
     Key? key,
   })  : assert(() {
-          if (children.any((ReorderableTableRow row1) =>
-              row1.key != null &&
-              children.any((ReorderableTableRow row2) =>
-                  row1 != row2 && row1.key == row2.key))) {
-            throw FlutterError(
-                'Two or more ReorderableTableRow children of this Table had the same key.\n'
+          if (children.any(
+              (ReorderableTableRow row1) => row1.key != null && children.any((ReorderableTableRow row2) => row1 != row2 && row1.key == row2.key))) {
+            throw FlutterError('Two or more ReorderableTableRow children of this Table had the same key.\n'
                 'All the keyed ReorderableTableRow children of a Table must have different Keys.');
           }
           return true;
@@ -99,12 +96,9 @@ class ReorderableTable extends StatelessWidget {
 
         super(key: key) {
     assert(() {
-      final List<Widget> flatChildren = children
-          .expand<Widget>((ReorderableTableRow row) => row.children)
-          .toList(growable: false);
+      final List<Widget> flatChildren = children.expand<Widget>((ReorderableTableRow row) => row.children).toList(growable: false);
       if (debugChildrenHaveDuplicateKeys(this, flatChildren)) {
-        throw FlutterError(
-            'Two or more cells in this Table contain widgets with the same key.\n'
+        throw FlutterError('Two or more cells in this Table contain widgets with the same key.\n'
             'Every widget child of every TableRow in a Table must have different keys. The cells of a Table are '
             'flattened out for processing, so separate cells cannot have duplicate keys even if they are in '
             'different rows.');
@@ -171,6 +165,8 @@ class ReorderableTable extends StatelessWidget {
   final Duration? scrollAnimationDuration;
   final bool ignorePrimaryScrollController;
 
+  final bool needsLongPressDraggable;
+
   @override
   Widget build(BuildContext context) {
 //    return TabluarColumn(
@@ -181,8 +177,7 @@ class ReorderableTable extends StatelessWidget {
 //          ReorderableTableRow(key: ValueKey<int>(2), mainAxisSize:MainAxisSize.min, children: <Widget>[Text('33'), Text('4444444444')])
 //        ],
 //    )
-    final GlobalKey tableKey =
-        GlobalKey(debugLabel: '$ReorderableTable table key');
+    final GlobalKey tableKey = GlobalKey(debugLabel: '$ReorderableTable table key');
 
     return ReorderableFlex(
         header: header,
@@ -190,9 +185,9 @@ class ReorderableTable extends StatelessWidget {
         children: children,
         onReorder: onReorder,
         onNoReorder: onNoReorder,
+        needsLongPressDraggable: needsLongPressDraggable,
         direction: Axis.vertical,
-        buildItemsContainer: (BuildContext containerContext, Axis direction,
-            List<Widget> children) {
+        buildItemsContainer: (BuildContext containerContext, Axis direction, List<Widget> children) {
           return TabluarFlex(
               key: tableKey,
               direction: direction,
@@ -204,44 +199,30 @@ class ReorderableTable extends StatelessWidget {
               textBaseline: textBaseline,
               children: children);
         },
-        buildDraggableFeedback: (BuildContext feedbackContext,
-            BoxConstraints constraints, Widget child) {
+        buildDraggableFeedback: (BuildContext feedbackContext, BoxConstraints constraints, Widget child) {
           // The child is a ReorderableTableRow because children is a List<ReorderableTableRow>
           ReorderableTableRow tableRow = child as ReorderableTableRow;
-          RenderTabluarFlex renderTabluarFlex =
-              tableKey.currentContext!.findRenderObject() as RenderTabluarFlex;
+          RenderTabluarFlex renderTabluarFlex = tableKey.currentContext!.findRenderObject() as RenderTabluarFlex;
           int grandChildIndex = 0;
-          for (;
-              grandChildIndex < tableRow.children.length;
-              grandChildIndex++) {
+          for (; grandChildIndex < tableRow.children.length; grandChildIndex++) {
             tableRow.children[grandChildIndex] = ConstrainedBox(
-                constraints: BoxConstraints(
-                    minWidth: renderTabluarFlex
-                        .maxGrandchildrenCrossSize[grandChildIndex]!),
+                constraints: BoxConstraints(minWidth: renderTabluarFlex.maxGrandchildrenCrossSize[grandChildIndex]!),
                 child: tableRow.children[grandChildIndex]);
           }
-          for (;
-              grandChildIndex <
-                  renderTabluarFlex.maxGrandchildrenCrossSize.length;
-              grandChildIndex++) {
+          for (; grandChildIndex < renderTabluarFlex.maxGrandchildrenCrossSize.length; grandChildIndex++) {
             tableRow.children.add(ConstrainedBox(
-              constraints: BoxConstraints(
-                  minWidth: renderTabluarFlex
-                      .maxGrandchildrenCrossSize[grandChildIndex]!),
+              constraints: BoxConstraints(minWidth: renderTabluarFlex.maxGrandchildrenCrossSize[grandChildIndex]!),
             ));
           }
 
-          ConstrainedBox constrainedTableRow =
-              ConstrainedBox(constraints: constraints, child: tableRow);
+          ConstrainedBox constrainedTableRow = ConstrainedBox(constraints: constraints, child: tableRow);
 
           return Transform(
             transform: new Matrix4.rotationZ(0),
             alignment: FractionalOffset.topLeft,
             child: Material(
 //            child: Card(child: ConstrainedBox(constraints: constraints, child: tableRow)),
-              child: (decorateDraggableFeedback ??
-                      defaultDecorateDraggableFeedback)(
-                  feedbackContext, constrainedTableRow),
+              child: (decorateDraggableFeedback ?? defaultDecorateDraggableFeedback)(feedbackContext, constrainedTableRow),
               elevation: 6.0,
               color: Colors.transparent,
               borderRadius: BorderRadius.zero,
@@ -253,7 +234,5 @@ class ReorderableTable extends StatelessWidget {
         ignorePrimaryScrollController: ignorePrimaryScrollController);
   }
 
-  Widget defaultDecorateDraggableFeedback(
-          BuildContext feedbackContext, Widget draggableFeedback) =>
-      Card(child: draggableFeedback);
+  Widget defaultDecorateDraggableFeedback(BuildContext feedbackContext, Widget draggableFeedback) => Card(child: draggableFeedback);
 }
