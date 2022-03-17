@@ -205,18 +205,20 @@ class ReorderableTable extends StatelessWidget {
               : children.map<Widget>(
                   (child) {
                     final index = children.indexOf(child);
-                    return Container(
-                        decoration: BoxDecoration(
-                          border: Border.symmetric(
-                            horizontal: BorderSide(
-                                color: borderColor!,
-                                width: index > 0 && index != children.length - 1
-                                    ? 0.5
-                                    : 1),
-                            vertical: BorderSide(color: borderColor!),
+                    if (index > 0) {
+                      return Container(
+                          decoration: BoxDecoration(
+                            border: Border.symmetric(
+                              horizontal: BorderSide(
+                                  color: borderColor!,
+                                  width:
+                                      index != children.length - 1 ? 0.5 : 1),
+                              vertical: BorderSide(color: borderColor!),
+                            ),
                           ),
-                        ),
-                        child: child);
+                          child: child);
+                    }
+                    return child;
                   },
                 ).toList();
           return TabluarFlex(
