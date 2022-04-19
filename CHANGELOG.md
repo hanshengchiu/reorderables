@@ -1,3 +1,7 @@
+## [0.4.4] - 18 April 2022.
+* Bugfix: [#146](https://github.com/hanshengchiu/reorderables/issues/146). ReorderableWrap: adding scroll controller causes exception
+  (thanks [diegotori](https://github.com/diegotori)).
+
 ## [0.4.3] - 22 February 2022.
 * New Feature: [#143](https://github.com/hanshengchiu/reorderables/pull/143). Allow enableReorder on DraggableWrap
   (thanks [89jd](https://github.com/89jd)).
