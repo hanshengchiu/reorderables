@@ -71,7 +71,9 @@ class ReorderableTable extends StatelessWidget {
     this.reorderAnimationDuration,
     this.scrollAnimationDuration,
     this.ignorePrimaryScrollController = false,
+    this.needsLongPressDraggable = true,
     Key? key,
+    this.borderColor,
   })  : assert(() {
           if (children.any((ReorderableTableRow row1) =>
               row1.key != null &&
@@ -148,6 +150,8 @@ class ReorderableTable extends StatelessWidget {
   /// The style to use when painting the boundary and interior divisions of the table.
   final TableBorder? border;
 
+  final Color? borderColor;
+
   /// How cells that do not explicitly specify a vertical alignment are aligned vertically.
   final TableCellVerticalAlignment defaultVerticalAlignment;
 
@@ -171,6 +175,8 @@ class ReorderableTable extends StatelessWidget {
   final Duration? scrollAnimationDuration;
   final bool ignorePrimaryScrollController;
 
+  final bool needsLongPressDraggable;
+
   @override
   Widget build(BuildContext context) {
 //    return TabluarColumn(
@@ -190,9 +196,31 @@ class ReorderableTable extends StatelessWidget {
         children: children,
         onReorder: onReorder,
         onNoReorder: onNoReorder,
+        needsLongPressDraggable: needsLongPressDraggable,
         direction: Axis.vertical,
         buildItemsContainer: (BuildContext containerContext, Axis direction,
             List<Widget> children) {
+          List<Widget> mapped = borderColor == null
+              ? children
+              : children.map<Widget>(
+                  (child) {
+                    final index = children.indexOf(child);
+                    if (index > 0) {
+                      return Container(
+                          decoration: BoxDecoration(
+                            border: Border.symmetric(
+                              horizontal: BorderSide(
+                                  color: borderColor!,
+                                  width:
+                                      index != children.length - 1 ? 0.5 : 1),
+                              vertical: BorderSide(color: borderColor!),
+                            ),
+                          ),
+                          child: child);
+                    }
+                    return child;
+                  },
+                ).toList();
           return TabluarFlex(
               key: tableKey,
               direction: direction,
@@ -202,7 +230,7 @@ class ReorderableTable extends StatelessWidget {
               textDirection: textDirection,
 //          verticalDirection: verticalDirection,
               textBaseline: textBaseline,
-              children: children);
+              children: mapped);
         },
         buildDraggableFeedback: (BuildContext feedbackContext,
             BoxConstraints constraints, Widget child) {
