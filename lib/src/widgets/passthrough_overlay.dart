@@ -130,9 +130,9 @@ class PassthroughOverlayEntry {
     assert(_overlay != null);
     final PassthroughOverlayState overlay = _overlay!;
     _overlay = null;
-    if (SchedulerBinding.instance!.schedulerPhase ==
+    if (SchedulerBinding.instance.schedulerPhase ==
         SchedulerPhase.persistentCallbacks) {
-      SchedulerBinding.instance!.addPostFrameCallback((Duration duration) {
+      SchedulerBinding.instance.addPostFrameCallback((Duration duration) {
         overlay._remove(this);
       });
     } else {
