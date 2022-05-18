@@ -1013,7 +1013,7 @@ class _ReorderableWrapContentState extends State<_ReorderableWrapContent>
       Widget preDragTarget = DragTarget<int>(
         builder: (BuildContext context, List<int?> acceptedCandidates,
                 List<dynamic> rejectedCandidates) =>
-            SizedBox(),
+            Opacity(opacity: 0.2, child: Container(color: Colors.green, child: SizedBox())),
         onWillAccept: (int? toAccept) => _onWillAccept(toAccept, true),
         onAccept: (int accepted) {},
         onLeave: (Object? leaving) {},
@@ -1021,40 +1021,93 @@ class _ReorderableWrapContentState extends State<_ReorderableWrapContent>
       Widget nextDragTarget = DragTarget<int>(
         builder: (BuildContext context, List<int?> acceptedCandidates,
                 List<dynamic> rejectedCandidates) =>
-            SizedBox(),
+            Opacity(opacity: 0.2, child: Container(color: Colors.amber, child: SizedBox())),
         onWillAccept: (int? toAccept) => _onWillAccept(toAccept, false),
         onAccept: (int accepted) {},
         onLeave: (Object? leaving) {},
       );
 
+      bool isLeft(int index) => index % 2 == 0;
+      final isFromLeft = isLeft(_currentDisplayIndex);
+
+      bool isSameRow(int draggingIndex, int targetIndex) {
+        if (isLeft(draggingIndex)) {
+          return draggingIndex + 1 == targetIndex;
+        } else {
+          return draggingIndex - 1 == targetIndex;
+        }
+      }
+
+      // TODO: Change these magic number (172) to calculated number by screen width.
+      // Small widget size is less than half of screen width.
+      bool isSmallWidget(double width) => width <= 172;
+
+      ///
+      /// Defination of variables.
+      /// 
+      /// index - ตำแหน่งของ widget ที่กำลังถูก wrap ดูจากลำดับที่ตั้งค่าเป็น children ของ ReorderableWrap.
+      /// _dragStartIndex - ตำแหน่งของ widget ที่กำลังโดนลาก ดูจากลำดับที่ตั้งค่าเป็น children ของ ReorderableWrap.
+      /// _childSizes - list ของขนาด widget ดูจากลำดับที่ตั้งค่าเป็น children ของ ReorderableWrap เปรียบเทียบตำแหน่งกับ index และ _dragStartIndex เท่านั้น.
+      /// displayIndex - ตำแหน่ง `การแสดงผล` ของ widget ที่กำลังถูก wrap ลำดับที่ได้เป็นตามที่แสดงผลในหน้าจอ
+      /// _currentDisplayIndex - ตำแหน่ง `การแสดงผล` ของ widget ที่กำลังโดนลาก ลำดับที่ได้เป็นตามที่แสดงผลในหน้าจอ
+      ///
       Widget dragTarget = Stack(
-//        key: keyIndexGlobalKey,
-//        fit: StackFit.passthrough,
         clipBehavior: Clip.hardEdge,
         children: <Widget>[
           containedDraggable.builder,
-          if (containedDraggable.isReorderable)
-            Positioned(
+          if (isSmallWidget(_childSizes[index].width) && isSameRow(_currentDisplayIndex, displayIndex))
+            ...[
+              Positioned(
                 left: 0,
                 top: 0,
-                width: widget.direction == Axis.horizontal
-                    ? _childSizes[index].width / 2
-                    : _childSizes[index].width,
-                height: widget.direction == Axis.vertical
-                    ? _childSizes[index].height / 2
-                    : _childSizes[index].height,
-                child: preDragTarget),
-          if (containedDraggable.isReorderable)
-            Positioned(
+                width: _childSizes[index].width * (isFromLeft ? 0.4 : 0.6),
+                height: _childSizes[index].height,
+                child: preDragTarget,
+              ),
+              Positioned(
                 right: 0,
                 bottom: 0,
-                width: widget.direction == Axis.horizontal
-                    ? _childSizes[index].width / 2
-                    : _childSizes[index].width,
-                height: widget.direction == Axis.vertical
-                    ? _childSizes[index].height / 2
-                    : _childSizes[index].height,
-                child: nextDragTarget),
+                width: _childSizes[index].width * (isFromLeft ? 0.6 : 0.4),
+                height: _childSizes[index].height,
+                child: nextDragTarget,
+              ),
+            ]
+          else if (isSmallWidget(_childSizes[index].width) && isSmallWidget(_childSizes[_dragStartIndex].width))
+            ...[
+              if (displayIndex < _currentDisplayIndex)
+                Positioned(
+                  left: 0,
+                  top: 0,
+                  width: _childSizes[index].width,
+                  height: _childSizes[index].height * ((_currentDisplayIndex < displayIndex) ? 0.4 : 0.6),
+                  child: preDragTarget,
+                )
+              else
+                Positioned(
+                  right: 0,
+                  bottom: 0,
+                  width: _childSizes[index].width,
+                  height: _childSizes[index].height * ((_currentDisplayIndex < displayIndex) ? 0.6 : 0.4),
+                  child: nextDragTarget,
+                ),
+            ]
+          else
+            ...[
+              Positioned(
+                left: 0,
+                top: 0,
+                width: _childSizes[index].width,
+                height: _childSizes[index].height * ((_currentDisplayIndex < displayIndex) ? 0.4 : 0.6),
+                child: preDragTarget,
+              ),
+              Positioned(
+                right: 0,
+                bottom: 0,
+                width: _childSizes[index].width,
+                height: _childSizes[index].height * ((_currentDisplayIndex < displayIndex) ? 0.6 : 0.4),
+                child: nextDragTarget,
+              ),
+            ],
         ],
       );
 //      return dragTarget;
