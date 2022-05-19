@@ -1065,9 +1065,11 @@ class _ReorderableWrapContentState extends State<_ReorderableWrapContent>
 
       bool isLeft(int index) {
         final rows = groupWidgetIndexByRow();
-        final row = rows.firstWhereOrNull((row) => row.contains(index)) ?? [];
 
-        return row[0] == index;
+        final firstRowIndex =
+            rows.firstWhereOrNull((row) => row.contains(index))?.firstOrNull;
+
+        return firstRowIndex == index;
       }
 
       final isFromLeft = isLeft(_currentDisplayIndex);
