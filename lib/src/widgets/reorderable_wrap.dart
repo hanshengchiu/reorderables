@@ -1074,11 +1074,10 @@ class _ReorderableWrapContentState extends State<_ReorderableWrapContent>
 
       bool isSameRow(int draggingIndex, int targetIndex) {
         final rows = groupWidgetIndexByRow();
-        final hasAntRowContainBoth = rows.any(
+
+        return rows.any(
           (row) => row.contains(draggingIndex) && row.contains(targetIndex),
         );
-
-        return hasAntRowContainBoth;
       }
 
       ///
