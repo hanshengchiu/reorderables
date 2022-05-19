@@ -15,6 +15,7 @@ import './wrap.dart';
 //import './transitions.dart';
 import '../rendering/wrap.dart';
 import 'reorderable_mixin.dart';
+import 'package:collection/collection.dart';
 
 /// Reorderable (drag and drop) version of [Wrap], A widget that displays its
 /// children in multiple horizontal or vertical runs.
@@ -324,34 +325,33 @@ class _ReorderableWrapState extends State<ReorderableWrap> {
 // This widget is responsible for the inside of the Overlay in the
 // ReorderableListView.
 class _ReorderableWrapContent extends StatefulWidget {
-  const _ReorderableWrapContent({
-    required this.children,
-    required this.direction,
-    required this.scrollDirection,
-    required this.scrollPhysics,
-    required this.padding,
-    required this.onReorder,
-    required this.onNoReorder,
-    required this.onReorderStarted,
-    required this.buildItemsContainer,
-    required this.buildDraggableFeedback,
-    required this.needsLongPressDraggable,
-    required this.alignment,
-    required this.spacing,
-    required this.runAlignment,
-    required this.runSpacing,
-    required this.crossAxisAlignment,
-    required this.textDirection,
-    required this.verticalDirection,
-    required this.minMainAxisCount,
-    required this.maxMainAxisCount,
-    this.header,
-    this.footer,
-    this.controller,
-    this.reorderAnimationDuration = const Duration(milliseconds: 200),
-    this.scrollAnimationDuration = const Duration(milliseconds: 200),
-    required this.enableReorder
-  });
+  const _ReorderableWrapContent(
+      {required this.children,
+      required this.direction,
+      required this.scrollDirection,
+      required this.scrollPhysics,
+      required this.padding,
+      required this.onReorder,
+      required this.onNoReorder,
+      required this.onReorderStarted,
+      required this.buildItemsContainer,
+      required this.buildDraggableFeedback,
+      required this.needsLongPressDraggable,
+      required this.alignment,
+      required this.spacing,
+      required this.runAlignment,
+      required this.runSpacing,
+      required this.crossAxisAlignment,
+      required this.textDirection,
+      required this.verticalDirection,
+      required this.minMainAxisCount,
+      required this.maxMainAxisCount,
+      this.header,
+      this.footer,
+      this.controller,
+      this.reorderAnimationDuration = const Duration(milliseconds: 200),
+      this.scrollAnimationDuration = const Duration(milliseconds: 200),
+      required this.enableReorder});
 
   final List<Widget>? header;
   final Widget? footer;
@@ -1011,40 +1011,79 @@ class _ReorderableWrapContentState extends State<_ReorderableWrapContent>
       }
 
       Widget preDragTarget = DragTarget<int>(
-        builder: (BuildContext context, List<int?> acceptedCandidates,
-                List<dynamic> rejectedCandidates) =>
-            Opacity(opacity: 0.2, child: Container(color: Colors.green, child: SizedBox())),
+        builder: (
+          BuildContext context,
+          List<int?> acceptedCandidates,
+          List<dynamic> rejectedCandidates,
+        ) =>
+            Opacity(
+          opacity: 0.2,
+          child: Container(color: Colors.green, child: SizedBox()),
+        ),
         onWillAccept: (int? toAccept) => _onWillAccept(toAccept, true),
         onAccept: (int accepted) {},
         onLeave: (Object? leaving) {},
       );
       Widget nextDragTarget = DragTarget<int>(
-        builder: (BuildContext context, List<int?> acceptedCandidates,
-                List<dynamic> rejectedCandidates) =>
-            Opacity(opacity: 0.2, child: Container(color: Colors.amber, child: SizedBox())),
+        builder: (
+          BuildContext context,
+          List<int?> acceptedCandidates,
+          List<dynamic> rejectedCandidates,
+        ) =>
+            Opacity(
+          opacity: 0.2,
+          child: Container(color: Colors.red, child: SizedBox()),
+        ),
         onWillAccept: (int? toAccept) => _onWillAccept(toAccept, false),
         onAccept: (int accepted) {},
         onLeave: (Object? leaving) {},
       );
 
-      bool isLeft(int index) => index % 2 == 0;
+      // TODO: Change these magic number (172) to calculated number by screen width.
+      // Small widget size is less than half of screen width.
+      bool isSmallWidget(double width) =>
+          width <= (MediaQuery.of(context).size.width / 2) + 20;
+
+      List<List<int>> groupWidgetIndexByRow() {
+        final rows = <List<int>>[];
+
+        _childSizes.forEachIndexed((index, size) {
+          final hasAnyRow = rows.lastOrNull != null;
+          final hasSmallSizeInLastRow =
+              hasAnyRow && isSmallWidget(_childSizes[rows.last.last].width);
+          final canAddToLastRow = hasSmallSizeInLastRow && rows.last.length < 2;
+
+          if (isSmallWidget(size.width) && canAddToLastRow) {
+            rows.last.add(index);
+          } else {
+            rows.add([index]);
+          }
+        });
+
+        return rows;
+      }
+
+      bool isLeft(int index) {
+        final rows = groupWidgetIndexByRow();
+        final row = rows.firstWhereOrNull((row) => row.contains(index)) ?? [];
+
+        return row[0] == index;
+      }
+
       final isFromLeft = isLeft(_currentDisplayIndex);
 
       bool isSameRow(int draggingIndex, int targetIndex) {
-        if (isLeft(draggingIndex)) {
-          return draggingIndex + 1 == targetIndex;
-        } else {
-          return draggingIndex - 1 == targetIndex;
-        }
-      }
+        final rows = groupWidgetIndexByRow();
+        final hasAntRowContainBoth = rows.any(
+          (row) => row.contains(draggingIndex) && row.contains(targetIndex),
+        );
 
-      // TODO: Change these magic number (172) to calculated number by screen width.
-      // Small widget size is less than half of screen width.
-      bool isSmallWidget(double width) => width <= 172;
+        return hasAntRowContainBoth;
+      }
 
       ///
       /// Defination of variables.
-      /// 
+      ///
       /// index - ตำแหน่งของ widget ที่กำลังถูก wrap ดูจากลำดับที่ตั้งค่าเป็น children ของ ReorderableWrap.
       /// _dragStartIndex - ตำแหน่งของ widget ที่กำลังโดนลาก ดูจากลำดับที่ตั้งค่าเป็น children ของ ReorderableWrap.
       /// _childSizes - list ของขนาด widget ดูจากลำดับที่ตั้งค่าเป็น children ของ ReorderableWrap เปรียบเทียบตำแหน่งกับ index และ _dragStartIndex เท่านั้น.
@@ -1055,59 +1094,125 @@ class _ReorderableWrapContentState extends State<_ReorderableWrapContent>
         clipBehavior: Clip.hardEdge,
         children: <Widget>[
           containedDraggable.builder,
-          if (isSmallWidget(_childSizes[index].width) && isSameRow(_currentDisplayIndex, displayIndex))
-            ...[
-              Positioned(
-                left: 0,
-                top: 0,
-                width: _childSizes[index].width * (isFromLeft ? 0.4 : 0.6),
-                height: _childSizes[index].height,
-                child: preDragTarget,
-              ),
-              Positioned(
-                right: 0,
-                bottom: 0,
-                width: _childSizes[index].width * (isFromLeft ? 0.6 : 0.4),
-                height: _childSizes[index].height,
-                child: nextDragTarget,
-              ),
-            ]
-          else if (isSmallWidget(_childSizes[index].width) && isSmallWidget(_childSizes[_dragStartIndex].width))
-            ...[
-              if (displayIndex < _currentDisplayIndex)
-                Positioned(
-                  left: 0,
-                  top: 0,
-                  width: _childSizes[index].width,
-                  height: _childSizes[index].height * ((_currentDisplayIndex < displayIndex) ? 0.4 : 0.6),
-                  child: preDragTarget,
-                )
-              else
-                Positioned(
-                  right: 0,
-                  bottom: 0,
-                  width: _childSizes[index].width,
-                  height: _childSizes[index].height * ((_currentDisplayIndex < displayIndex) ? 0.6 : 0.4),
-                  child: nextDragTarget,
+          if (isSmallWidget(_childSizes[index].width) &&
+              isSameRow(_currentDisplayIndex, displayIndex)) ...[
+            Positioned(
+              left: 0,
+              top: 0,
+              width: _childSizes[index].width * (isFromLeft ? 0.4 : 0.6),
+              height: _childSizes[index].height,
+              child: preDragTarget,
+            ),
+            Positioned(
+              right: 0,
+              bottom: 0,
+              width: _childSizes[index].width * (isFromLeft ? 0.6 : 0.4),
+              height: _childSizes[index].height,
+              child: nextDragTarget,
+            ),
+            Positioned(
+              right: 0,
+              bottom: 0,
+              width: _childSizes[index].width,
+              height: _childSizes[index].height,
+              child: Center(
+                child: Text(
+                  '1',
+                  textScaleFactor: 4,
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
-            ]
-          else
-            ...[
+              ),
+            ),
+          ] else if (isSmallWidget(_childSizes[index].width) &&
+              isSmallWidget(_childSizes[_dragStartIndex].width)) ...[
+            if (displayIndex < _currentDisplayIndex) ...[
               Positioned(
                 left: 0,
                 top: 0,
                 width: _childSizes[index].width,
-                height: _childSizes[index].height * ((_currentDisplayIndex < displayIndex) ? 0.4 : 0.6),
+                height: _childSizes[index].height *
+                    ((_currentDisplayIndex < displayIndex) ? 0.4 : 0.6),
                 child: preDragTarget,
               ),
               Positioned(
                 right: 0,
                 bottom: 0,
                 width: _childSizes[index].width,
-                height: _childSizes[index].height * ((_currentDisplayIndex < displayIndex) ? 0.6 : 0.4),
+                height: _childSizes[index].height,
+                child: Center(
+                  child: Text(
+                    '2.1',
+                    textScaleFactor: 4,
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ),
+            ] else ...[
+              Positioned(
+                right: 0,
+                bottom: 0,
+                width: _childSizes[index].width,
+                height: _childSizes[index].height *
+                    ((_currentDisplayIndex < displayIndex) ? 0.6 : 0.4),
                 child: nextDragTarget,
+              ),
+              Positioned(
+                right: 0,
+                bottom: 0,
+                width: _childSizes[index].width,
+                height: _childSizes[index].height,
+                child: Center(
+                  child: Text(
+                    '2.2',
+                    textScaleFactor: 4,
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
               ),
             ],
+          ] else ...[
+            Positioned(
+              left: 0,
+              top: 0,
+              width: _childSizes[index].width,
+              height: _childSizes[index].height *
+                  ((_currentDisplayIndex < displayIndex) ? 0.4 : 0.6),
+              child: preDragTarget,
+            ),
+            Positioned(
+              right: 0,
+              bottom: 0,
+              width: _childSizes[index].width,
+              height: _childSizes[index].height *
+                  ((_currentDisplayIndex < displayIndex) ? 0.6 : 0.4),
+              child: nextDragTarget,
+            ),
+            Positioned(
+              right: 0,
+              bottom: 0,
+              width: _childSizes[index].width,
+              height: _childSizes[index].height,
+              child: Center(
+                child: Text(
+                  '3',
+                  textScaleFactor: 4,
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            ),
+          ],
         ],
       );
 //      return dragTarget;
