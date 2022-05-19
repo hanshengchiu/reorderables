@@ -1110,25 +1110,9 @@ class _ReorderableWrapContentState extends State<_ReorderableWrapContent>
               height: _childSizes[index].height,
               child: nextDragTarget,
             ),
-            Positioned(
-              right: 0,
-              bottom: 0,
-              width: _childSizes[index].width,
-              height: _childSizes[index].height,
-              child: Center(
-                child: Text(
-                  '1',
-                  textScaleFactor: 4,
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-            ),
           ] else if (isSmallWidget(_childSizes[index].width) &&
               isSmallWidget(_childSizes[_dragStartIndex].width)) ...[
-            if (displayIndex < _currentDisplayIndex) ...[
+            if (displayIndex < _currentDisplayIndex)
               Positioned(
                 left: 0,
                 top: 0,
@@ -1136,24 +1120,8 @@ class _ReorderableWrapContentState extends State<_ReorderableWrapContent>
                 height: _childSizes[index].height *
                     ((_currentDisplayIndex < displayIndex) ? 0.4 : 0.6),
                 child: preDragTarget,
-              ),
-              Positioned(
-                right: 0,
-                bottom: 0,
-                width: _childSizes[index].width,
-                height: _childSizes[index].height,
-                child: Center(
-                  child: Text(
-                    '2.1',
-                    textScaleFactor: 4,
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-              ),
-            ] else ...[
+              )
+            else
               Positioned(
                 right: 0,
                 bottom: 0,
@@ -1162,23 +1130,6 @@ class _ReorderableWrapContentState extends State<_ReorderableWrapContent>
                     ((_currentDisplayIndex < displayIndex) ? 0.6 : 0.4),
                 child: nextDragTarget,
               ),
-              Positioned(
-                right: 0,
-                bottom: 0,
-                width: _childSizes[index].width,
-                height: _childSizes[index].height,
-                child: Center(
-                  child: Text(
-                    '2.2',
-                    textScaleFactor: 4,
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-              ),
-            ],
           ] else ...[
             Positioned(
               left: 0,
@@ -1195,22 +1146,6 @@ class _ReorderableWrapContentState extends State<_ReorderableWrapContent>
               height: _childSizes[index].height *
                   ((_currentDisplayIndex < displayIndex) ? 0.6 : 0.4),
               child: nextDragTarget,
-            ),
-            Positioned(
-              right: 0,
-              bottom: 0,
-              width: _childSizes[index].width,
-              height: _childSizes[index].height,
-              child: Center(
-                child: Text(
-                  '3',
-                  textScaleFactor: 4,
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
             ),
           ],
         ],
