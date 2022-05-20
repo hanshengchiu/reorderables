@@ -7,6 +7,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:reorderables/reorderables.dart';
+import 'package:collection/collection.dart';
 
 import './passthrough_overlay.dart';
 //import './transitions.dart';
@@ -1027,20 +1028,48 @@ class _ReorderableWrapContentState extends State<_ReorderableWrapContent>
         onLeave: (Object? leaving) {},
       );
 
-      bool isLeft(int index) => index % 2 == 0;
+      // TODO: Change this magic number to calculated number by screen width.
+      // Small widget size is less than half of screen width.
+      bool isSmallWidget(double width) =>
+          width <= (MediaQuery.of(context).size.width / 2) + 20;
+
+      List<List<int>> groupWidgetIndexByRow() {
+        final rows = <List<int>>[];
+
+        _childSizes.forEachIndexed((index, size) {
+          final hasAnyRow = rows.lastOrNull != null;
+          final hasSmallSizeInLastRow =
+              hasAnyRow && isSmallWidget(_childSizes[rows.last.last].width);
+          final canAddToLastRow = hasSmallSizeInLastRow && rows.last.length < 2;
+
+          if (isSmallWidget(size.width) && canAddToLastRow) {
+            rows.last.add(index);
+          } else {
+            rows.add([index]);
+          }
+        });
+
+        return rows;
+      }
+
+      bool isLeft(int index) {
+        final rows = groupWidgetIndexByRow();
+
+        final firstRowIndex =
+            rows.firstWhereOrNull((row) => row.contains(index))?.firstOrNull;
+
+        return firstRowIndex == index;
+      }
+
       final isFromLeft = isLeft(_currentDisplayIndex);
 
       bool isSameRow(int draggingIndex, int targetIndex) {
-        if (isLeft(draggingIndex)) {
-          return draggingIndex + 1 == targetIndex;
-        } else {
-          return draggingIndex - 1 == targetIndex;
-        }
-      }
+        final rows = groupWidgetIndexByRow();
 
-      // TODO: Change these magic number (172) to calculated number by screen width.
-      // Small widget size is less than half of screen width.
-      bool isSmallWidget(double width) => width <= 172;
+        return rows.any(
+          (row) => row.contains(draggingIndex) && row.contains(targetIndex),
+        );
+      }
 
       ///
       /// Defination of variables.
