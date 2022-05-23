@@ -429,6 +429,7 @@ class _ReorderableWrapContentState extends State<_ReorderableWrapContent>
   late List<Size> _childSizes;
   late List<int> _childIndexToDisplayIndex;
   late List<int> _childDisplayIndexToIndex;
+  late List<List<int>> _displayIndexesRows;
 
   // The location that the dragging widget occupied before it started to drag.
   int _dragStartIndex = -1;
@@ -1028,32 +1029,8 @@ class _ReorderableWrapContentState extends State<_ReorderableWrapContent>
         onLeave: (Object? leaving) {},
       );
 
-      // TODO: Change this magic number to calculated number by screen width.
-      // Small widget size is less than half of screen width.
-      bool isSmallWidget(double width) =>
-          width <= (MediaQuery.of(context).size.width / 2) + 20;
-
-      List<List<int>> groupWidgetIndexByRow() {
-        final rows = <List<int>>[];
-
-        _childSizes.forEachIndexed((index, size) {
-          final hasAnyRow = rows.lastOrNull != null;
-          final hasSmallSizeInLastRow =
-              hasAnyRow && isSmallWidget(_childSizes[rows.last.last].width);
-          final canAddToLastRow = hasSmallSizeInLastRow && rows.last.length < 2;
-
-          if (isSmallWidget(size.width) && canAddToLastRow) {
-            rows.last.add(index);
-          } else {
-            rows.add([index]);
-          }
-        });
-
-        return rows;
-      }
-
       bool isLeft(int index) {
-        final rows = groupWidgetIndexByRow();
+        final rows = _displayIndexesRows;
 
         final firstRowIndex =
             rows.firstWhereOrNull((row) => row.contains(index))?.firstOrNull;
@@ -1064,7 +1041,7 @@ class _ReorderableWrapContentState extends State<_ReorderableWrapContent>
       final isFromLeft = isLeft(_currentDisplayIndex);
 
       bool isSameRow(int draggingIndex, int targetIndex) {
-        final rows = groupWidgetIndexByRow();
+        final rows = _displayIndexesRows;
 
         return rows.any(
           (row) => row.contains(draggingIndex) && row.contains(targetIndex),
@@ -1074,11 +1051,12 @@ class _ReorderableWrapContentState extends State<_ReorderableWrapContent>
       ///
       /// Defination of variables.
       /// 
-      /// index - ตำแหน่งของ widget ที่กำลังถูก wrap ดูจากลำดับที่ตั้งค่าเป็น children ของ ReorderableWrap.
-      /// _dragStartIndex - ตำแหน่งของ widget ที่กำลังโดนลาก ดูจากลำดับที่ตั้งค่าเป็น children ของ ReorderableWrap.
-      /// _childSizes - list ของขนาด widget ดูจากลำดับที่ตั้งค่าเป็น children ของ ReorderableWrap เปรียบเทียบตำแหน่งกับ index และ _dragStartIndex เท่านั้น.
-      /// displayIndex - ตำแหน่ง `การแสดงผล` ของ widget ที่กำลังถูก wrap ลำดับที่ได้เป็นตามที่แสดงผลในหน้าจอ
-      /// _currentDisplayIndex - ตำแหน่ง `การแสดงผล` ของ widget ที่กำลังโดนลาก ลำดับที่ได้เป็นตามที่แสดงผลในหน้าจอ
+      /// 1. index - ตำแหน่งของ widget ที่กำลังถูก wrap ดูจากลำดับที่ตั้งค่าเป็น children ของ ReorderableWrap.
+      /// 2. _dragStartIndex - ตำแหน่งของ widget ที่กำลังโดนลาก ดูจากลำดับที่ตั้งค่าเป็น children ของ ReorderableWrap.
+      /// 3. _childSizes - list ของขนาด widget ดูจากลำดับที่ตั้งค่าเป็น children ของ ReorderableWrap เปรียบเทียบตำแหน่งกับ index และ _dragStartIndex เท่านั้น.
+      /// 4. displayIndex - ตำแหน่ง `การแสดงผล` ของ widget ที่กำลังถูก wrap ลำดับที่ได้เป็นตามที่แสดงผลในหน้าจอ
+      /// 5. _currentDisplayIndex - ตำแหน่ง `การแสดงผล` ของ widget ที่กำลังโดนลาก ลำดับที่ได้เป็นตามที่แสดงผลในหน้าจอ
+      /// 6. _childIndexToDisplayIndex - map ระหว่าง index (ของข้อ 1, 2, 3) ไปหาค่าลำดับตำแหน่งที่ `แสดงผล` ของ widget
       ///
       Widget dragTarget = Stack(
         clipBehavior: Clip.hardEdge,
@@ -1245,6 +1223,35 @@ class _ReorderableWrapContentState extends State<_ReorderableWrapContent>
     return KeyedSubtree(key: ValueKey(index), child: builder);
   }
 
+  bool isSmallWidget(double width) =>
+    width <= (MediaQuery.of(context).size.width / 2) + 20;
+
+  List<List<int>> groupWidgetIndexByRow() {
+    final rows = <List<int>>[];
+
+    final entities = _childIndexToDisplayIndex.mapIndexed((childIndex, displayIndex) {
+      return MapEntry(displayIndex, _childSizes[childIndex]);
+    }).sorted((a, b) => a.key - b.key);
+
+    entities.forEach((entity) {
+      final index = entity.key;
+      final size = entity.value;
+
+      if (isSmallWidget(size.width)) {
+        final canAddToLastRow = rows.lastOrNull?.length == 1;
+        if (canAddToLastRow) {
+          rows.last.add(index);
+        } else {
+          rows.add([index]);              
+        }
+      } else {
+        rows.add([index, -1]);
+      }
+    });
+
+    return rows;
+  }
+
   @override
   Widget build(BuildContext context) {
 //    assert(debugCheckHasMaterialLocalizations(context));
@@ -1290,6 +1297,7 @@ class _ReorderableWrapContentState extends State<_ReorderableWrapContent>
 //      '_childIndexToDisplayIndex:$_childIndexToDisplayIndex _childDisplayIndexToIndex:$_childDisplayIndexToIndex _childRunIndexes:$_childRunIndexes _nextChildRunIndexes:$_nextChildRunIndexes');
 
     _childRunIndexes = _nextChildRunIndexes.toList();
+    _displayIndexesRows = groupWidgetIndexByRow();
 
     final List<Widget> wrappedChildren = <Widget>[];
     for (int i = 0; i < widget.children.length; i++) {
