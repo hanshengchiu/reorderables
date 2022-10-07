@@ -56,6 +56,7 @@ class ReorderableFlex extends StatefulWidget {
     this.draggingWidgetOpacity = 0.2,
     this.reorderAnimationDuration,
     this.scrollAnimationDuration,
+    this.draggedItemBuilder,
     this.ignorePrimaryScrollController = false,
   })  : assert(
           children.every((Widget w) => w.key != null),
@@ -67,6 +68,8 @@ class ReorderableFlex extends StatefulWidget {
   ///
   /// If null, no header will appear at the top/left of the widget.
   final Widget? header;
+
+  final Widget Function(BuildContext context, int index)? draggedItemBuilder;
 
   /// A non-reorderable footer widget to show after the list.
   ///
@@ -149,6 +152,7 @@ class _ReorderableFlexState extends State<ReorderableFlex> {
           scrollController: widget.scrollController,
           needsLongPressDraggable: widget.needsLongPressDraggable,
           draggingWidgetOpacity: widget.draggingWidgetOpacity,
+          draggedItemBuilder: widget.draggedItemBuilder,
           reorderAnimationDuration: widget.reorderAnimationDuration ??
               const Duration(milliseconds: 200),
           scrollAnimationDuration: widget.scrollAnimationDuration ??
@@ -190,6 +194,7 @@ class _ReorderableFlexContent extends StatefulWidget {
     required this.buildItemsContainer,
     required this.buildDraggableFeedback,
     required this.padding,
+    this.draggedItemBuilder,
     this.reorderAnimationDuration = const Duration(milliseconds: 200),
     this.scrollAnimationDuration = const Duration(milliseconds: 200),
   });
@@ -206,6 +211,7 @@ class _ReorderableFlexContent extends StatefulWidget {
   final BuildDraggableFeedback? buildDraggableFeedback;
   final ScrollController? scrollController;
   final EdgeInsets? padding;
+  final Widget Function(BuildContext context, int index)? draggedItemBuilder;
 
   final MainAxisAlignment mainAxisAlignment;
   final bool needsLongPressDraggable;
@@ -435,10 +441,13 @@ class _ReorderableFlexContentState extends State<_ReorderableFlexContent>
     // item gets dragged, the accessibility framework can preserve the selected
     // state of the dragging item.
 
+    final draggedItem =
+        widget.draggedItemBuilder?.call(context, index) ?? toWrap;
+
     // Starts dragging toWrap.
     void onDragStarted() {
       setState(() {
-        _draggingWidget = toWrap;
+        _draggingWidget = draggedItem;
         _dragStartIndex = index;
         _ghostIndex = index;
         _currentIndex = index;
@@ -577,7 +586,7 @@ class _ReorderableFlexContentState extends State<_ReorderableFlexContent>
             _draggingFeedbackSize!); //renderObject.constraints
 //          debugPrint('${DateTime.now().toString().substring(5, 22)} reorderable_flex.dart(515) $this.buildDragTarget: contentConstraints:$contentSizeConstraints _draggingFeedbackSize:$_draggingFeedbackSize');
         return (widget.buildDraggableFeedback ?? defaultBuildDraggableFeedback)(
-            context, contentSizeConstraints, toWrap);
+            context, contentSizeConstraints, draggedItem);
       });
 
       // We build the draggable inside of a layout builder so that we can
@@ -979,6 +988,7 @@ class ReorderableRow extends ReorderableFlex {
     double draggingWidgetOpacity = 0.2,
     Duration? reorderAnimationDuration,
     Duration? scrollAnimationDuration,
+    Widget Function(BuildContext context, int index)? draggedItemBuilder,
     bool ignorePrimaryScrollController = false,
   }) : super(
             key: key,
@@ -991,6 +1001,7 @@ class ReorderableRow extends ReorderableFlex {
             direction: Axis.horizontal,
             scrollDirection: Axis.horizontal,
             padding: padding,
+            draggedItemBuilder: draggedItemBuilder,
             buildItemsContainer:
                 (BuildContext context, Axis direction, List<Widget> children) {
               return Flex(
@@ -1060,6 +1071,7 @@ class ReorderableColumn extends ReorderableFlex {
     double draggingWidgetOpacity = 0.2,
     Duration? reorderAnimationDuration,
     Duration? scrollAnimationDuration,
+    Widget Function(BuildContext context, int index)? draggedItemBuilder,
     bool ignorePrimaryScrollController = false,
   }) : super(
             key: key,
@@ -1090,5 +1102,6 @@ class ReorderableColumn extends ReorderableFlex {
             draggingWidgetOpacity: draggingWidgetOpacity,
             reorderAnimationDuration: reorderAnimationDuration,
             scrollAnimationDuration: scrollAnimationDuration,
+            draggedItemBuilder: draggedItemBuilder,
             ignorePrimaryScrollController: ignorePrimaryScrollController);
 }
