@@ -61,7 +61,6 @@ class ReorderableWrap extends StatefulWidget {
     this.scrollAnimationDuration = const Duration(milliseconds: 200),
     this.ignorePrimaryScrollController = false,
     this.enableReorder = true,
-    this.notMovableIndexes = const [],
     Key? key,
   }) :
 //        assert(
@@ -121,7 +120,7 @@ class ReorderableWrap extends StatefulWidget {
   final bool needsLongPressDraggable;
 
   // Disable movement for those indexes
-  final List<int> notMovableIndexes;
+  static List<int> notMovableIndexes = [];
 
   /// How the children within a run should be places in the main axis.
   ///
@@ -308,7 +307,6 @@ class _ReorderableWrapState extends State<ReorderableWrap> {
           reorderAnimationDuration: widget.reorderAnimationDuration,
           scrollAnimationDuration: widget.scrollAnimationDuration,
           enableReorder: widget.enableReorder,
-          notMovableIndexes: widget.notMovableIndexes,
         );
       },
     );
@@ -351,7 +349,6 @@ class _ReorderableWrapContent extends StatefulWidget {
       required this.verticalDirection,
       required this.minMainAxisCount,
       required this.maxMainAxisCount,
-      required this.notMovableIndexes,
       this.header,
       this.footer,
       this.controller,
@@ -386,7 +383,6 @@ class _ReorderableWrapContent extends StatefulWidget {
   final Duration reorderAnimationDuration;
   final Duration scrollAnimationDuration;
   final bool enableReorder;
-  final List<int> notMovableIndexes;
 
   @override
   _ReorderableWrapContentState createState() => _ReorderableWrapContentState();
@@ -457,7 +453,6 @@ class _ReorderableWrapContentState extends State<_ReorderableWrapContent>
   late List<int> _childRunIndexes;
   late List<int> _nextChildRunIndexes;
   late List<Widget?> _wrapChildren;
-  late List<int> _notMovableIndexes;
 
   late bool enableReorder;
 
@@ -485,7 +480,6 @@ class _ReorderableWrapContentState extends State<_ReorderableWrapContent>
     enableReorder = widget.enableReorder;
     _reorderAnimationDuration = widget.reorderAnimationDuration;
     _scrollAnimationDuration = widget.scrollAnimationDuration;
-    _notMovableIndexes = widget.notMovableIndexes;
     _entranceController = AnimationController(
         value: 1.0, vsync: this, duration: _reorderAnimationDuration);
     _ghostController = AnimationController(
@@ -694,8 +688,8 @@ class _ReorderableWrapContentState extends State<_ReorderableWrapContent>
     void _reorder(int startIndex, int endIndex) {
 //      debugPrint('_reorder: startIndex:$startIndex endIndex:$endIndex');
       if ((startIndex != endIndex) &&
-          !_notMovableIndexes.contains(startIndex) &&
-          !_notMovableIndexes.contains(endIndex))
+          !ReorderableWrap.notMovableIndexes.contains(startIndex) &&
+          !ReorderableWrap.notMovableIndexes.contains(endIndex))
         widget.onReorder(startIndex, endIndex);
       else if (widget.onNoReorder != null) widget.onNoReorder!(startIndex);
       // Animates leftover space in the drop area closed.
