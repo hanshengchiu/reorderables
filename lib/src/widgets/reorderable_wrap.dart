@@ -61,7 +61,7 @@ class ReorderableWrap extends StatefulWidget {
     this.scrollAnimationDuration = const Duration(milliseconds: 200),
     this.ignorePrimaryScrollController = false,
     this.enableReorder = true,
-    this.notMovableIndexes = [],
+    this.notMovableIndexes = const [],
     Key? key,
   }) :
 //        assert(
