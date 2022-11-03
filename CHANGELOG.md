@@ -1,3 +1,6 @@
+## [0.5.1] - 3 Nov 2022.
+* New Feature: [#164](https://github.com/hanshengchiu/reorderables/pull/164). add a draggedItemBuilder widget to support persistent state children (thanks [danReynolds](https://github.com/danReynolds))
+
 ## [0.5.0] - 12 May 2022.
 * Bugfix: [#51](https://github.com/hanshengchiu/reorderables/issues/151). Added lint fixes due to Flutter 3.
   (thanks [diegotori](https://github.com/diegotori)).
