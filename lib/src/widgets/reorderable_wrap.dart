@@ -324,34 +324,33 @@ class _ReorderableWrapState extends State<ReorderableWrap> {
 // This widget is responsible for the inside of the Overlay in the
 // ReorderableListView.
 class _ReorderableWrapContent extends StatefulWidget {
-  const _ReorderableWrapContent({
-    required this.children,
-    required this.direction,
-    required this.scrollDirection,
-    required this.scrollPhysics,
-    required this.padding,
-    required this.onReorder,
-    required this.onNoReorder,
-    required this.onReorderStarted,
-    required this.buildItemsContainer,
-    required this.buildDraggableFeedback,
-    required this.needsLongPressDraggable,
-    required this.alignment,
-    required this.spacing,
-    required this.runAlignment,
-    required this.runSpacing,
-    required this.crossAxisAlignment,
-    required this.textDirection,
-    required this.verticalDirection,
-    required this.minMainAxisCount,
-    required this.maxMainAxisCount,
-    this.header,
-    this.footer,
-    this.controller,
-    this.reorderAnimationDuration = const Duration(milliseconds: 200),
-    this.scrollAnimationDuration = const Duration(milliseconds: 200),
-    required this.enableReorder
-  });
+  const _ReorderableWrapContent(
+      {required this.children,
+      required this.direction,
+      required this.scrollDirection,
+      required this.scrollPhysics,
+      required this.padding,
+      required this.onReorder,
+      required this.onNoReorder,
+      required this.onReorderStarted,
+      required this.buildItemsContainer,
+      required this.buildDraggableFeedback,
+      required this.needsLongPressDraggable,
+      required this.alignment,
+      required this.spacing,
+      required this.runAlignment,
+      required this.runSpacing,
+      required this.crossAxisAlignment,
+      required this.textDirection,
+      required this.verticalDirection,
+      required this.minMainAxisCount,
+      required this.maxMainAxisCount,
+      this.header,
+      this.footer,
+      this.controller,
+      this.reorderAnimationDuration = const Duration(milliseconds: 200),
+      this.scrollAnimationDuration = const Duration(milliseconds: 200),
+      required this.enableReorder});
 
   final List<Widget>? header;
   final Widget? footer;
@@ -497,7 +496,7 @@ class _ReorderableWrapContentState extends State<_ReorderableWrapContent>
   @override
   void didChangeDependencies() {
     _scrollController = widget.controller ??
-        PrimaryScrollController.of(context) ??
+        PrimaryScrollController.maybeOf(context) ??
         ScrollController();
     super.didChangeDependencies();
   }
@@ -539,7 +538,7 @@ class _ReorderableWrapContentState extends State<_ReorderableWrapContent>
     if (_scrolling || !_scrollController.hasClients) return;
     final RenderObject contextObject = context.findRenderObject()!;
     final RenderAbstractViewport viewport =
-        RenderAbstractViewport.of(contextObject)!;
+        RenderAbstractViewport.of(contextObject);
     // If and only if the current scroll offset falls in-between the offsets
     // necessary to reveal the selected context at the top or bottom of the
     // screen, then it is already on-screen.
@@ -1228,7 +1227,7 @@ class _ReorderableWrapContentState extends State<_ReorderableWrapContent>
     }
 
     if (widget.controller != null &&
-        PrimaryScrollController.of(context) == null) {
+        PrimaryScrollController.maybeOf(context) == null) {
       return (widget.buildItemsContainer ?? defaultBuildItemsContainer)(
           context, widget.direction, wrappedChildren);
     } else {
