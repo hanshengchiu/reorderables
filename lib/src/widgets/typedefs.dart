@@ -7,3 +7,4 @@ typedef BuildDraggableFeedback = Widget Function(
 
 typedef NoReorderCallback = void Function(int index);
 typedef ReorderStartedCallback = void Function(int index);
+typedef ReorderingCallback = void Function(DragUpdateDetails details);

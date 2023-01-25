@@ -57,6 +57,7 @@ class ReorderableWrap extends StatefulWidget {
     this.maxMainAxisCount,
     this.onNoReorder,
     this.onReorderStarted,
+    this.onReordering,
     this.reorderAnimationDuration = const Duration(milliseconds: 200),
     this.scrollAnimationDuration = const Duration(milliseconds: 200),
     this.ignorePrimaryScrollController = false,
@@ -107,6 +108,9 @@ class ReorderableWrap extends StatefulWidget {
   /// children.
   final ReorderCallback onReorder;
   final NoReorderCallback? onNoReorder;
+
+  /// Called while the draggable is being dragged.
+  final ReorderingCallback? onReordering;
 
   /// Called when the draggable starts being dragged.
   final ReorderStartedCallback? onReorderStarted;
@@ -286,6 +290,7 @@ class _ReorderableWrapState extends State<ReorderableWrap> {
           onReorder: widget.onReorder,
           onNoReorder: widget.onNoReorder,
           onReorderStarted: widget.onReorderStarted,
+          onReordering: widget.onReordering,
           padding: widget.padding,
           buildItemsContainer: widget.buildItemsContainer,
           buildDraggableFeedback: widget.buildDraggableFeedback,
@@ -333,6 +338,7 @@ class _ReorderableWrapContent extends StatefulWidget {
     required this.onReorder,
     required this.onNoReorder,
     required this.onReorderStarted,
+    required this.onReordering,
     required this.buildItemsContainer,
     required this.buildDraggableFeedback,
     required this.needsLongPressDraggable,
@@ -364,6 +370,7 @@ class _ReorderableWrapContent extends StatefulWidget {
   final ReorderCallback onReorder;
   final NoReorderCallback? onNoReorder;
   final ReorderStartedCallback? onReorderStarted;
+  final ReorderingCallback? onReordering;
   final BuildItemsContainer? buildItemsContainer;
   final BuildDraggableFeedback? buildDraggableFeedback;
   final bool needsLongPressDraggable;
@@ -846,6 +853,7 @@ class _ReorderableWrapContentState extends State<_ReorderableWrapContent>
                         //child: toWrap,//Container(width: 0, height: 0, child: toWrap)
                         child: _makeAppearingWidget(toWrap))),
                 onDragStarted: onDragStarted,
+                onDragUpdate: widget.onReordering,
                 // When the drag ends inside a DragTarget widget, the drag
                 // succeeds, and we reorder the widget into position appropriately.
                 onDragCompleted: onDragEnded,
@@ -873,6 +881,7 @@ class _ReorderableWrapContentState extends State<_ReorderableWrapContent>
                   ),
                 ),
                 onDragStarted: onDragStarted,
+                onDragUpdate: widget.onReordering,
                 onDragCompleted: onDragEnded,
                 dragAnchorStrategy: childDragAnchorStrategy,
                 onDraggableCanceled: (Velocity velocity, Offset offset) =>

@@ -68,6 +68,7 @@ class ReorderableTable extends StatelessWidget {
     this.footer,
     this.decorateDraggableFeedback,
     this.onNoReorder,
+    this.onReordering,
     this.reorderAnimationDuration,
     this.scrollAnimationDuration,
     this.ignorePrimaryScrollController = false,
@@ -170,6 +171,10 @@ class ReorderableTable extends StatelessWidget {
   /// children.
   final ReorderCallback onReorder;
   final NoReorderCallback? onNoReorder;
+
+  /// Called while the draggable is being dragged.
+  final ReorderingCallback? onReordering;
+
   final DecorateDraggableFeedback? decorateDraggableFeedback;
   final Duration? reorderAnimationDuration;
   final Duration? scrollAnimationDuration;
@@ -195,6 +200,7 @@ class ReorderableTable extends StatelessWidget {
         footer: footer,
         children: children,
         onReorder: onReorder,
+        onReordering: onReordering,
         onNoReorder: onNoReorder,
         needsLongPressDraggable: needsLongPressDraggable,
         direction: Axis.vertical,
