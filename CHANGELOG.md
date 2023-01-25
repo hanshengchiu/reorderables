@@ -1,3 +1,6 @@
+## [0.6.0] - 25 Jan 2023.
+* Bugfix: [#174](https://github.com/hanshengchiu/reorderables/pull/174). Fix crashes when using Flutter 3.7 (thanks [luccasclezar](https://github.com/luccasclezar))
+
 ## [0.5.1] - 3 Nov 2022.
 * New Feature: [#164](https://github.com/hanshengchiu/reorderables/pull/164). add a draggedItemBuilder widget to support persistent state children (thanks [danReynolds](https://github.com/danReynolds))
 
