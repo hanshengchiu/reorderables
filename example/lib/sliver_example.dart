@@ -34,7 +34,7 @@ class _SliverExampleState extends State<SliverExample> {
     // Make sure there is a scroll controller attached to the scroll view that contains ReorderableSliverList.
     // Otherwise an error will be thrown.
     ScrollController _scrollController =
-        PrimaryScrollController.of(context) ?? ScrollController();
+        PrimaryScrollController.maybeOf(context) ?? ScrollController();
 
     return CustomScrollView(
       // A ScrollController must be included in CustomScrollView, otherwise

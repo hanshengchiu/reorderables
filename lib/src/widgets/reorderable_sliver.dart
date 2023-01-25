@@ -384,11 +384,12 @@ class _ReorderableSliverListState extends State<ReorderableSliverList>
     }
 
     _scrollController = widget.controller ??
-        PrimaryScrollController.of(context) ??
+        PrimaryScrollController.maybeOf(context) ??
         ScrollController();
 
-    _attachedScrollPosition =
-        _scrollController.hasClients ? null : Scrollable.of(context)?.position;
+    _attachedScrollPosition = _scrollController.hasClients
+        ? null
+        : Scrollable.maybeOf(context)?.position;
 
     if (_attachedScrollPosition != null) {
       _scrollController.attach(_attachedScrollPosition!);
@@ -498,7 +499,7 @@ class _ReorderableSliverListState extends State<ReorderableSliverList>
     if (_scrolling) return;
     final RenderObject contextObject = context.findRenderObject()!;
     final RenderAbstractViewport viewport =
-        RenderAbstractViewport.of(contextObject)!;
+        RenderAbstractViewport.of(contextObject);
 
 //    if (_scrollController.positions.isEmpty) {
 //      debugPrint('${DateTime.now().toString().substring(5, 22)} reorderable_sliver.dart(537) $this._scrollTo: empty pos');
