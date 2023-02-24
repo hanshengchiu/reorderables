@@ -1037,24 +1037,22 @@ class _ReorderableWrapContentState extends State<_ReorderableWrapContent>
             Positioned(
                 left: 0,
                 top: 0,
-                width: widget.direction == Axis.horizontal
-                    ? _childSizes[index].width / 2
-                    : _childSizes[index].width,
-                height: widget.direction == Axis.vertical
-                    ? _childSizes[index].height / 2
-                    : _childSizes[index].height,
-                child: preDragTarget),
+                width: _childSizes[index].width,
+                height: _childSizes[index].height,
+                child: ClipPath(
+                  clipper: TopLeftTriangleClipper(),
+                  child: preDragTarget,
+                )),
           if (containedDraggable.isReorderable)
             Positioned(
                 right: 0,
                 bottom: 0,
-                width: widget.direction == Axis.horizontal
-                    ? _childSizes[index].width / 2
-                    : _childSizes[index].width,
-                height: widget.direction == Axis.vertical
-                    ? _childSizes[index].height / 2
-                    : _childSizes[index].height,
-                child: nextDragTarget),
+                width: _childSizes[index].width,
+                height: _childSizes[index].height,
+                child: ClipPath(
+                  clipper: BottomRightTriangleClipper(),
+                  child: nextDragTarget,
+                )),
         ],
       );
 //      return dragTarget;
@@ -1284,4 +1282,32 @@ class ContainedDraggable {
   bool isReorderable;
 
   ContainedDraggable(this.builder, this.isReorderable);
+}
+
+class TopLeftTriangleClipper extends CustomClipper<Path> {
+  @override
+  Path getClip(Size size) {
+    return Path()
+      ..moveTo(0, 0)
+      ..lineTo(size.width, 0)
+      ..lineTo(0, size.height)
+      ..close();
+  }
+
+  @override
+  bool shouldReclip(CustomClipper<Path> oldClipper) => false;
+}
+
+class BottomRightTriangleClipper extends CustomClipper<Path> {
+  @override
+  Path getClip(Size size) {
+    return Path()
+      ..moveTo(size.width, size.height)
+      ..lineTo(0, size.height)
+      ..lineTo(size.width, 0)
+      ..close();
+  }
+
+  @override
+  bool shouldReclip(CustomClipper<Path> oldClipper) => false;
 }
