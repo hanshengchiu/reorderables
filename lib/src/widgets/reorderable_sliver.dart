@@ -246,6 +246,7 @@ class ReorderableSliverList extends StatefulWidget {
     this.onReorderStarted,
     this.onDragStart,
     this.onDragEnd,
+    this.dragDelay = DragDelay.long,
     this.enabled = true,
     this.controller,
     Key? key,
@@ -279,6 +280,9 @@ class ReorderableSliverList extends StatefulWidget {
 
   final BuildItemsContainer? buildItemsContainer;
   final BuildDraggableFeedback? buildDraggableFeedback;
+
+  // Sets the delay required to trigger dragging (short or long)
+  final DragDelay dragDelay;
 
   /// Sets whether the children are reorderable or not
   final bool enabled;
@@ -769,13 +773,14 @@ class _ReorderableSliverListState extends State<ReorderableSliverList>
       } else {
         // We build the draggable inside of a layout builder so that we can
         // constrain the size of the feedback dragging widget.
-        child = LongPressDraggable<int>(
-          maxSimultaneousDrags: widget.enabled ? 1 : 0,
-          axis: Axis.vertical,
-          //widget.direction,
-          data: index,
-          //toWrap.key,
-          ignoringFeedbackSemantics: false,
+        child = widget.dragDelay == DragDelay.long
+            ? LongPressDraggable<int>(
+                maxSimultaneousDrags: widget.enabled ? 1 : 0,
+                axis: Axis.vertical,
+                //widget.direction,
+                data: index,
+                //toWrap.key,
+                ignoringFeedbackSemantics: false,
 //        feedback: Container(
 //          alignment: Alignment.topLeft,
 //          // These constraints will limit the cross axis of the drawn widget.
@@ -785,7 +790,7 @@ class _ReorderableSliverListState extends State<ReorderableSliverList>
 //            child: IntrinsicWidth(child: toWrapWithSemantics),
 //          ),
 //        ),
-          feedback: feedbackBuilder,
+                feedback: feedbackBuilder,
 //        feedback: Transform(
 //          transform: new Matrix4.rotationZ(0),
 //          alignment: FractionalOffset.topLeft,
@@ -797,32 +802,61 @@ class _ReorderableSliverListState extends State<ReorderableSliverList>
 //          ),
 //        ),
 
-          // Wrap toWrapWithSemantics with a widget that supports HitTestBehavior
-          // to make sure the whole toWrapWithSemantics responds to pointer events, i.e. dragging
-          child: MetaData(
-              child: toWrapWithSemantics, behavior: HitTestBehavior.opaque),
-          //toWrapWithSemantics,//_dragging == toWrap.key ? const SizedBox() : toWrapWithSemantics,
-          childWhenDragging: IgnorePointer(
-              ignoring: true,
-              child: SizedBox(
-                  // Small values (<50) cause an error when used with ListTile.
-                  width: double.infinity,
-                  child: Opacity(
-                      opacity: 0,
+                // Wrap toWrapWithSemantics with a widget that supports HitTestBehavior
+                // to make sure the whole toWrapWithSemantics responds to pointer events, i.e. dragging
+                child: MetaData(
+                  child: toWrapWithSemantics, behavior: HitTestBehavior.opaque),
+                //toWrapWithSemantics,//_dragging == toWrap.key ? const SizedBox() : toWrapWithSemantics,
+                childWhenDragging: IgnorePointer(
+                    ignoring: true,
+                    child: SizedBox(
+                        // Small values (<50) cause an error when used with ListTile.
+                        width: double.infinity,
+                        child: Opacity(
+                            opacity: 0,
 //              child: _makeAppearingWidget(toWrap)
-                      child: Container(width: 0, height: 0, child: toWrap)))),
-          onDragStarted: onDragStarted,
-          dragAnchorStrategy: childDragAnchorStrategy,
-          // When the drag ends inside a DragTarget widget, the drag
-          // succeeds, and we reorder the widget into position appropriately.
-          onDragCompleted: onDragEnded,
-          // When the drag does not end inside a DragTarget widget, the
-          // drag fails, but we still reorder the widget to the last position it
-          // had been dragged to.
-          onDraggableCanceled: (Velocity velocity, Offset offset) {
-            onDragEnded();
-          },
-        );
+                            child: Container(width: 0, height: 0, child: toWrap)))),
+                onDragStarted: onDragStarted,
+                dragAnchorStrategy: childDragAnchorStrategy,
+                // When the drag ends inside a DragTarget widget, the drag
+                // succeeds, and we reorder the widget into position appropriately.
+                onDragCompleted: onDragEnded,
+                // When the drag does not end inside a DragTarget widget, the
+                // drag fails, but we still reorder the widget to the last position it
+                // had been dragged to.
+                onDraggableCanceled: (Velocity velocity, Offset offset) {
+                  onDragEnded();
+                },
+              )
+            : Draggable<int>(
+                maxSimultaneousDrags: widget.enabled ? 1 : 0,
+                axis: Axis.vertical,
+                data: index,
+                ignoringFeedbackSemantics: false,
+                feedback: feedbackBuilder,
+                child: MetaData(
+                    child: toWrapWithSemantics,
+                    behavior: HitTestBehavior.opaque),
+                childWhenDragging: IgnorePointer(
+                    ignoring: true,
+                    child: SizedBox(
+                        // Small values (<50) cause an error when used with ListTile.
+                        width: double.infinity,
+                        child: Opacity(
+                            opacity: 0,
+                            child: Container(
+                                width: 0, height: 0, child: toWrap)))),
+                onDragStarted: onDragStarted,
+                dragAnchorStrategy: childDragAnchorStrategy,
+                // When the drag ends inside a DragTarget widget, the drag
+                // succeeds, and we reorder the widget into position appropriately.
+                onDragCompleted: onDragEnded,
+                // When the drag does not end inside a DragTarget widget, the
+                // drag fails, but we still reorder the widget to the last position it
+                // had been dragged to.
+                onDraggableCanceled: (Velocity velocity, Offset offset) {
+                  onDragEnded();
+                });
       }
 
       // The target for dropping at the end of the list doesn't need to be

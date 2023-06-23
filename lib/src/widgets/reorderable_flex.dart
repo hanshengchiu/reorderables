@@ -11,6 +11,7 @@ import './passthrough_overlay.dart';
 import './reorderable_mixin.dart';
 import './reorderable_widget.dart';
 import './typedefs.dart';
+import '../drag_delay_enum.dart';
 
 /// Reorderable (drag and drop) version of [Flex], a widget that displays its
 /// draggable children in a one-dimensional array.
@@ -26,7 +27,7 @@ import './typedefs.dart';
 /// top/left and bottom/right of the widget. If further control is needed, you
 /// can use [buildItemsContainer] to customize how each item is contained, or
 /// use [buildDraggableFeedback] to customize the [feedback] of the internal
-/// [LongPressDraggable]. Consider using [ReorderableRow] or [ReorderableColumn]
+/// [Draggable] widget. Consider using [ReorderableRow] or [ReorderableColumn]
 /// instead using this widget directly.
 ///
 /// All [children] must have a key.
@@ -52,7 +53,7 @@ class ReorderableFlex extends StatefulWidget {
     this.onNoReorder,
     this.onReorderStarted,
     this.scrollController,
-    this.needsLongPressDraggable = true,
+    this.dragDelay = DragDelay.long,
     this.draggingWidgetOpacity = 0.2,
     this.reorderAnimationDuration,
     this.scrollAnimationDuration,
@@ -102,7 +103,7 @@ class ReorderableFlex extends StatefulWidget {
 
   final MainAxisAlignment mainAxisAlignment;
 
-  final bool needsLongPressDraggable;
+  final DragDelay dragDelay;
   final double draggingWidgetOpacity;
 
   final Duration? reorderAnimationDuration;
@@ -150,7 +151,7 @@ class _ReorderableFlexState extends State<ReorderableFlex> {
           buildDraggableFeedback: widget.buildDraggableFeedback,
           mainAxisAlignment: widget.mainAxisAlignment,
           scrollController: widget.scrollController,
-          needsLongPressDraggable: widget.needsLongPressDraggable,
+          dragDelay: widget.dragDelay,
           draggingWidgetOpacity: widget.draggingWidgetOpacity,
           draggedItemBuilder: widget.draggedItemBuilder,
           reorderAnimationDuration: widget.reorderAnimationDuration ??
@@ -189,7 +190,7 @@ class _ReorderableFlexContent extends StatefulWidget {
     required this.onReorderStarted,
     required this.mainAxisAlignment,
     required this.scrollController,
-    required this.needsLongPressDraggable,
+    required this.dragDelay,
     required this.draggingWidgetOpacity,
     required this.buildItemsContainer,
     required this.buildDraggableFeedback,
@@ -214,7 +215,7 @@ class _ReorderableFlexContent extends StatefulWidget {
   final Widget Function(BuildContext context, int index)? draggedItemBuilder;
 
   final MainAxisAlignment mainAxisAlignment;
-  final bool needsLongPressDraggable;
+  final DragDelay dragDelay;
   final double draggingWidgetOpacity;
   final Duration reorderAnimationDuration;
   final Duration scrollAnimationDuration;
@@ -601,7 +602,7 @@ class _ReorderableFlexContentState extends State<_ReorderableFlexContent>
       if (!isReorderable) {
         child = toWrap;
       } else {
-        child = widget.needsLongPressDraggable
+        child = widget.dragDelay == DragDelay.long
             ? LongPressDraggable<int>(
                 maxSimultaneousDrags: 1,
                 axis: widget.direction,
@@ -947,7 +948,7 @@ class _ReorderableFlexContentState extends State<_ReorderableFlexContent>
 /// In addition to other parameters in [Row]'s constructor, this widget also
 /// has [header] and [footer] for placing non-reorderable widgets at the top and
 /// bottom of the widget, and [buildDraggableFeedback] to customize the
-/// [feedback] widget of the internal [LongPressDraggable].
+/// [feedback] widget of the internal [Draggable].
 ///
 /// The [onReorder] function must be defined. A typical onReorder function looks
 /// like the following:
@@ -984,7 +985,7 @@ class ReorderableRow extends ReorderableFlex {
     NoReorderCallback? onNoReorder,
     ReorderStartedCallback? onReorderStarted,
     ScrollController? scrollController,
-    bool needsLongPressDraggable = true,
+    DragDelay dragDelay = DragDelay.long,
     double draggingWidgetOpacity = 0.2,
     Duration? reorderAnimationDuration,
     Duration? scrollAnimationDuration,
@@ -1017,7 +1018,7 @@ class ReorderableRow extends ReorderableFlex {
             buildDraggableFeedback: buildDraggableFeedback,
             mainAxisAlignment: mainAxisAlignment,
             scrollController: scrollController,
-            needsLongPressDraggable: needsLongPressDraggable,
+            dragDelay: dragDelay,
             draggingWidgetOpacity: draggingWidgetOpacity,
             reorderAnimationDuration: reorderAnimationDuration,
             scrollAnimationDuration: scrollAnimationDuration,
@@ -1030,7 +1031,7 @@ class ReorderableRow extends ReorderableFlex {
 /// In addition to other parameters in [Column]'s constructor, this widget also
 /// has [header] and [footer] for placing non-reorderable widgets at the left and
 /// right of the widget, and [buildDraggableFeedback] to customize the
-/// [feedback] widget of the internal [LongPressDraggable].
+/// [feedback] widget of the internal [Draggable].
 ///
 /// The [onReorder] function must be defined. A typical onReorder function looks
 /// like the following:
@@ -1067,7 +1068,7 @@ class ReorderableColumn extends ReorderableFlex {
     NoReorderCallback? onNoReorder,
     ReorderStartedCallback? onReorderStarted,
     ScrollController? scrollController,
-    bool needsLongPressDraggable = true,
+    DragDelay dragDelay = DragDelay.long,
     double draggingWidgetOpacity = 0.2,
     Duration? reorderAnimationDuration,
     Duration? scrollAnimationDuration,
@@ -1098,7 +1099,7 @@ class ReorderableColumn extends ReorderableFlex {
             buildDraggableFeedback: buildDraggableFeedback,
             mainAxisAlignment: mainAxisAlignment,
             scrollController: scrollController,
-            needsLongPressDraggable: needsLongPressDraggable,
+            dragDelay: dragDelay,
             draggingWidgetOpacity: draggingWidgetOpacity,
             reorderAnimationDuration: reorderAnimationDuration,
             scrollAnimationDuration: scrollAnimationDuration,
