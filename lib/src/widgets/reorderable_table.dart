@@ -5,6 +5,7 @@ import './reorderable_flex.dart';
 import './tabluar_flex.dart';
 import './typedefs.dart';
 import '../rendering/tabluar_flex.dart';
+import '../drag_delay_enum.dart';
 
 class ReorderableTableRow extends TabluarRow {
   ReorderableTableRow({
@@ -71,7 +72,7 @@ class ReorderableTable extends StatelessWidget {
     this.reorderAnimationDuration,
     this.scrollAnimationDuration,
     this.ignorePrimaryScrollController = false,
-    this.needsLongPressDraggable = true,
+    this.dragDelay = DragDelay.long,
     Key? key,
     this.borderColor,
   })  : assert(() {
@@ -175,7 +176,7 @@ class ReorderableTable extends StatelessWidget {
   final Duration? scrollAnimationDuration;
   final bool ignorePrimaryScrollController;
 
-  final bool needsLongPressDraggable;
+  final DragDelay dragDelay;
 
   @override
   Widget build(BuildContext context) {
@@ -196,7 +197,7 @@ class ReorderableTable extends StatelessWidget {
         children: children,
         onReorder: onReorder,
         onNoReorder: onNoReorder,
-        needsLongPressDraggable: needsLongPressDraggable,
+        dragDelay: dragDelay,
         direction: Axis.vertical,
         buildItemsContainer: (BuildContext containerContext, Axis direction,
             List<Widget> children) {

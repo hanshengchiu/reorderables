@@ -45,7 +45,7 @@ class ReorderableWrap extends StatefulWidget {
     this.padding,
     this.buildItemsContainer,
     this.buildDraggableFeedback,
-    this.needsLongPressDraggable = true,
+    this.dragDelay = DragDelay.long,
     this.alignment = WrapAlignment.start,
     this.spacing = 0.0,
     this.runAlignment = WrapAlignment.start,
@@ -114,9 +114,9 @@ class ReorderableWrap extends StatefulWidget {
   final BuildItemsContainer? buildItemsContainer;
   final BuildDraggableFeedback? buildDraggableFeedback;
 
-  /// The flag of whether needs long press to trigger dragging mode.
-  /// true means it needs long press and false means no need.
-  final bool needsLongPressDraggable;
+  /// Enum flag used to determine if a long press or a short press is needed to
+  /// trigger dragging mode. DragDelay.long is the default
+  final DragDelay dragDelay;
 
   /// How the children within a run should be places in the main axis.
   ///
@@ -289,7 +289,7 @@ class _ReorderableWrapState extends State<ReorderableWrap> {
           padding: widget.padding,
           buildItemsContainer: widget.buildItemsContainer,
           buildDraggableFeedback: widget.buildDraggableFeedback,
-          needsLongPressDraggable: widget.needsLongPressDraggable,
+          dragDelay: widget.dragDelay,
           alignment: widget.alignment,
           spacing: widget.spacing,
           runAlignment: widget.runAlignment,
@@ -335,7 +335,7 @@ class _ReorderableWrapContent extends StatefulWidget {
     required this.onReorderStarted,
     required this.buildItemsContainer,
     required this.buildDraggableFeedback,
-    required this.needsLongPressDraggable,
+    required this.dragDelay,
     required this.alignment,
     required this.spacing,
     required this.runAlignment,
@@ -352,7 +352,7 @@ class _ReorderableWrapContent extends StatefulWidget {
     this.scrollAnimationDuration = const Duration(milliseconds: 200),
     required this.enableReorder
   });
-  
+
   final List<Widget>? header;
   final Widget? footer;
   final ScrollController? controller;
@@ -366,7 +366,7 @@ class _ReorderableWrapContent extends StatefulWidget {
   final ReorderStartedCallback? onReorderStarted;
   final BuildItemsContainer? buildItemsContainer;
   final BuildDraggableFeedback? buildDraggableFeedback;
-  final bool needsLongPressDraggable;
+  final DragDelay dragDelay;
 
   final WrapAlignment alignment;
   final double spacing;
@@ -826,7 +826,7 @@ class _ReorderableWrapContentState extends State<_ReorderableWrapContent>
       } else {
         // We build the draggable inside of a layout builder so that we can
         // constrain the size of the feedback dragging widget.
-        child = this.widget.needsLongPressDraggable
+        child = this.widget.dragDelay == DragDelay.long
             ? LongPressDraggable<int>(
                 maxSimultaneousDrags: 1,
                 data: index,
