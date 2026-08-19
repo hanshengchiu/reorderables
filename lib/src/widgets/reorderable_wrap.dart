@@ -705,6 +705,12 @@ class _ReorderableWrapContentState extends State<_ReorderableWrapContent>
 
     // Drops toWrap into the last position it was hovering over.
     void onDragEnded() {
+      // A Draggable can outlive this state when its route or parent is removed
+      // before the pointer is released. Its completion callback must not touch
+      // the animation controllers after dispose.
+      if (!mounted) {
+        return;
+      }
 //      reorder(_dragStartIndex, _currentIndex);
       setState(() {
         _reorder(_dragStartIndex, _currentDisplayIndex);
