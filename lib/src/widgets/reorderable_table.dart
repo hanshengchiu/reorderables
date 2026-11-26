@@ -1,12 +1,12 @@
 //import 'dart:math' as math;
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 import './reorderable_flex.dart';
-import './tabluar_flex.dart';
+import 'tabular_flex.dart';
 import './typedefs.dart';
-import '../rendering/tabluar_flex.dart';
+import '../rendering/tabular_flex.dart';
 
-class ReorderableTableRow extends TabluarRow {
+class ReorderableTableRow extends TabularRow {
   ReorderableTableRow({
     MainAxisAlignment mainAxisAlignment = MainAxisAlignment.start,
     MainAxisSize mainAxisSize = MainAxisSize.max,
@@ -221,7 +221,7 @@ class ReorderableTable extends StatelessWidget {
                     return child;
                   },
                 ).toList();
-          return TabluarFlex(
+          return TabularFlex(
               key: tableKey,
               direction: direction,
 //          mainAxisAlignment: mainAxisAlignment,
@@ -236,8 +236,8 @@ class ReorderableTable extends StatelessWidget {
             BoxConstraints constraints, Widget child) {
           // The child is a ReorderableTableRow because children is a List<ReorderableTableRow>
           ReorderableTableRow tableRow = child as ReorderableTableRow;
-          RenderTabluarFlex renderTabluarFlex =
-              tableKey.currentContext!.findRenderObject() as RenderTabluarFlex;
+          RenderTabularFlex renderTabluarFlex =
+              tableKey.currentContext!.findRenderObject() as RenderTabularFlex;
           int grandChildIndex = 0;
           for (;
               grandChildIndex < tableRow.children.length;

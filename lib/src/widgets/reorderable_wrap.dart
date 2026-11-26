@@ -4,7 +4,7 @@
 
 import 'dart:math';
 
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter/rendering.dart';
 import 'package:reorderables/reorderables.dart';
 
@@ -577,22 +577,21 @@ class _ReorderableWrapContentState extends State<_ReorderableWrapContent>
   // Wraps children in Row or Column, so that the children flow in
   // the widget's scrollDirection.
   Widget _buildContainerForMainAxis({required List<Widget> children}) {
-//    MainAxisSize mainAxisSize = MainAxisSize.min;
+//    MainAxisSize mainAxisSize = .min;
 //    CrossAxisAlignment crossAxisAlignment;
     WrapAlignment runAlignment;
     switch (widget.crossAxisAlignment) {
       case WrapCrossAlignment.start:
-//        crossAxisAlignment = CrossAxisAlignment.start;
-        runAlignment = WrapAlignment.start;
+//        crossAxisAlignment = .start;
+        runAlignment = .start;
         break;
       case WrapCrossAlignment.end:
-//        crossAxisAlignment = CrossAxisAlignment.end;
-        runAlignment = WrapAlignment.end;
+//        crossAxisAlignment = .end;
+        runAlignment = .end;
         break;
       case WrapCrossAlignment.center:
-      default:
-//        crossAxisAlignment = CrossAxisAlignment.center;
-        runAlignment = WrapAlignment.center;
+//        crossAxisAlignment = .center;
+        runAlignment = .center;
         break;
     }
     return Wrap(
@@ -729,8 +728,7 @@ class _ReorderableWrapContentState extends State<_ReorderableWrapContent>
       // before index+2, which is after the space at index+1.
       void moveAfter() => reorder(index, index + 2);
 
-      final MaterialLocalizations localizations =
-          MaterialLocalizations.of(context);
+      final WidgetsLocalizations localizations = WidgetsLocalizations.of(context);
 
       if (index > 0) {
         semanticsActions[CustomSemanticsAction(
@@ -1014,16 +1012,16 @@ class _ReorderableWrapContentState extends State<_ReorderableWrapContent>
         builder: (BuildContext context, List<int?> acceptedCandidates,
                 List<dynamic> rejectedCandidates) =>
             SizedBox(),
-        onWillAccept: (int? toAccept) => _onWillAccept(toAccept, true),
-        onAccept: (int accepted) {},
+        onWillAcceptWithDetails: (DragTargetDetails<int>? toAccept) => _onWillAccept(toAccept!.data, true),
+        onAcceptWithDetails: (DragTargetDetails<int> accepted) {},
         onLeave: (Object? leaving) {},
       );
       Widget nextDragTarget = DragTarget<int>(
         builder: (BuildContext context, List<int?> acceptedCandidates,
                 List<dynamic> rejectedCandidates) =>
             SizedBox(),
-        onWillAccept: (int? toAccept) => _onWillAccept(toAccept, false),
-        onAccept: (int accepted) {},
+        onWillAcceptWithDetails: (DragTargetDetails<int>? toAccept) => _onWillAccept(toAccept!.data, false),
+        onAcceptWithDetails: (DragTargetDetails<int> accepted) {},
         onLeave: (Object? leaving) {},
       );
 

@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 import 'package:reorderables/reorderables.dart';
 
@@ -56,7 +56,7 @@ class _WrapExampleState extends State<WrapExample> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         wrap,
-        ButtonBar(
+        OverflowBar(
           alignment: MainAxisAlignment.start,
           children: <Widget>[
             IconButton(
