@@ -11,9 +11,9 @@ class SizeTransitionWithIntrinsicSize extends SingleChildRenderObjectWidget {
   /// defaults to 0.0, which centers the child along the main axis during the
   /// transition.
   SizeTransitionWithIntrinsicSize({
-    this.axis = Axis.vertical,
+    this.axis = .vertical,
     required this.sizeFactor,
-    double axisAlignment = 0.0,
+    AlignmentGeometry axisAlignment = .topStart,
     Widget? child,
     Key? key,
   }) : super(
@@ -21,7 +21,7 @@ class SizeTransitionWithIntrinsicSize extends SingleChildRenderObjectWidget {
             child: SizeTransition(
               axis: axis,
               sizeFactor: sizeFactor,
-              axisAlignment: axisAlignment,
+              alignment: axisAlignment,
               child: child,
             ));
 

@@ -1,9 +1,9 @@
 import 'package:flutter/widgets.dart';
 
-import '../rendering/tabluar_flex.dart';
+import '../rendering/tabular_flex.dart';
 
-class TabluarFlex extends Flex {
-  TabluarFlex({
+class TabularFlex extends Flex {
+  TabularFlex({
     required Axis direction,
     MainAxisAlignment mainAxisAlignment = MainAxisAlignment.start,
     MainAxisSize mainAxisSize = MainAxisSize.max,
@@ -32,8 +32,8 @@ class TabluarFlex extends Flex {
   final Decoration? decoration;
 
   @override
-  RenderTabluarFlex createRenderObject(BuildContext context) {
-    return RenderTabluarFlex(
+  RenderTabularFlex createRenderObject(BuildContext context) {
+    return RenderTabularFlex(
       direction: direction,
       mainAxisAlignment: mainAxisAlignment,
       mainAxisSize: mainAxisSize,
@@ -48,7 +48,7 @@ class TabluarFlex extends Flex {
 
   @override
   void updateRenderObject(
-      BuildContext context, RenderTabluarFlex renderObject) {
+      BuildContext context, RenderTabularFlex renderObject) {
     renderObject
       ..direction = direction
       ..mainAxisAlignment = mainAxisAlignment
@@ -215,7 +215,7 @@ class TabluarFlex extends Flex {
 ///    that may by sized smaller (leaving some remaining room unused).
 ///  * [Spacer], a widget that takes up space proportional to it's flex value.
 ///  * The [catalog of layout widgets](https://flutter.io/widgets/layout/).
-class TabluarRow extends TabluarFlex {
+class TabularRow extends TabularFlex {
   /// Creates a horizontal array of children.
   ///
   /// The [direction], [mainAxisAlignment], [mainAxisSize],
@@ -229,7 +229,7 @@ class TabluarRow extends TabluarFlex {
   /// unless the row has no children or only one child) or to disambiguate
   /// `start` or `end` values for the [mainAxisAlignment], the [textDirection]
   /// must not be null.
-  TabluarRow({
+  TabularRow({
     MainAxisAlignment mainAxisAlignment = MainAxisAlignment.start,
     MainAxisSize mainAxisSize = MainAxisSize.max,
     CrossAxisAlignment crossAxisAlignment = CrossAxisAlignment.center,
@@ -415,7 +415,7 @@ class TabluarRow extends TabluarFlex {
 ///    use a [Column] inside a scrolling container.
 ///  * [Spacer], a widget that takes up space proportional to it's flex value.
 ///  * The [catalog of layout widgets](https://flutter.io/widgets/layout/).
-class TabluarColumn extends TabluarFlex {
+class TabularColumn extends TabularFlex {
   /// Creates a vertical array of children.
   ///
   /// The [direction], [mainAxisAlignment], [mainAxisSize],
@@ -427,7 +427,7 @@ class TabluarColumn extends TabluarFlex {
   /// any. If there is no ambient directionality, and a text direction is going
   /// to be necessary to disambiguate `start` or `end` values for the
   /// [crossAxisAlignment], the [textDirection] must not be null.
-  TabluarColumn({
+  TabularColumn({
     MainAxisAlignment mainAxisAlignment = MainAxisAlignment.start,
     MainAxisSize mainAxisSize = MainAxisSize.max,
     CrossAxisAlignment crossAxisAlignment = CrossAxisAlignment.center,

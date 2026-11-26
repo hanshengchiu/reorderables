@@ -8,7 +8,7 @@
 
 import 'dart:math';
 
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter/rendering.dart';
 import 'package:reorderables/reorderables.dart';
 
@@ -672,8 +672,7 @@ class _ReorderableSliverListState extends State<ReorderableSliverList>
       // before index+2, which is after the space at index+1.
       void moveAfter() => reorder(index, index + 2);
 
-      final MaterialLocalizations localizations =
-          MaterialLocalizations.of(context);
+      final WidgetsLocalizations localizations = WidgetsLocalizations.of(context);
 
       if (index > 0) {
         semanticsActions[CustomSemanticsAction(
@@ -850,8 +849,8 @@ class _ReorderableSliverListState extends State<ReorderableSliverList>
     return Builder(builder: (BuildContext context) {
       Widget dragTarget = DragTarget<int>(
         builder: buildDragTarget,
-        onWillAccept: (int? toAccept) {
-          bool willAccept = _dragStartIndex == toAccept && toAccept != index;
+        onWillAcceptWithDetails: (DragTargetDetails<int>? toAccept) {
+          bool willAccept = _dragStartIndex == toAccept!.data && toAccept.data != index;
 //          debugPrint('${DateTime.now().toString().substring(5, 22)} reorderable_sliver.dart(679) $this._statefulWrap: '
 //            'onWillAccept: toAccept:$toAccept return:$willAccept _nextIndex:$_nextIndex index:$index _currentIndex:$_currentIndex _dragStartIndex:$_dragStartIndex');
 
@@ -879,7 +878,7 @@ class _ReorderableSliverListState extends State<ReorderableSliverList>
           // If the target is not the original starting point, then we will accept the drop.
           return willAccept; //_dragging == toAccept && toAccept != toWrap.key;
         },
-        onAccept: (int accepted) {},
+        onAcceptWithDetails: (DragTargetDetails<int> accepted) {},
         onLeave: (Object? leaving) {},
       );
 

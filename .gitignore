@@ -28,6 +28,7 @@
 .pub/
 build/
 .fvm/
+.fvmrc
 
 # Android related
 **/android/**/gradle-wrapper.jar
@@ -62,6 +63,7 @@ build/
 **/ios/Flutter/app.zip
 **/ios/Flutter/flutter_export_environment.sh
 **/ios/Flutter/flutter_assets/
+**/ios/Flutter/ephemeral/
 **/ios/ServiceDefinitions.json
 **/ios/Runner/GeneratedPluginRegistrant.*
 
